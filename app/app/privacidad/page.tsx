@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { LegalShell, LegalSectionBlock, type LegalSection } from "@/components/legal/LegalShell";
+import { pageOpenGraph } from "@/lib/seo";
+
+const TITLE = "Aviso de Privacidad";
+const DESCRIPTION =
+  "Aviso de Privacidad de la app Centavos conforme a la LFPDPPP: qué datos recabamos, para qué los usamos, cómo los protegemos y cómo ejercer tus derechos ARCO.";
 
 export const metadata: Metadata = {
-  title: "Aviso de Privacidad · App Centavos",
-  description:
-    "Aviso de Privacidad de la app Centavos conforme a la LFPDPPP: qué datos recabamos, para qué los usamos, cómo los protegemos y cómo ejercer tus derechos ARCO.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/app/privacidad" },
+  openGraph: pageOpenGraph({ title: `${TITLE} · Centavos`, description: DESCRIPTION, path: "/app/privacidad" }),
 };
 
 const SECTIONS: LegalSection[] = [

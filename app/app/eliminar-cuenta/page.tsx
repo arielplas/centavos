@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { LegalShell, LegalSectionBlock, type LegalSection } from "@/components/legal/LegalShell";
+import { pageOpenGraph } from "@/lib/seo";
+
+const TITLE = "Eliminar tu cuenta";
+const DESCRIPTION =
+  "Cómo eliminar tu cuenta de Centavos: desde la app en Configuraciones > Perfil > Eliminar Cuenta, o enviando un correo a hola@centavos.mx con el asunto «Eliminar cuenta».";
 
 export const metadata: Metadata = {
-  title: "Eliminar tu cuenta · App Centavos",
-  description:
-    "Cómo eliminar tu cuenta de Centavos: desde la app en Configuraciones > Perfil > Eliminar Cuenta, o enviando un correo a hola@centavos.mx con el asunto «Eliminar cuenta».",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/app/eliminar-cuenta" },
+  openGraph: pageOpenGraph({ title: `${TITLE} · Centavos`, description: DESCRIPTION, path: "/app/eliminar-cuenta" }),
 };
 
 const SECTIONS: LegalSection[] = [

@@ -22,6 +22,8 @@ app/
   robots.ts                  → robots.txt
   manifest.ts                → PWA manifest
   not-found.tsx              → 404
+  opengraph-image.png        → imagen social (og:image / twitter:image) de todas las rutas
+  apple-icon.png             → ícono iOS
   app/
     soporte/page.tsx         → formulario de soporte (+ mailto de respaldo)
     privacidad/page.tsx      → aviso de privacidad
@@ -31,14 +33,15 @@ app/
     soporte/route.ts         → endpoint del formulario (stub 503 hasta reconectar backend)
 
 components/
-  Header.tsx, Logo.tsx, MobileMenu.tsx
-  home/*                     → AppHeader, AppFooter, AppStoreBadges, PhoneMock
+  Header.tsx, Logo.tsx
+  home/*                     → AppFooter, AppStoreBadges, MobileDownloadBar, PhoneMock
   legal/*                    → LegalShell, BackToTop
   soporte/SoporteForm.tsx
 
 lib/
   store-links.ts             → URLs de App Store / Google Play
-  seo.ts                     → helpers de JSON-LD
+  seo.ts                     → helpers de JSON-LD y Open Graph por página
+  config.ts                  → flags (formulario de soporte, correo)
 ```
 
 ## Empezar

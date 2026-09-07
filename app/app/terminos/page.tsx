@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { LegalShell, LegalSectionBlock, type LegalSection } from "@/components/legal/LegalShell";
+import { pageOpenGraph } from "@/lib/seo";
+
+const TITLE = "Términos y Condiciones";
+const DESCRIPTION =
+  "Términos y Condiciones de la app Centavos: tu cuaderno digital de gastos, presupuestos, alcancías y suscripciones. Sin bancos, sin dinero real, sin letras chiquitas escondidas.";
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones · App Centavos",
-  description:
-    "Términos y Condiciones de la app Centavos: tu cuaderno digital de gastos, presupuestos, alcancías y suscripciones. Sin bancos, sin dinero real, sin letras chiquitas escondidas.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/app/terminos" },
+  openGraph: pageOpenGraph({ title: `${TITLE} · Centavos`, description: DESCRIPTION, path: "/app/terminos" }),
 };
 
 const SECTIONS: LegalSection[] = [

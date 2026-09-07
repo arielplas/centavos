@@ -1,18 +1,30 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Script from "next/script";
 import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
-import { AppStoreBadges } from "@/components/home/AppStoreBadges";
-import { PhoneFrame, PulsoMock, AnotarMock, SuscripcionesMock } from "@/components/home/PhoneMock";
+import { AppStoreBadges, InlineStoreLinks } from "@/components/home/AppStoreBadges";
+import { MobileDownloadBar } from "@/components/home/MobileDownloadBar";
+import {
+  PhoneFrame,
+  PulsoMock,
+  PresupuestosMock,
+  SuscripcionesMock,
+  MesesSinInteresesMock,
+  DivideMock,
+  RecordatoriosMock,
+} from "@/components/home/PhoneMock";
 import { getAppLinks } from "@/lib/store-links";
-import { SITE, appStoreId, mobileApplicationJsonLd } from "@/lib/seo";
+import { appStoreId, faqJsonLd, mobileApplicationJsonLd, pageOpenGraph } from "@/lib/seo";
 
-const HOME_TITLE = "Centavos · App para anotar gastos y controlar tu presupuesto";
+// Título con la keyword de búsqueda ("app para anotar gastos") + el
+// diferenciador de marca ("sin conectar tu banco"). ≤ 60 caracteres.
+const HOME_TITLE = "Centavos · App para anotar gastos sin conectar tu banco";
+// ≤ 155 caracteres: Google corta la descripción alrededor de ahí.
 const HOME_DESCRIPTION =
-  "App gratis para el control de gastos: anota lo que gastas, arma presupuestos por categoría y lleva tus suscripciones. Sin conectar tu banco. Para iOS y Android, hecha en México.";
+  "Anota lo que gastas en segundos, sin conectar tu banco. Presupuestos, suscripciones, meses sin intereses y gastos compartidos. Gratis en iOS y Android.";
 
 export async function generateMetadata(): Promise<Metadata> {
-  // Next.js dedupes this fetch with the page render.
   const { storeUrl } = await getAppLinks();
   const iosId = appStoreId(storeUrl);
 
@@ -22,29 +34,74 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: "/" },
     // Smart App Banner de Safari — manda a la App Store a quien ya navega en iPhone.
     ...(iosId ? { itunes: { appId: iosId } } : {}),
-    openGraph: {
-      type: "website",
-      url: SITE.url,
-      title: HOME_TITLE,
-      description:
-        "Anota gastos, arma presupuestos y controla tus suscripciones. Sin conectar tu banco. Descárgala gratis.",
-    },
+    openGraph: pageOpenGraph({ title: HOME_TITLE, description: HOME_DESCRIPTION, path: "" }),
   };
 }
 
+// Tarjetas de funciones principales, cada una con su maqueta de pantalla.
 const FEATURES = [
-  { emoji: "📊", bg: "bg-peach", t: "Pulso diario", d: "Un semáforo te dice si vas bien, aguas o ya te pasaste. De un vistazo." },
-  { emoji: "👛", bg: "bg-sand", t: "Presupuestos", d: "Un límite por categoría. Te avisamos al 80% y cuando te pasas." },
-  { emoji: "📺", bg: "bg-sky", t: "Suscripciones", d: "Netflix, Spotify, el gym. Sabes cuánto se va y cuándo te cobran." },
-];
+  {
+    kbd: "límite mensual",
+    t: "Presupuestos",
+    d: "Ponle un límite a cada categoría y mira, de un vistazo, cuánto te queda por gastar. Sin que te tome por sorpresa el fin de mes.",
+    Mock: PresupuestosMock,
+    tilt: -2,
+  },
+  {
+    kbd: "sin cargos fantasma",
+    t: "Suscripciones",
+    d: "Netflix, Spotify, el gym, el iCloud que ya ni usas. Centavos suma tus cargos recurrentes y te dice cuánto se te va al mes y al año.",
+    Mock: SuscripcionesMock,
+    tilt: 2,
+  },
+  {
+    kbd: "compras a plazos",
+    t: "Meses sin intereses",
+    d: "Registra tus compras a meses sin intereses y ve tu calendario de pagos: cuánto pagas este mes y cuántas mensualidades te faltan. Lo anotas tú, no lo saca de ninguna tarjeta.",
+    Mock: MesesSinInteresesMock,
+    tilt: -2,
+  },
+] as const;
 
 const STEPS = [
-  { n: "01", t: "Descarga y crea tu cuenta", d: "30 segundos. Solo tu correo, sin tarjetas ni datos del banco." },
+  { n: "01", t: "Descarga y crea tu cuenta", d: "30 segundos. Solo tu correo, nunca tarjetas ni datos del banco." },
   { n: "02", t: "Anota lo que gastas", d: "Cada cafecito, cada Uber. El botón + lo hace en segundos." },
-  { n: "03", t: "Mira a dónde se va tu lana", d: "El Pulso y los presupuestos te muestran el panorama, sin sustos." },
+  { n: "03", t: "Mira a dónde se va tu lana", d: "Presupuestos, suscripciones y pagos, todo en un cuaderno tuyo." },
 ];
 
-const TRUST = ["No se conecta a tu banco", "Nunca toca tu dinero", "Tus datos son tuyos", "Hecho en México 🇲🇽"];
+// Preguntas frecuentes: responden objeciones (conversión) y generan el rich
+// result FAQPage (SEO). Solo afirmaciones que ya están en el sitio o en los
+// términos; sin promesas nuevas.
+const FAQ = [
+  {
+    q: "¿Centavos se conecta a mi banco o a mis tarjetas?",
+    a: "No. Nunca. Centavos no te pide credenciales bancarias, no sincroniza cuentas ni lee tus movimientos. Tú anotas lo que gastas y esa información se queda en tu cuenta.",
+  },
+  {
+    q: "¿Cuánto cuesta?",
+    a: "Descargar y usar Centavos es gratis, en App Store y Google Play.",
+  },
+  {
+    q: "¿Qué necesito para crear mi cuenta?",
+    a: "Solo un correo electrónico. No pedimos tarjetas, número de cuenta ni datos del banco.",
+  },
+  {
+    q: "¿Cómo anoto un gasto?",
+    a: "Tocas el botón +, escribes el monto, eliges la categoría y listo. Toma unos segundos. Si quieres, agregas una nota.",
+  },
+  {
+    q: "¿Puedo dividir gastos con mi pareja, roomies o amigos?",
+    a: "Sí. Arman un presupuesto compartido, cada quien anota lo que pagó y Centavos calcula quién le debe a quién y el mínimo de pagos para quedar a mano.",
+  },
+  {
+    q: "¿Me van a llenar de notificaciones?",
+    a: "No. Hay un aviso diario para anotar tus gastos, a la hora que tú elijas, y un recordatorio antes de cada cobro de suscripción. Los puedes apagar cuando quieras.",
+  },
+  {
+    q: "¿Cómo elimino mi cuenta?",
+    a: "Desde la app, en Configuraciones > Perfil > Eliminar cuenta. También puedes pedirlo por correo a hola@centavos.mx con el asunto «Eliminar cuenta».",
+  },
+];
 
 export const revalidate = false; // Página 100% estática.
 
@@ -55,45 +112,39 @@ export default async function AppPage() {
     <>
       <Script id="ld-mobile-app" type="application/ld+json" strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(mobileApplicationJsonLd({ storeUrl, playUrl })) }} />
-      <a
-        href="#contenido"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-bg focus:rounded-full focus:px-5 focus:py-2.5 focus:text-sm focus:font-bold"
-      >
-        Saltar al contenido
-      </a>
-      <Header />
+      <Script id="ld-faq" type="application/ld+json" strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(FAQ)) }} />
+
+      <Header mobileCta={false} />
 
       <main id="contenido">
         {/* HERO */}
-        <section className="relative overflow-hidden">
+        <section id="hero" className="relative overflow-hidden">
           <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-yolk/25 blur-2xl" aria-hidden />
           <div className="absolute top-40 -left-20 w-64 h-64 rounded-full bg-peach/40 blur-2xl" aria-hidden />
 
           <div className="relative mx-auto max-w-screen-lg px-5 pt-10 md:pt-16 pb-12 grid md:grid-cols-2 gap-10 items-center">
             <div>
               <div className="inline-flex items-center gap-2.5 bg-surface border border-rule rounded-full pl-4 pr-4 py-1.5 mb-5 whitespace-nowrap">
-                <span className="font-hand text-mandarina-deep text-xl leading-none pr-0.5">¡nuevo!</span>
+                <span className="font-hand text-mandarina-deep text-xl leading-none pr-0.5">gratis</span>
                 <span className="w-px h-3.5 bg-rule" aria-hidden />
-                <span className="text-[12px] font-bold text-ink-soft">El cuaderno de tu lana, ahora en app</span>
+                <span className="text-[12px] font-bold text-ink-soft">Para iOS y Android</span>
               </div>
-              <h1 className="font-display text-[46px] md:text-[68px] font-extrabold tracking-[-0.045em] leading-[0.9] mb-5">
-                Tu lana,<br />
-                <span className="text-mandarina-deep italic">en tu bolsillo</span>.
+              <h1 className="font-display text-[40px] md:text-[58px] font-extrabold tracking-[-0.045em] leading-[0.94] mb-5">
+                La app para anotar tus gastos,<br />
+                <span className="text-mandarina-deep italic">sin conectar tu banco</span>.
               </h1>
               <p className="text-[16px] md:text-lg leading-relaxed text-ink-soft max-w-md mb-7">
-                Centavos es un cuaderno, no un banco. Anotas lo que gastas, lo que ahorras y lo que pagas — y por fin ves a dónde se va tu dinero. <b className="text-ink">Sin conectar tu banco. Sin sermones.</b>
+                Anota lo que gastas en segundos. <b className="text-ink">Sin bancos, sin sorpresas</b> y sin que nadie más vea tu dinero. Tú registras, tú tienes el control.
               </p>
-              <AppStoreBadges storeUrl={storeUrl} playUrl={playUrl} />
-              {/*<div className="flex items-center gap-3 mt-6">*/}
-              {/*  <div className="flex -space-x-2">*/}
-              {/*    {["bg-mandarina", "bg-yolk", "bg-sky", "bg-peach"].map((c) => (*/}
-              {/*      <span key={c} className={`${c} w-7 h-7 rounded-full border-2 border-bg`} aria-hidden />*/}
-              {/*    ))}*/}
-              {/*  </div>*/}
-              {/*  <div className="text-[12px] text-ink-soft">*/}
-              {/*    <b className="text-ink">★ 4.9</b> · +12 mil personas anotando su lana*/}
-              {/*  </div>*/}
-              {/*</div>*/}
+              <AppStoreBadges storeUrl={storeUrl} playUrl={playUrl} priority />
+              <ul className="flex flex-wrap gap-x-5 gap-y-1.5 mt-6 text-[13px] font-semibold text-ink-soft" aria-label="Compromisos de Centavos">
+                {["Solo tu correo, nunca tu banco", "Tus datos son tuyos", "Hecho en México 🇲🇽"].map((t) => (
+                  <li key={t} className="flex items-center gap-1.5">
+                    <span className="text-mandarina-deep" aria-hidden>●</span> {t}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="flex justify-center md:justify-end">
@@ -110,45 +161,146 @@ export default async function AppPage() {
           </div>
         </section>
 
-        {/* TRUST BAR */}
-        <section className="bg-ink text-bg" aria-label="Compromisos de Centavos">
-          <ul className="mx-auto max-w-screen-lg px-5 py-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-center">
-            {TRUST.map((t) => (
-              <li key={t} className="flex items-center gap-2 text-[13px] font-semibold">
-                <span className="text-yolk" aria-hidden>●</span> {t}
-              </li>
-            ))}
-          </ul>
+        {/* FUNCIONES PRINCIPALES */}
+        <section className="bg-surface border-y border-rule">
+          <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">
+            <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+              <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">Todo en un cuaderno</div>
+              <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">
+                Presupuestos, suscripciones y meses sin intereses en un solo lugar
+              </h2>
+            </div>
+
+            <div className="space-y-12 md:space-y-24">
+              {FEATURES.map((f, i) => {
+                const Mock = f.Mock;
+                const flip = i % 2 === 1;
+                return (
+                  <div key={f.t} className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">
+                    <div className={`flex justify-center ${flip ? "md:order-2" : ""}`}>
+                      <p className="sr-only">Pantalla de la app: {f.t}.</p>
+                      <div aria-hidden>
+                        <PhoneFrame tilt={f.tilt}>
+                          <Mock />
+                        </PhoneFrame>
+                      </div>
+                    </div>
+                    <div className={flip ? "md:order-1" : ""}>
+                      <div className="font-hand text-mandarina-deep text-2xl leading-none mb-2">{f.kbd}</div>
+                      <h3 className="font-display text-3xl md:text-4xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
+                        {f.t}
+                      </h3>
+                      <p className="text-[15px] md:text-base leading-relaxed text-ink-soft max-w-md">
+                        {f.d}
+                      </p>
+                      <InlineStoreLinks storeUrl={storeUrl} playUrl={playUrl} className="mt-5 text-ink-soft" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
-        {/* FEATURE 1 — Anota */}
-        <section className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+        {/* PRIVADO POR DISEÑO — la promesa, una sola vez y completa */}
+        <section className="mx-auto max-w-screen-lg px-5 py-16 md:py-24">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-4">Privado por diseño</div>
+            <h2 className="font-display text-4xl md:text-6xl font-extrabold tracking-[-0.04em] leading-[0.95] mb-6">
+              No pedimos tu banco.<br /><span className="text-mandarina-deep">Nunca.</span>
+            </h2>
+            <p className="text-[16px] md:text-lg leading-relaxed text-ink-soft max-w-xl mx-auto mb-8">
+              Centavos no se conecta a tu banco ni a tus tarjetas. No te pide credenciales, no sincroniza cuentas y no ve tu historial. Es un cuaderno privado: lo que anotas se queda contigo.
+            </p>
+            <ul className="grid sm:grid-cols-3 gap-3 max-w-2xl mx-auto text-left">
+              {[
+                { t: "Cero credenciales", d: "Nunca escribes la clave de tu banco." },
+                { t: "Nada que sincronizar", d: "No conectamos cuentas ni tarjetas." },
+                { t: "Tu historial es tuyo", d: "Nadie más ve en qué gastas." },
+              ].map((c) => (
+                <li key={c.t} className="bg-surface border border-rule rounded-3xl p-4 sm:p-5 flex sm:block items-center gap-3">
+                  <div aria-hidden className="w-10 h-10 rounded-2xl bg-ink text-bg grid place-items-center text-[15px] font-bold sm:mb-3 flex-shrink-0">✓</div>
+                  <div>
+                    <div className="font-display text-[15px] font-extrabold tracking-[-0.02em] mb-0.5 sm:mb-1">{c.t}</div>
+                    <div className="text-[13px] text-ink-soft leading-relaxed">{c.d}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p className="text-[13px] text-ink-soft mt-6">
+              Los detalles, sin letras chiquitas, en el{" "}
+              <Link href="/app/privacidad" className="text-mandarina-deep underline underline-offset-2 font-semibold">Aviso de Privacidad</Link>.
+            </p>
+          </div>
+        </section>
+
+        {/* DIVIDE GASTOS — gancho social */}
+        <section className="bg-peach">
+          <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
+            <div>
+              <div className="font-hand text-mandarina-deep text-2xl leading-none mb-2">entre cuates</div>
+              <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
+                Divide gastos<br />con quien quieras.
+              </h2>
+              <p className="text-[15px] md:text-base leading-relaxed text-ink/75 max-w-md mb-7">
+                Roomies, pareja o la banda del viaje. Armen un presupuesto compartido, anoten quién pagó qué, y deja que Centavos calcule <b>quién le debe a quién</b>. Nada de cuentas raras a fin de mes.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  <><b>Presupuestos compartidos</b> para el depa, el viaje o la fiesta</>,
+                  <><b>Lo que te deben y lo que debes</b>, apuntado por persona</>,
+                  <>El <b>ajuste de cuentas</b> te dice el mínimo de pagos para quedar a mano</>,
+                ].map((li, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span aria-hidden className="w-6 h-6 rounded-full bg-ink text-bg grid place-items-center text-[13px] font-bold flex-shrink-0 mt-0.5">✓</span>
+                    <span className="text-[14px]">{li}</span>
+                  </li>
+                ))}
+              </ul>
+              <InlineStoreLinks storeUrl={storeUrl} playUrl={playUrl} label="Pruébalo con tu banda:" className="mt-6 text-ink/75" />
+            </div>
+            <div className="flex justify-center md:justify-end">
+              <p className="sr-only">
+                Pantalla de la app de gastos compartidos: los balances del grupo y quién le debe a
+                quién, con un botón para ajustar cuentas.
+              </p>
+              <div aria-hidden>
+                <PhoneFrame tilt={2} crop>
+                  <DivideMock />
+                </PhoneFrame>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* RECORDATORIOS */}
+        <section className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="flex justify-center order-2 md:order-1">
             <p className="sr-only">
-              Pantalla de la app para anotar un gasto: monto, categorías con emoji y una nota
-              opcional.
+              Pantalla de la app con recordatorios: un aviso diario para anotar gastos y avisos
+              antes de cada cobro de suscripción.
             </p>
             <div aria-hidden>
-              <PhoneFrame tilt={-2}>
-                <AnotarMock />
+              <PhoneFrame tilt={-2} crop>
+                <RecordatoriosMock />
               </PhoneFrame>
             </div>
           </div>
           <div className="order-1 md:order-2">
-            <div className="font-hand text-mandarina-deep text-3xl leading-none mb-2">rapidísimo</div>
+            <div className="font-hand text-mandarina-deep text-2xl leading-none mb-2">sin dar lata</div>
             <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
-              Anota un gasto<br />en 5 segundos.
+              Recordatorios que<br />no molestan.
             </h2>
             <p className="text-[15px] md:text-base leading-relaxed text-ink-soft max-w-md mb-6">
-              Sin formularios eternos. Escribes el monto, eliges la categoría y listo. El chiste es que sí lo hagas — por eso lo hicimos tan fácil que no da flojera.
+              Un aviso al día para anotar tus gastos: 30 segundos y quedas al corriente. Y te avisamos <b className="text-ink">antes de que Netflix te cobre</b>, para que decidas a tiempo si sigue o se va.
             </p>
             <ul className="space-y-3">
               {[
-                <><b>8 categorías</b> con emoji para que sea visual</>,
-                <><b>Botón + flotante</b> en todas las pantallas</>,
-                <>Una nota opcional para acordarte del <i>porqué</i></>,
-              ].map((li, i) => (
-                <li key={i} className="flex items-start gap-3">
+                <><b>Aviso diario</b> a la hora que tú elijas</>,
+                <><b>Antes de cada cobro</b> de suscripción, no después</>,
+                <>Tú mandas: <b>apágalos</b> cuando quieras</>,
+              ].map((li, idx) => (
+                <li key={idx} className="flex items-start gap-3">
                   <span aria-hidden className="w-6 h-6 rounded-full bg-ink text-bg grid place-items-center text-[13px] font-bold flex-shrink-0 mt-0.5">✓</span>
                   <span className="text-[14px]">{li}</span>
                 </li>
@@ -157,57 +309,7 @@ export default async function AppPage() {
           </div>
         </section>
 
-        {/* FEATURE 2 — Suscripciones */}
-        <section className="bg-peach">
-          <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <div className="font-hand text-mandarina-deep text-3xl leading-none mb-2">sin cargos fantasma</div>
-              <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
-                Tus suscripciones,<br />bajo control.
-              </h2>
-              <p className="text-[15px] md:text-base leading-relaxed text-ink/75 max-w-md mb-6">
-                Netflix, Spotify, el gym, el iCloud que ya ni usas. Centavos suma todo lo que se te va en pagos recurrentes y te avisa antes de cada cobro. Por fin sabes cuánto cuesta tu &ldquo;solo son $99&rdquo;.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {["📺 Netflix", "🎧 Spotify", "💪 Gym", "☁️ iCloud"].map((t) => (
-                  <span key={t} className="bg-bg/60 rounded-full px-3 py-1.5 text-[12px] font-bold">{t}</span>
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-center md:justify-end">
-              <p className="sr-only">
-                Pantalla de la app de suscripciones: el total mensual y la lista de próximos
-                cobros como Netflix, Spotify y el gym.
-              </p>
-              <div aria-hidden>
-                <PhoneFrame tilt={2}>
-                  <SuscripcionesMock />
-                </PhoneFrame>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FEATURE GRID */}
-        <section className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">
-          <div className="text-center max-w-xl mx-auto mb-10">
-            <div className="text-[11px] font-extrabold tracking-wider text-[#b04f27] uppercase mb-2">Todo en un cuaderno</div>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">
-              Lo que Centavos lleva por ti
-            </h2>
-          </div>
-          <ul className="grid md:grid-cols-3 gap-3 max-w-4xl mx-auto">
-            {FEATURES.map((f) => (
-              <li key={f.t} className="bg-surface border border-rule rounded-3xl p-6 card-hover">
-                <div aria-hidden className={`w-12 h-12 rounded-2xl ${f.bg} grid place-items-center text-2xl mb-4`}>{f.emoji}</div>
-                <h3 className="font-display text-lg font-extrabold tracking-[-0.02em] mb-1">{f.t}</h3>
-                <p className="text-[13px] text-ink-soft leading-relaxed">{f.d}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* HOW IT WORKS */}
+        {/* CÓMO FUNCIONA */}
         <section className="bg-surface border-y border-rule">
           <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">
             <div className="text-center mb-10">
@@ -226,41 +328,43 @@ export default async function AppPage() {
           </div>
         </section>
 
-        {/* TESTIMONIALS  - not yet*/}
-        {/*<section className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">*/}
-        {/*  <div className="mb-8">*/}
-        {/*    <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-1.5">Historias reales</div>*/}
-        {/*    <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-[-0.025em]">La banda ya anota su lana</h2>*/}
-        {/*  </div>*/}
-        {/*  <div className="grid md:grid-cols-3 gap-3">*/}
-        {/*    {TESTIMONIALS.map((t) => (*/}
-        {/*      <article key={t.name} className={`${t.bg} rounded-3xl p-6`}>*/}
-        {/*        <div className="font-hand text-mandarina-deep text-3xl leading-none mb-2" aria-hidden>&ldquo;</div>*/}
-        {/*        <p className="font-display text-[15px] font-semibold leading-snug tracking-[-0.01em] mb-5">{t.q}</p>*/}
-        {/*        <div className="flex items-center gap-2.5">*/}
-        {/*          <div className="w-8 h-8 rounded-full bg-ink/15" aria-hidden />*/}
-        {/*          <div>*/}
-        {/*            <div className="text-xs font-bold">{t.name}</div>*/}
-        {/*            <div className="text-[10px] opacity-60">{t.city}</div>*/}
-        {/*          </div>*/}
-        {/*        </div>*/}
-        {/*      </article>*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*</section>*/}
+        {/* PREGUNTAS FRECUENTES */}
+        <section className="mx-auto max-w-screen-lg px-5 py-14 md:py-20" aria-labelledby="faq-title">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">Dudas comunes</div>
+              <h2 id="faq-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">Preguntas frecuentes</h2>
+            </div>
+            <div className="space-y-2">
+              {FAQ.map((it) => (
+                <details key={it.q} className="group bg-surface border border-rule rounded-2xl px-5 open:border-rule-strong">
+                  <summary className="cursor-pointer list-none flex items-center justify-between gap-4 py-4 text-[15px] font-bold text-ink [&::-webkit-details-marker]:hidden">
+                    {it.q}
+                    <span aria-hidden className="w-7 h-7 rounded-full bg-bg border border-rule grid place-items-center text-lg leading-none flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none">+</span>
+                  </summary>
+                  <p className="text-[14px] leading-relaxed text-ink-soft pb-4 pr-8">{it.a}</p>
+                </details>
+              ))}
+            </div>
+            <p className="text-center text-[13px] text-ink-soft mt-6">
+              ¿Otra duda?{" "}
+              <Link href="/app/soporte" className="text-mandarina-deep underline underline-offset-2 font-semibold">Escríbenos</Link>.
+            </p>
+          </div>
+        </section>
 
-        {/* FINAL CTA */}
-        <section className="mx-auto max-w-screen-lg py-14 px-5 pb-16">
+        {/* CIERRE — refuerza privacidad + CTA */}
+        <section id="descargar" className="mx-auto max-w-screen-lg py-6 px-5 pb-16 scroll-mt-20">
           <div className="bg-mandarina text-ink rounded-[32px] px-6 md:px-12 py-12 md:py-16 relative overflow-hidden">
             <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-yolk/50" aria-hidden />
             <div className="absolute -bottom-16 -left-10 w-56 h-56 rounded-full bg-mandarina-deep/30" aria-hidden />
             <div className="relative max-w-lg">
-              <div className="font-hand text-2xl leading-none mb-2">¿le entras?</div>
+              <div className="font-hand text-2xl leading-none mb-2">tú tienes el control</div>
               <h2 className="font-display text-4xl md:text-6xl font-extrabold tracking-[-0.035em] leading-[0.92] mb-4">
-                Tu lana te<br />está esperando.
+                Tu dinero, solo<br />para tus ojos.
               </h2>
               <p className="text-[15px] md:text-lg leading-relaxed mb-7 opacity-90">
-                Descarga Centavos gratis y empieza a anotar hoy. Tu yo del futuro te lo va a agradecer.
+                Descarga Centavos gratis y empieza a anotar hoy. Sin conectar tu banco, sin sorpresas, sin que nadie más vea tu lana.
               </p>
               <AppStoreBadges storeUrl={storeUrl} playUrl={playUrl} />
             </div>
@@ -269,14 +373,16 @@ export default async function AppPage() {
 
         {/* DISCLAIMER */}
         <section className="mx-auto max-w-screen-lg px-5 pb-10">
-          <p className="text-center text-[11px] text-ink-soft leading-relaxed max-w-xl mx-auto">
-            * Las pantallas mostradas son ilustrativas y pueden variar de la app real.
+          <p className="text-center text-[12px] text-ink-soft leading-relaxed max-w-xl mx-auto">
+            Las pantallas mostradas son ilustrativas y pueden variar de la app real.
             Cifras y datos en las imágenes son de ejemplo.
           </p>
         </section>
       </main>
 
-      <AppFooter />
+      {/* Deja espacio para la barra inferior móvil sobre el footer. */}
+      <AppFooter className="pb-24 md:pb-0" />
+      <MobileDownloadBar storeUrl={storeUrl} playUrl={playUrl} />
     </>
   );
 }

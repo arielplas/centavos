@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { SUPPORT_EMAIL } from "@/lib/config";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -11,8 +12,21 @@ const DESC_MIN = 5;
 const DESC_MAX = 2000;
 
 const fieldClass =
-  "w-full bg-bg px-4 py-3 rounded-xl text-[14px] text-ink placeholder:text-ink-soft outline-none focus:ring-2 focus:ring-ink disabled:opacity-60";
+  "w-full bg-bg border border-rule-strong px-4 py-3 rounded-xl text-[14px] text-ink placeholder:text-ink-soft outline-none focus:ring-2 focus:ring-ink focus:border-ink disabled:opacity-60";
 const labelClass = "text-[12px] font-bold text-ink mb-1.5 block";
+
+/** Contador de caracteres; solo lo anuncia el lector de pantalla cerca del límite. */
+function Counter({ len, max }: { len: number; max: number }) {
+  const near = len >= max * 0.9;
+  return (
+    <span
+      className={`text-[12px] tabular-nums ${len >= max ? "text-mandarina-deep font-bold" : "text-ink-soft"}`}
+      aria-live={near ? "polite" : "off"}
+    >
+      {len}/{max}
+    </span>
+  );
+}
 
 export function SoporteForm() {
   const [title, setTitle] = useState("");
@@ -68,21 +82,19 @@ export function SoporteForm() {
         </div>
         <p className="text-[14px] leading-relaxed text-ink-soft">
           Gracias por escribirnos. Te respondemos a <b className="text-ink">{email}</b> lo
-          antes posible —normalmente dentro de uno o dos días hábiles.
+          antes posible, normalmente dentro de uno o dos días hábiles.
         </p>
       </div>
     );
   }
 
   const loading = status === "loading";
-  const counterColor = (len: number, max: number) =>
-    len >= max ? "text-mandarina-deep" : "text-ink-soft";
+  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(title || "Soporte Centavos")}`;
 
   return (
     <form
       onSubmit={onSubmit}
       className="bg-surface border border-rule rounded-2xl p-6 flex flex-col gap-4"
-      noValidate
     >
       {/* Honeypot — visually hidden, ignored by humans, catches bots. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
@@ -103,12 +115,7 @@ export function SoporteForm() {
           <label htmlFor="soporte-asunto" className="text-[12px] font-bold text-ink">
             Asunto
           </label>
-          <span
-            className={`text-[12px] tabular-nums ${counterColor(title.length, TITLE_MAX)}`}
-            aria-live="polite"
-          >
-            {title.length}/{TITLE_MAX}
-          </span>
+          <Counter len={title.length} max={TITLE_MAX} />
         </div>
         <input
           id="soporte-asunto"
@@ -117,7 +124,7 @@ export function SoporteForm() {
           maxLength={TITLE_MAX}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="¿En qué te ayudamos?"
+          placeholder="Ej. No puedo entrar a mi cuenta"
           disabled={loading}
           className={fieldClass}
         />
@@ -138,8 +145,9 @@ export function SoporteForm() {
           autoComplete="email"
           disabled={loading}
           className={fieldClass}
+          aria-describedby="soporte-correo-hint"
         />
-        <p className="text-[12px] text-ink-soft mt-1.5">
+        <p id="soporte-correo-hint" className="text-[12px] text-ink-soft mt-1.5">
           Te responderemos aquí.
         </p>
       </div>
@@ -149,12 +157,7 @@ export function SoporteForm() {
           <label htmlFor="soporte-mensaje" className="text-[12px] font-bold text-ink">
             Tu mensaje
           </label>
-          <span
-            className={`text-[12px] tabular-nums ${counterColor(description.length, DESC_MAX)}`}
-            aria-live="polite"
-          >
-            {description.length}/{DESC_MAX}
-          </span>
+          <Counter len={description.length} max={DESC_MAX} />
         </div>
         <textarea
           id="soporte-mensaje"
@@ -172,7 +175,11 @@ export function SoporteForm() {
 
       {status === "error" && errorMsg && (
         <div className="text-[13px] font-semibold text-mandarina-deep" role="alert">
-          {errorMsg}
+          <span aria-hidden>⚠ </span>
+          {errorMsg}{" "}
+          <a href={mailto} className="underline underline-offset-2 text-ink">
+            Abrir mi correo
+          </a>
         </div>
       )}
 
@@ -187,10 +194,10 @@ export function SoporteForm() {
       <p className="text-[12px] text-ink-soft text-center">
         O escríbenos directo a{" "}
         <a
-          href="mailto:hola@centavos.mx"
+          href={`mailto:${SUPPORT_EMAIL}`}
           className="text-mandarina-deep underline underline-offset-2"
         >
-          hola@centavos.mx
+          {SUPPORT_EMAIL}
         </a>
       </p>
     </form>
