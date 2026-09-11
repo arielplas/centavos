@@ -60,7 +60,19 @@ const FEATURES = [
     d: "Registra tus compras a meses sin intereses y ve tu calendario de pagos: cuánto pagas este mes y cuántas mensualidades te faltan. Lo anotas tú, no lo saca de ninguna tarjeta.",
     Mock: MesesSinInteresesMock,
     tilt: -2,
+    tool: { href: "/meses-sin-intereses", label: "Calcula tu mensualidad a MSI" },
   },
+] as const;
+
+// Calculadoras gratis: páginas-herramienta que traen tráfico orgánico y enlazan
+// de vuelta a la app. El orden pone primero las de mayor volumen de búsqueda.
+const TOOLS = [
+  { href: "/aguinaldo", tag: "cada diciembre", t: "Aguinaldo", d: "Cuánto te toca según tu sueldo y los días que trabajaste en el año." },
+  { href: "/finiquito", tag: "finiquito y liquidación", t: "Finiquito", d: "El desglose de lo que te corresponde al salir, concepto por concepto." },
+  { href: "/vacaciones", tag: "días y prima", t: "Vacaciones", d: "Cuántos días te tocan por antigüedad y cuánto es tu prima vacacional." },
+  { href: "/meses-sin-intereses", tag: "compras a plazos", t: "Meses sin intereses", d: "Tu mensualidad, el calendario de pagos y cuánto cuesta de verdad la promoción." },
+  { href: "/ptu", tag: "reparto de utilidades", t: "PTU", d: "Estima cuánto te toca de utilidades, con el tope de la reforma 2021." },
+  { href: "/cetes", tag: "ahorro e inversión", t: "CETES", d: "Cuánto ganas según el monto, el plazo y la tasa de la subasta." },
 ] as const;
 
 const STEPS = [
@@ -193,6 +205,17 @@ export default async function AppPage() {
                       <p className="text-[15px] md:text-base leading-relaxed text-ink-soft max-w-md">
                         {f.d}
                       </p>
+                      {"tool" in f && (
+                        <p className="mt-4">
+                          <Link
+                            href={f.tool.href}
+                            className="inline-flex items-center gap-1 text-[14px] font-bold text-mandarina-deep underline underline-offset-4 decoration-mandarina hover:decoration-mandarina-deep py-1"
+                          >
+                            {f.tool.label}
+                            <span aria-hidden>→</span>
+                          </Link>
+                        </p>
+                      )}
                       <InlineStoreLinks storeUrl={storeUrl} playUrl={playUrl} className="mt-5 text-ink-soft" />
                     </div>
                   </div>
@@ -325,6 +348,38 @@ export default async function AppPage() {
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
+
+        {/* HERRAMIENTAS GRATIS — calculadoras (tráfico orgánico + enlaces internos) */}
+        <section className="bg-surface border-y border-rule" aria-labelledby="tools-title">
+          <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">Sin descargar nada</div>
+              <h2 id="tools-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">
+                Calculadoras gratis, hechas para México
+              </h2>
+              <p className="text-[15px] md:text-base text-ink-soft mt-4">
+                Sácale la cuenta a tu aguinaldo, tu finiquito o tus compras a meses. Con la ley en la mano y sin registrarte.
+              </p>
+            </div>
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {TOOLS.map((t) => (
+                <li key={t.href}>
+                  <Link
+                    href={t.href}
+                    className="card-hover block h-full bg-bg border border-rule rounded-2xl p-5 hover:border-rule-strong"
+                  >
+                    <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-1.5">{t.tag}</div>
+                    <div className="font-display text-xl font-extrabold tracking-[-0.02em] mb-1 flex items-center gap-1.5">
+                      {t.t}
+                      <span aria-hidden className="text-mandarina-deep">→</span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-ink-soft">{t.d}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 

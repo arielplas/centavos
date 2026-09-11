@@ -20,6 +20,19 @@ punto cuando se cierre.
 - [ ] Página "¿Por qué Centavos no se conecta a tu banco?" (modelo manual vs. agregadores).
 - [ ] Agregar las landings nuevas a `app/sitemap.ts` y enlazarlas desde las tarjetas de función de la home.
 
+## Calculadoras (páginas-herramienta para tráfico orgánico)
+
+Especificaciones completas en [docs/calculadoras/](./calculadoras/README.md): fundamento
+legal, fórmulas, casos de prueba, estructura de página y CTA.
+
+- [ ] `/meses-sin-intereses` — cero constantes, pico en el Buen Fin. Empezar por esta.
+- [ ] `/aguinaldo` — mayor pico del año; publicar en **octubre**.
+- [ ] `/finiquito` — mayor volumen sostenido; requiere el salario mínimo.
+- [ ] `/vacaciones` — cero constantes.
+- [ ] `/ptu` — publicar antes de marzo; requiere la UMA.
+- [ ] `/cetes` — cero constantes si la tasa es input.
+- [ ] `lib/fiscal/` con UMA y salario mínimo versionados por año + test de vigencia.
+
 ## Prueba social
 
 - [ ] Cuando haya ≥ 20 reseñas reales en las tiendas: mostrar calificación y número de reseñas junto a los badges del hero.
