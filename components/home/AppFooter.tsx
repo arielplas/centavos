@@ -6,6 +6,9 @@ import { Logo } from "@/components/Logo";
  */
 export function AppFooter({ className = "" }: { className?: string }) {
   const cols = [
+    { h: "Calculadoras", items: [
+      { name: "Meses sin intereses", href: "/meses-sin-intereses" },
+    ]},
     { h: "Soporte", items: [
       { name: "Soporte y contacto", href: "/app/soporte" },
       { name: "Eliminar cuenta",    href: "/app/eliminar-cuenta" },
@@ -24,7 +27,7 @@ export function AppFooter({ className = "" }: { className?: string }) {
           Le ayudamos a la gente a perderle el miedo a las finanzas.
         </p>
 
-        <nav aria-label="Pie de página" className="grid grid-cols-2 gap-6 mt-8">
+        <nav aria-label="Pie de página" className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-8">
           {cols.map((col) => (
             <div key={col.h}>
               <div className="text-[11px] font-extrabold tracking-[0.06em] text-mandarina uppercase mb-2">

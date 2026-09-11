@@ -60,6 +60,7 @@ const FEATURES = [
     d: "Registra tus compras a meses sin intereses y ve tu calendario de pagos: cuánto pagas este mes y cuántas mensualidades te faltan. Lo anotas tú, no lo saca de ninguna tarjeta.",
     Mock: MesesSinInteresesMock,
     tilt: -2,
+    tool: { href: "/meses-sin-intereses", label: "Calcula tu mensualidad a MSI" },
   },
 ] as const;
 
@@ -193,6 +194,17 @@ export default async function AppPage() {
                       <p className="text-[15px] md:text-base leading-relaxed text-ink-soft max-w-md">
                         {f.d}
                       </p>
+                      {"tool" in f && (
+                        <p className="mt-4">
+                          <Link
+                            href={f.tool.href}
+                            className="inline-flex items-center gap-1 text-[14px] font-bold text-mandarina-deep underline underline-offset-4 decoration-mandarina hover:decoration-mandarina-deep py-1"
+                          >
+                            {f.tool.label}
+                            <span aria-hidden>→</span>
+                          </Link>
+                        </p>
+                      )}
                       <InlineStoreLinks storeUrl={storeUrl} playUrl={playUrl} className="mt-5 text-ink-soft" />
                     </div>
                   </div>
