@@ -83,6 +83,31 @@ export function mobileApplicationJsonLd(args: { storeUrl?: string; playUrl?: str
   };
 }
 
+/**
+ * Schema de una página-herramienta (calculadoras). `WebApplication` describe la
+ * herramienta en sí; el `FAQPage` de la misma página va en un bloque aparte.
+ */
+export function webApplicationJsonLd(args: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": args.name,
+    "description": args.description,
+    "url": `${SITE_URL}${args.path}`,
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requiere JavaScript",
+    "inLanguage": "es-MX",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
+    "publisher": { "@type": "Organization", "name": SITE_NAME, "url": SITE_URL },
+  };
+}
+
 /** Preguntas frecuentes (rich result FAQPage). Las respuestas deben ser texto plano. */
 export function faqJsonLd(items: { q: string; a: string }[]) {
   return {
