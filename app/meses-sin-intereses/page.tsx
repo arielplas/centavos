@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
 import { AppStoreBadges } from "@/components/home/AppStoreBadges";
@@ -92,10 +91,8 @@ export default function MesesSinInteresesPage() {
     <>
       <Header />
 
-      <Script
-        id="ld-msi-app"
+      <script
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             webApplicationJsonLd({
@@ -106,10 +103,8 @@ export default function MesesSinInteresesPage() {
           ),
         }}
       />
-      <Script
-        id="ld-msi-faq"
+      <script
         type="application/ld+json"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(FAQ)) }}
       />
 

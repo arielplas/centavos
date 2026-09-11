@@ -7,7 +7,12 @@ import { Logo } from "@/components/Logo";
 export function AppFooter({ className = "" }: { className?: string }) {
   const cols = [
     { h: "Calculadoras", items: [
+      { name: "Aguinaldo",           href: "/aguinaldo" },
+      { name: "Finiquito",           href: "/finiquito" },
+      { name: "Vacaciones",          href: "/vacaciones" },
       { name: "Meses sin intereses", href: "/meses-sin-intereses" },
+      { name: "PTU",                 href: "/ptu" },
+      { name: "CETES",               href: "/cetes" },
     ]},
     { h: "Soporte", items: [
       { name: "Soporte y contacto", href: "/app/soporte" },
