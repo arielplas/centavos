@@ -1,0 +1,10 @@
+# app-ads.txt — authorised sellers for the Centavos mobile apps (IAB Tech Lab).
+# AdMob crawls https://centavos.mx/app-ads.txt because that is the developer
+# website on the store listings, and matches what it finds here against the
+# publisher id in the app. Without it, AdMob keeps the apps on limited ad
+# serving and most programmatic buyers will not bid at all.
+#
+# Fields: <ad system>, <publisher id>, <relationship>, <certification authority>
+# DIRECT means Google sells this inventory on our behalf; the last field is
+# Google's own certification authority id, identical for every AdMob publisher.
+google.com, pub-6508206288738628, DIRECT, f08c47fec0942fa0
