@@ -81,7 +81,7 @@ export default function TerminosAppPage() {
         </ul>
         <p>
           Si detectamos cuentas duplicadas o datos falsos, podemos pedirte que lo corrijas o
-          suspender la cuenta (ver sección 11).
+          suspender la cuenta (ver sección 12).
         </p>
       </LegalSectionBlock>
 
@@ -97,7 +97,60 @@ export default function TerminosAppPage() {
         </ul>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={5} title="Uso aceptable">
+      <LegalSectionBlock n={5} title="Centavos+ (suscripción de paga)">
+        <p>
+          Centavos se usa gratis. <b>Centavos+</b> es una suscripción opcional que quita los
+          anuncios y desbloquea funciones extra; lo que incluye se enlista en la propia app,
+          en Ajustes › Centavos+.
+        </p>
+        <ul>
+          <li>
+            <b>Planes y precio.</b> Se ofrece en plan <b>mensual</b> y <b>anual</b>. El precio
+            de cada uno, en tu moneda local y con impuestos donde apliquen, se te muestra en la
+            pantalla de compra <b>antes</b> de que confirmes. Los precios pueden cambiar; si eso
+            pasa, el cambio aplica hasta tu siguiente periodo y te avisamos con la anticipación
+            que exija la tienda.
+          </li>
+          <li>
+            <b>El cobro lo hace la tienda, no nosotros.</b> La compra se procesa a través de tu
+            cuenta de <b>Apple ID</b> (App Store) o de <b>Google Play</b>, según el dispositivo.
+            Nosotros nunca vemos ni guardamos los datos de tu tarjeta.
+          </li>
+          <li>
+            <b>Se renueva sola.</b> La suscripción es de <b>renovación automática</b>. Se te
+            cobra al confirmar la compra y después se renueva por el mismo periodo, salvo que la
+            canceles al menos <b>24 horas antes</b> de que termine el periodo en curso. El cobro
+            de la renovación se hace dentro de las 24 horas previas al fin del periodo.
+          </li>
+          <li>
+            <b>Cómo cancelar.</b> Desde los ajustes de tu cuenta en la tienda: en iOS,
+            Ajustes del sistema › tu nombre › Suscripciones; en Android, Google Play ›
+            Suscripciones. Cancelar detiene las renovaciones futuras y <b>conservas Centavos+
+            hasta que termina el periodo que ya pagaste</b>. No podemos cancelar la suscripción
+            por ti.
+          </li>
+          <li>
+            <b>Periodos de prueba.</b> Si una oferta incluye prueba gratis, la parte no usada se
+            pierde al comprar la suscripción, cuando la tienda lo establezca así.
+          </li>
+          <li>
+            <b>Reembolsos.</b> Los gestiona la tienda conforme a sus propias políticas
+            (Apple o Google), no Centavos.
+          </li>
+          <li>
+            <b>Si tu suscripción termina</b>, tu cuenta y todo lo que capturaste siguen ahí:
+            vuelves al plan gratuito, con anuncios y sin las funciones de Centavos+. No se borra
+            nada por dejar de pagar.
+          </li>
+        </ul>
+        <p>
+          Al comprar Centavos+ aceptas estos Términos y el{" "}
+          <a href="/app/privacidad">Aviso de Privacidad</a>, además de los términos de la tienda
+          donde hiciste la compra.
+        </p>
+      </LegalSectionBlock>
+
+      <LegalSectionBlock n={6} title="Uso aceptable">
         <p>Queremos que Centavos sea un espacio sano. Por eso, esto no se vale:</p>
         <ul>
           <li>Hacer <b>scraping</b>, extracción masiva de datos o accesos automatizados (bots) a la app o a nuestra API.</li>
@@ -109,7 +162,7 @@ export default function TerminosAppPage() {
         <p>Incumplir esta sección puede llevar a la suspensión o cierre de tu cuenta.</p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={6} title="Contenido del usuario">
+      <LegalSectionBlock n={7} title="Contenido del usuario">
         <p>
           Todo lo que capturas en Centavos — gastos, presupuestos, alcancías, suscripciones, notas —{" "}
           <b>es tuyo</b>. Punto.
@@ -120,10 +173,10 @@ export default function TerminosAppPage() {
           propia experiencia</b> en la app. Nada más. No publicamos tu contenido, no lo
           compartimos con otros usuarios y no lo reutilizamos con fines comerciales.
         </p>
-        <p>Si borras tu cuenta, la licencia termina (ver sección 11 y el Aviso de Privacidad).</p>
+        <p>Si borras tu cuenta, la licencia termina (ver sección 12 y el Aviso de Privacidad).</p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={7} title="Propiedad intelectual de Centavos">
+      <LegalSectionBlock n={8} title="Propiedad intelectual de Centavos">
         <p>
           La marca Centavos, el logotipo, el código de la app, el diseño, las ilustraciones y los
           textos son propiedad de Centavos y están protegidos por las leyes de propiedad
@@ -131,7 +184,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={8} title="No constituye asesoría financiera">
+      <LegalSectionBlock n={9} title="No constituye asesoría financiera">
         <p>
           <b>Centavos no ofrece asesoría financiera, fiscal, legal ni de inversión de ningún
           tipo.</b> La información que ves en la app proviene de lo que tú mismo capturas, y
@@ -144,7 +197,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={9} title="Disponibilidad del servicio">
+      <LegalSectionBlock n={10} title="Disponibilidad del servicio">
         <p>
           Hacemos nuestro mejor esfuerzo para que Centavos esté disponible siempre, pero no
           podemos garantizar un funcionamiento ininterrumpido o libre de errores. A veces haremos
@@ -153,7 +206,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={10} title="Modificaciones al servicio y a los términos">
+      <LegalSectionBlock n={11} title="Modificaciones al servicio y a los términos">
         <p>
           Centavos evoluciona: podemos agregar, cambiar o retirar funciones. También podemos
           actualizar estos términos. Si el cambio es relevante, te lo notificaremos dentro de la
@@ -162,7 +215,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={11} title="Suspensión y terminación">
+      <LegalSectionBlock n={12} title="Suspensión y terminación">
         <p>
           <b>Tú puedes irte cuando quieras.</b> Puedes borrar tu cuenta en cualquier momento desde
           Ajustes dentro de la app, sin trámites raros ni preguntas incómodas.
@@ -174,7 +227,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={12} title="Limitación de responsabilidad">
+      <LegalSectionBlock n={13} title="Limitación de responsabilidad">
         <p>
           En la medida máxima permitida por la legislación mexicana, Centavos no será responsable
           por daños indirectos, incidentales o consecuenciales, lucro cesante, pérdida de
@@ -188,7 +241,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={13} title="Indemnización">
+      <LegalSectionBlock n={14} title="Indemnización">
         <p>
           Si usas Centavos de forma indebida o en violación de estos términos y eso genera
           reclamaciones de terceros contra Centavos, aceptas sacarnos en paz y a salvo y cubrir
@@ -197,7 +250,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={14} title="Ley aplicable y jurisdicción">
+      <LegalSectionBlock n={15} title="Ley aplicable y jurisdicción">
         <p>
           Estos términos se rigen por las leyes de los <b>Estados Unidos Mexicanos</b>. Para
           cualquier controversia, las partes se someten a la jurisdicción de los tribunales
@@ -206,7 +259,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={15} title="Divisibilidad">
+      <LegalSectionBlock n={16} title="Divisibilidad">
         <p>
           Si alguna cláusula de estos términos resulta inválida o inaplicable, el resto seguirá
           siendo plenamente válido. La cláusula afectada se interpretará de la forma que mejor
@@ -214,7 +267,7 @@ export default function TerminosAppPage() {
         </p>
       </LegalSectionBlock>
 
-      <LegalSectionBlock n={16} title="Contacto">
+      <LegalSectionBlock n={17} title="Contacto">
         <p>
           ¿Dudas, comentarios o algo que no cuadra? Escríbenos a{" "}
           <a href="mailto:hola@centavos.mx">hola@centavos.mx</a>. Leemos todo.
