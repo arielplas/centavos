@@ -14,10 +14,16 @@ export const SITE = { url: SITE_URL, name: SITE_NAME };
  * La imagen viene de app/opengraph-image.png (file convention) y no hace
  * falta declararla aquí.
  */
-export function pageOpenGraph(args: { title: string; description: string; path: string }) {
+export function pageOpenGraph(args: {
+  title: string;
+  description: string;
+  path: string;
+  /** `og:locale`; defaults to Spanish, the house language. */
+  locale?: string;
+}) {
   return {
     type: "website" as const,
-    locale: "es_MX",
+    locale: args.locale ?? "es_MX",
     siteName: SITE_NAME,
     url: `${SITE_URL}${args.path}`,
     title: args.title,

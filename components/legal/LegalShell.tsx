@@ -1,33 +1,42 @@
 import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
+import { UI } from "@/lib/ui-strings";
+import { DEFAULT_LANG, type SiteLang } from "@/lib/lang";
 import { BackToTop } from "./BackToTop";
-
-export type LegalSection = { id: string; title: string };
+import { HtmlLang } from "./HtmlLang";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import type { LegalDoc } from "./types";
 
 /**
- * Layout compartido para las páginas legales de la app (/app/terminos,
- * /app/privacidad, /app/eliminar-cuenta): header del sitio, TOC lateral en
- * desktop y colapsable en móvil, contenido ~720px y footer compartido.
+ * Shared layout for the app's legal pages (/app/terminos, /app/privacidad,
+ * /app/eliminar-cuenta): site header, side TOC on desktop and collapsible on
+ * mobile, ~720px of content, shared footer.
+ *
+ * Pass `bilingual` for the documents that exist in both languages; it adds the
+ * language switcher and keeps `<html lang>` in step with what is served.
  */
 export function LegalShell({
-  title,
-  updated,
-  intro,
-  sections,
-  children,
+  doc,
+  lang = DEFAULT_LANG,
+  path,
+  bilingual = false,
 }: {
-  title: string;
-  updated: string;
-  intro: React.ReactNode;
-  sections: LegalSection[];
-  children: React.ReactNode;
+  doc: LegalDoc;
+  lang?: SiteLang;
+  /** Path of this page, without the language param (e.g. "/app/terminos"). */
+  path: string;
+  bilingual?: boolean;
 }) {
+  const strings = UI[lang];
+
+  // Section anchors stay language-independent (#seccion-N) so a link shared
+  // with an anchor lands on the same clause in either language.
   const tocItems = (
     <ol className="space-y-1 border-l border-rule">
-      {sections.map((s, i) => (
-        <li key={s.id}>
+      {doc.sections.map((s, i) => (
+        <li key={i}>
           <a
-            href={`#${s.id}`}
+            href={`#seccion-${i + 1}`}
             className="block pl-3 -ml-px py-1 border-l border-transparent text-[13px] leading-snug text-ink-soft hover:text-mandarina-deep hover:border-mandarina-deep"
           >
             {i + 1}. {s.title}
@@ -39,50 +48,60 @@ export function LegalShell({
 
   return (
     <>
-      <Header />
+      {bilingual && <HtmlLang lang={lang} />}
+      <Header lang={lang} />
 
       <main id="contenido" className="mx-auto max-w-screen-lg px-5 pb-16 md:grid md:grid-cols-[230px_1fr] md:gap-10">
-        {/* TOC lateral (solo desktop) */}
-        <aside className="hidden md:block pt-12" aria-label="Tabla de contenidos">
+        {/* Side TOC (desktop only) */}
+        <aside className="hidden md:block pt-12" aria-label={strings.tableOfContents}>
           <nav className="sticky top-20">
             <div className="text-[11px] font-extrabold tracking-[0.06em] text-ink-soft uppercase mb-3">
-              En esta página
+              {strings.onThisPage}
             </div>
             {tocItems}
           </nav>
         </aside>
 
-        {/* Contenido */}
+        {/* Content */}
         <article className="max-w-[720px] pt-10 md:pt-12">
-          <p className="text-[12px] font-bold tracking-wide text-ink-soft uppercase mb-3">
-            Última actualización: {updated}
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+            <p className="text-[12px] font-bold tracking-wide text-ink-soft uppercase">
+              {strings.lastUpdated}: {doc.updated}
+            </p>
+            {bilingual && <LanguageSwitcher path={path} lang={lang} />}
+          </div>
           <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-[-0.035em] leading-[1.0] mb-5">
-            {title}
+            {doc.title}
           </h1>
-          <div className="text-[15px] leading-relaxed text-ink-soft mb-8">{intro}</div>
+          <div className="text-[15px] leading-relaxed text-ink-soft mb-8">{doc.intro}</div>
 
-          {/* TOC colapsable (solo móvil): sin esto, 13–16 secciones sin forma de saltar. */}
+          {/* Collapsible TOC (mobile only): without it, 13–17 sections and no way to jump. */}
           <details className="md:hidden mb-10 bg-surface border border-rule rounded-2xl px-4 py-3">
             <summary className="cursor-pointer text-[13px] font-extrabold tracking-wide uppercase text-ink py-1">
-              En esta página ({sections.length})
+              {strings.onThisPage} ({doc.sections.length})
             </summary>
-            <nav aria-label="Tabla de contenidos" className="mt-3">{tocItems}</nav>
+            <nav aria-label={strings.tableOfContents} className="mt-3">{tocItems}</nav>
           </details>
 
-          <div className="legal-body space-y-10">{children}</div>
+          <div className="legal-body space-y-10">
+            {doc.sections.map((s, i) => (
+              <LegalSectionBlock key={i} n={i + 1} title={s.title}>
+                {s.body}
+              </LegalSectionBlock>
+            ))}
+          </div>
         </article>
       </main>
 
-      <AppFooter />
+      <AppFooter lang={lang} />
 
-      <BackToTop />
+      <BackToTop lang={lang} />
     </>
   );
 }
 
-/** Sección numerada con anchor estable (#seccion-N). */
-export function LegalSectionBlock({
+/** Numbered section with a stable anchor (#seccion-N). */
+function LegalSectionBlock({
   n,
   title,
   children,

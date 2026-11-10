@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { UI } from "@/lib/ui-strings";
+import { DEFAULT_LANG, type SiteLang } from "@/lib/lang";
 
-/** Botón flotante "volver arriba"; aparece después de scrollear. */
-export function BackToTop() {
+/** Floating "back to top" button; appears after scrolling. */
+export function BackToTop({ lang = DEFAULT_LANG }: { lang?: SiteLang }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -15,7 +17,7 @@ export function BackToTop() {
 
   return (
     <button
-      aria-label="Volver arriba"
+      aria-label={UI[lang].backToTop}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={`fixed bottom-5 right-5 z-40 w-11 h-11 rounded-full bg-ink text-bg grid place-items-center shadow-lg transition-all duration-200 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
