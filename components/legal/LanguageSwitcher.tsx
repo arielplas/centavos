@@ -1,5 +1,5 @@
 import { UI } from "@/lib/ui-strings";
-import { langHref, otherLang, HREFLANG, type SiteLang } from "@/lib/lang";
+import { explicitLangHref, langHref, otherLang, HREFLANG, type SiteLang } from "@/lib/lang";
 
 /**
  * Switches the document between Spanish and English by rewriting the `?lang=`
@@ -8,14 +8,25 @@ import { langHref, otherLang, HREFLANG, type SiteLang } from "@/lib/lang";
  * A plain `<a>` on purpose, not `next/link`: a full document load guarantees
  * the right `<html lang>` and fresh metadata, and it keeps the link copyable
  * and shareable as-is.
+ *
+ * Pass `explicit` on a page that auto-detects the language (the landing), so
+ * the link to Spanish carries `?lang=es` and the choice overrides detection.
  */
-export function LanguageSwitcher({ path, lang }: { path: string; lang: SiteLang }) {
+export function LanguageSwitcher({
+  path,
+  lang,
+  explicit = false,
+}: {
+  path: string;
+  lang: SiteLang;
+  explicit?: boolean;
+}) {
   const target = otherLang(lang);
   const strings = UI[lang];
 
   return (
     <a
-      href={langHref(path, target)}
+      href={explicit ? explicitLangHref(path, target) : langHref(path, target)}
       hrefLang={HREFLANG[target]}
       lang={HTML_LANG_SHORT[target]}
       aria-label={strings.switchToAria}

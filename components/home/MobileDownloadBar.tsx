@@ -4,13 +4,24 @@ import { useEffect, useState } from "react";
 
 type Platform = "ios" | "android" | "other";
 
+/** Copy of the bar, passed in by the (server) page in its language. */
+type BarStrings = { title: string; subtitle: string; goTo: string; newTab: string };
+
 /**
  * Barra inferior fija (solo móvil) con el badge de la tienda que corresponde
  * al sistema del usuario. Aparece cuando el hero sale de pantalla y se oculta
  * mientras la sección #descargar (con los badges completos) está visible.
  * Usa scroll + getBoundingClientRect (mismo patrón que BackToTop).
  */
-export function MobileDownloadBar({ storeUrl, playUrl }: { storeUrl: string; playUrl: string }) {
+export function MobileDownloadBar({
+  storeUrl,
+  playUrl,
+  strings,
+}: {
+  storeUrl: string;
+  playUrl: string;
+  strings: BarStrings;
+}) {
   const [visible, setVisible] = useState(false);
   const [platform, setPlatform] = useState<Platform>("other");
 
@@ -53,16 +64,16 @@ export function MobileDownloadBar({ storeUrl, playUrl }: { storeUrl: string; pla
     >
       <div className="mx-3 mb-3 rounded-2xl bg-ink text-bg shadow-[0_12px_30px_-8px_rgba(42,26,16,.6)] px-4 py-3 flex items-center gap-3">
         <div className="flex-1 min-w-0 leading-tight">
-          <div className="text-[13px] font-bold">Descarga Centavos gratis</div>
-          <div className="text-[11px] font-semibold text-bg/70">Sin conectar tu banco</div>
+          <div className="text-[13px] font-bold">{strings.title}</div>
+          <div className="text-[11px] font-semibold text-bg/70">{strings.subtitle}</div>
         </div>
         {platform === "other" ? (
           <div className="flex items-center gap-2 text-[13px] font-bold">
             <a href={storeUrl} target="_blank" rel="noopener noreferrer" className="bg-bg text-ink rounded-full px-3 py-2">
-              iOS<span className="sr-only"> · App Store (se abre en una pestaña nueva)</span>
+              iOS<span className="sr-only"> · App Store {strings.newTab}</span>
             </a>
             <a href={playUrl} target="_blank" rel="noopener noreferrer" className="bg-bg text-ink rounded-full px-3 py-2">
-              Android<span className="sr-only"> · Google Play (se abre en una pestaña nueva)</span>
+              Android<span className="sr-only"> · Google Play {strings.newTab}</span>
             </a>
           </div>
         ) : (
@@ -72,8 +83,8 @@ export function MobileDownloadBar({ storeUrl, playUrl }: { storeUrl: string; pla
             rel="noopener noreferrer"
             className="bg-mandarina text-ink rounded-full px-4 py-2.5 text-[13px] font-bold whitespace-nowrap"
           >
-            Ir a {label}
-            <span className="sr-only"> (se abre en una pestaña nueva)</span>
+            {strings.goTo} {label}
+            <span className="sr-only"> {strings.newTab}</span>
           </a>
         )}
       </div>

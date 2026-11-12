@@ -8,10 +8,18 @@
 //   https://play.google.com/intl/es_mx/badges/
 // Las URLs vienen de lib/store-links.ts; un badge sin URL no se muestra.
 
-const APPLE_BADGE_SRC =
-  "https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/es-mx?size=250x83";
-const GOOGLE_BADGE_SRC =
-  "https://play.google.com/intl/es_mx/badges/static/images/badges/es_badge_web_generic.png";
+import { HOME_COPY } from "@/components/home/copy";
+import { DEFAULT_LANG, type SiteLang } from "@/lib/lang";
+
+// Each store publishes its badge per language.
+const APPLE_BADGE_SRC: Record<SiteLang, string> = {
+  es: "https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/es-mx?size=250x83",
+  en: "https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83",
+};
+const GOOGLE_BADGE_SRC: Record<SiteLang, string> = {
+  es: "https://play.google.com/intl/es_mx/badges/static/images/badges/es_badge_web_generic.png",
+  en: "https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png",
+};
 
 // Alturas visuales equivalentes: el PNG de Google trae ~8 % de margen
 // transparente alrededor del badge, por eso se renderiza un poco más alto.
@@ -24,10 +32,12 @@ type Props = {
   playUrl?: string;
   /** Carga prioritaria (hero). */
   priority?: boolean;
+  lang?: SiteLang;
 };
 
-export function AppStoreBadges({ className = "", storeUrl, playUrl, priority = false }: Props) {
+export function AppStoreBadges({ className = "", storeUrl, playUrl, priority = false, lang = DEFAULT_LANG }: Props) {
   if (!storeUrl && !playUrl) return null;
+  const strings = HOME_COPY[lang].store;
   const loading = priority ? "eager" : "lazy";
 
   return (
@@ -36,28 +46,28 @@ export function AppStoreBadges({ className = "", storeUrl, playUrl, priority = f
         <a href={storeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex card-hover rounded-lg">
           {/* eslint-disable-next-line @next/next/no-img-element -- artwork oficial de Apple, servido por Apple */}
           <img
-            src={APPLE_BADGE_SRC}
-            alt="Descárgala en el App Store"
+            src={APPLE_BADGE_SRC[lang]}
+            alt={strings.appleAlt}
             width={Math.round((APPLE_H * 250) / 83)}
             height={APPLE_H}
             loading={loading}
             decoding="async"
           />
-          <span className="sr-only">(se abre en una pestaña nueva)</span>
+          <span className="sr-only">{strings.newTab}</span>
         </a>
       )}
       {playUrl && (
         <a href={playUrl} target="_blank" rel="noopener noreferrer" className="inline-flex card-hover rounded-lg -mx-1">
           {/* eslint-disable-next-line @next/next/no-img-element -- artwork oficial de Google, servido por Google */}
           <img
-            src={GOOGLE_BADGE_SRC}
-            alt="Disponible en Google Play"
+            src={GOOGLE_BADGE_SRC[lang]}
+            alt={strings.googleAlt}
             width={Math.round((GOOGLE_H * 646) / 250)}
             height={GOOGLE_H}
             loading={loading}
             decoding="async"
           />
-          <span className="sr-only">(se abre en una pestaña nueva)</span>
+          <span className="sr-only">{strings.newTab}</span>
         </a>
       )}
     </div>
@@ -71,29 +81,32 @@ export function AppStoreBadges({ className = "", storeUrl, playUrl, priority = f
 export function InlineStoreLinks({
   storeUrl,
   playUrl,
-  label = "Empieza a anotar:",
+  label,
   className = "text-ink-soft",
+  lang = DEFAULT_LANG,
 }: {
   storeUrl?: string;
   playUrl?: string;
   label?: string;
   /** Incluye el color del texto (p. ej. `text-ink/75` sobre fondos de color). */
   className?: string;
+  lang?: SiteLang;
 }) {
   if (!storeUrl && !playUrl) return null;
+  const strings = HOME_COPY[lang].store;
   const link = "font-bold text-ink underline underline-offset-4 decoration-mandarina hover:decoration-ink py-2";
   return (
     <p className={`text-[14px] ${className}`}>
-      {label}{" "}
+      {label ?? strings.inlineLabel}{" "}
       {storeUrl && (
         <a href={storeUrl} target="_blank" rel="noopener noreferrer" className={link}>
-          App Store<span className="sr-only"> (se abre en una pestaña nueva)</span>
+          App Store<span className="sr-only"> {strings.newTab}</span>
         </a>
       )}
       {storeUrl && playUrl && <span aria-hidden> · </span>}
       {playUrl && (
         <a href={playUrl} target="_blank" rel="noopener noreferrer" className={link}>
-          Google Play<span className="sr-only"> (se abre en una pestaña nueva)</span>
+          Google Play<span className="sr-only"> {strings.newTab}</span>
         </a>
       )}
     </p>

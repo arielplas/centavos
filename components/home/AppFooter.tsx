@@ -45,7 +45,7 @@ export function AppFooter({
   return (
     <footer className={`bg-ink text-bg ${className}`}>
       <div className="mx-auto max-w-screen-lg px-5 py-10 md:py-14">
-        <Logo size={30} color="var(--color-bg)" dotColor="var(--color-mandarina)" />
+        <Logo size={30} color="var(--color-bg)" dotColor="var(--color-mandarina)" href={navHref("/", lang)} label={strings.homeLabel} />
         <p className="font-hand text-mandarina text-2xl mt-4 mb-2">{strings.footerTagline}</p>
 
         <nav aria-label={strings.footerNav} className="grid grid-cols-2 sm:grid-cols-3 gap-6 mt-8">

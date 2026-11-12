@@ -17,7 +17,8 @@ Components por default, 100% estática. Mobile-first.
 ```
 app/
   layout.tsx                 → fuentes, metadata raíz, JSON-LD Organización + WebSite
-  page.tsx                   → home (landing de la app)
+  page.tsx                   → home (landing de la app) en español
+  en/page.tsx                → la misma landing en inglés (se sirve en /?lang=en)
   sitemap.ts                 → sitemap
   robots.ts                  → robots.txt
   manifest.ts                → PWA manifest
@@ -34,10 +35,12 @@ app/
 
 components/
   Header.tsx, Logo.tsx
-  home/*                     → AppFooter, AppStoreBadges, MobileDownloadBar, PhoneMock
+  home/*                     → HomePage, copy (es/en), AppFooter, AppStoreBadges, MobileDownloadBar, PhoneMock
   legal/*                    → LegalShell, BackToTop, LanguageSwitcher, HtmlLang
   legal/docs/*               → el texto legal, un módulo por documento e idioma
   soporte/SoporteForm.tsx
+
+proxy.ts                     → idioma de la landing: ?lang=, cookie o idioma del dispositivo
 
 lib/
   store-links.ts             → URLs de App Store / Google Play
@@ -98,6 +101,30 @@ misma URL; el idioma va en un query param, así que el enlace es compartible:
   porque los anchors `#seccion-N` y las referencias cruzadas del texto son
   compartidos.
 - Huecos legales conocidos: [docs/legales-pendientes.md](./docs/legales-pendientes.md).
+
+## Landing en dos idiomas
+
+La landing existe en español (`/`) y en inglés (`/?lang=en`), y **detecta el
+idioma del dispositivo**. Lo decide `proxy.ts`, solo para `/`, en este orden:
+
+1. `?lang=es` o `?lang=en` manda siempre, y se recuerda en la cookie `lang`
+   (un año). Es lo que usa el selector de idioma del header.
+2. Sin param: la cookie, si existe.
+3. Sin cookie: el header `Accept-Language`, respetando su orden y sus pesos
+   (`es-MX,es;q=0.9,en;q=0.8` es español).
+4. Cualquier otro idioma, o ningún header (los crawlers), recibe español.
+
+Si el resultado es inglés, `/` redirige con 307 a `/?lang=en`.
+
+- Las dos versiones son **estáticas**: `app/page.tsx` y `app/en/page.tsx`
+  renderizan el mismo `HomePage` con distinto `lang`, y el proxy reescribe
+  `/?lang=en` hacia `/en`. Una visita directa a `/en` redirige a `/?lang=en`.
+- El copy vive en `components/home/copy.tsx`, tipado: una clave que falte en un
+  idioma rompe el typecheck. **El español es la fuente de verdad.** Las maquetas
+  de teléfono tienen su propio texto en `components/home/PhoneMock.tsx`.
+- Las calculadoras son solo en español, así que la sección de calculadoras y el
+  enlace a la de MSI no salen en la landing en inglés.
+- Soporte y eliminar cuenta siguen solo en español.
 
 ## Notas
 

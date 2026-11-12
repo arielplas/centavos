@@ -5,11 +5,14 @@ export function Logo({
   color = "var(--color-ink)",
   dotColor = "var(--color-mandarina)",
   href = "/" as string | null,
+  label = "Centavos · Inicio",
 }: {
   size?: number;
   color?: string;
   dotColor?: string;
   href?: string | null;
+  /** Accessible name of the link. */
+  label?: string;
 }) {
   const inner = (
     <span className="inline-flex items-center gap-2 select-none">
@@ -37,5 +40,5 @@ export function Logo({
     </span>
   );
   if (!href) return inner;
-  return <Link href={href} aria-label="Centavos · Inicio">{inner}</Link>;
+  return <Link href={href} aria-label={label}>{inner}</Link>;
 }

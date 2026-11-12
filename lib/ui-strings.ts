@@ -1,12 +1,14 @@
 // Chrome copy (header, footer, legal shell) in both languages.
 //
 // Only the pages that can be served in English read the `en` side; every other
-// page keeps the Spanish default, so nothing on the landing changes.
+// page keeps the Spanish default.
 
 import type { SiteLang } from "./lang";
 
 export type UIStrings = {
   skipToContent: string;
+  /** Accessible name of the logo link. */
+  homeLabel: string;
   support: string;
   download: string;
   downloadFull: string;
@@ -33,6 +35,7 @@ export type UIStrings = {
 export const UI: Record<SiteLang, UIStrings> = {
   es: {
     skipToContent: "Saltar al contenido",
+    homeLabel: "Centavos · Inicio",
     support: "Soporte",
     download: "Descargar",
     downloadFull: "Descargar gratis",
@@ -55,6 +58,7 @@ export const UI: Record<SiteLang, UIStrings> = {
   },
   en: {
     skipToContent: "Skip to content",
+    homeLabel: "Centavos · Home",
     support: "Support",
     download: "Download",
     downloadFull: "Download free",

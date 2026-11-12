@@ -14,7 +14,20 @@ function absoluteAlternates(path: string) {
 // page.
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    { url: `${SITE.url}/`,                    lastModified: new Date("2026-09-07"), changeFrequency: "monthly", priority: 1.0 },
+    {
+      url: `${SITE.url}/`,
+      lastModified: new Date("2026-11-11"),
+      changeFrequency: "monthly",
+      priority: 1.0,
+      alternates: { languages: absoluteAlternates("/") },
+    },
+    {
+      url: `${SITE.url}/?lang=en`,
+      lastModified: new Date("2026-11-11"),
+      changeFrequency: "monthly",
+      priority: 1.0,
+      alternates: { languages: absoluteAlternates("/") },
+    },
     { url: `${SITE.url}/meses-sin-intereses`, lastModified: new Date("2026-09-11"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE.url}/aguinaldo`, lastModified: new Date("2026-09-11"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE.url}/finiquito`, lastModified: new Date("2026-09-11"), changeFrequency: "monthly", priority: 0.8 },
