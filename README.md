@@ -54,6 +54,7 @@ lib/
   gastos-hormiga.ts          → la cuenta y los límites de la calculadora de gastos hormiga (los mismos de la API)
   gastos-hormiga-api.ts      → cliente del endpoint que guarda la lista de gastos hormiga
   store-links.ts             → URLs de App Store / Google Play
+  social-links.ts            → URLs de Instagram y TikTok (footer)
   seo.ts                     → helpers de JSON-LD y Open Graph por página
   config.ts                  → flags (formulario de soporte, correo)
   lang.ts                    → idioma por query param (?lang=), hreflang, hrefs

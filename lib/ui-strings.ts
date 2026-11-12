@@ -26,6 +26,9 @@ export type UIStrings = {
   footerTagline: string;
   footerSupportHeading: string;
   footerLegalHeading: string;
+  footerSocialHeading: string;
+  /** Screen-reader note on the footer links that leave the site. */
+  footerNewTab: string;
   footerSupportLink: string;
   footerDeleteAccount: string;
   footerTerms: string;
@@ -59,6 +62,8 @@ export const UI: Record<SiteLang, UIStrings> = {
     footerTagline: "Le ayudamos a la gente a perderle el miedo a las finanzas.",
     footerSupportHeading: "Soporte",
     footerLegalHeading: "Legal",
+    footerSocialHeading: "Redes sociales",
+    footerNewTab: "(se abre en una pestaña nueva)",
     footerSupportLink: "Soporte y contacto",
     footerDeleteAccount: "Eliminar cuenta",
     footerTerms: "Términos y Condiciones",
@@ -87,6 +92,8 @@ export const UI: Record<SiteLang, UIStrings> = {
     footerTagline: "We help people stop being afraid of their finances.",
     footerSupportHeading: "Support",
     footerLegalHeading: "Legal",
+    footerSocialHeading: "Social",
+    footerNewTab: "(opens in a new tab)",
     footerSupportLink: "Support and contact",
     footerDeleteAccount: "Delete your account",
     footerTerms: "Terms and Conditions",
