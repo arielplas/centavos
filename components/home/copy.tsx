@@ -82,7 +82,8 @@ export type HomeCopy = {
     kicker: string;
     title: string;
     body: string;
-    items: { href: string; tag: string; t: string; d: string }[];
+    /** `featured` makes the card the dark one with orange accents: the one we most want opened. */
+    items: { href: string; tag: string; t: string; d: string; featured?: boolean }[];
   };
   /** Answers must be plain text: they also feed the FAQPage JSON-LD. */
   faq: {
@@ -230,7 +231,7 @@ const es: HomeCopy = {
       { href: "/meses-sin-intereses", tag: "compras a plazos", t: "Meses sin intereses", d: "Tu mensualidad, el calendario de pagos y cuánto cuesta de verdad la promoción." },
       { href: "/ptu", tag: "reparto de utilidades", t: "PTU", d: "Estima cuánto te toca de utilidades, con el tope de la reforma 2021." },
       { href: "/cetes", tag: "ahorro e inversión", t: "CETES", d: "Cuánto ganas según el monto, el plazo y la tasa de la subasta." },
-      { href: "/gastos-hormiga", tag: "cafecitos y antojos", t: "Gastos hormiga", d: "Anota tus gastos chiquitos de todos los días y mira cuánto suman al mes y al año." },
+      { href: "/gastos-hormiga", tag: "cafecitos y antojos", t: "Gastos hormiga", d: "Anota tus gastos chiquitos de todos los días y mira cuánto suman al mes y al año.", featured: true },
     ],
   },
   // FAQ: answers objections (conversion) and feeds the FAQPage rich result

@@ -304,16 +304,23 @@ export function HomePage({ lang }: { lang: SiteLang }) {
               <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {c.tools.items.map((t) => (
                   <li key={t.href}>
+                    {/* The featured card is the dark one, like the footer and the
+                        download button: cream text on ink, with the primary orange
+                        as the accent. Ink text on an orange fill read too weakly. */}
                     <Link
                       href={t.href}
-                      className="card-hover block h-full bg-bg border border-rule rounded-2xl p-5 hover:border-rule-strong"
+                      className={`card-hover block h-full border rounded-2xl p-5 ${
+                        t.featured
+                          ? "bg-ink border-ink text-bg hover:border-mandarina"
+                          : "bg-bg border-rule hover:border-rule-strong"
+                      }`}
                     >
-                      <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-1.5">{t.tag}</div>
+                      <div className={`text-[11px] font-extrabold tracking-wider uppercase mb-1.5 ${t.featured ? "text-mandarina" : "text-mandarina-deep"}`}>{t.tag}</div>
                       <div className="font-display text-xl font-extrabold tracking-[-0.02em] mb-1 flex items-center gap-1.5">
                         {t.t}
-                        <span aria-hidden className="text-mandarina-deep">→</span>
+                        <span aria-hidden className={t.featured ? "text-mandarina" : "text-mandarina-deep"}>→</span>
                       </div>
-                      <p className="text-[13px] leading-relaxed text-ink-soft">{t.d}</p>
+                      <p className={`text-[13px] leading-relaxed ${t.featured ? "text-bg/80" : "text-ink-soft"}`}>{t.d}</p>
                     </Link>
                   </li>
                 ))}
