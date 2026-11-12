@@ -7,6 +7,9 @@ import type { SiteLang } from "@/lib/lang";
 export type CanjearCopy = {
   metaTitle: string;
   metaDescription: string;
+  // Link preview of a shared code (`/canjear?code=PDM`).
+  metaOfferDescription: (code: string) => string;
+  ogAlt: (code: string, days: number) => string;
   eyebrow: string;
   // Offer visuals
   giftNote: string;
@@ -83,6 +86,8 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
   es: {
     metaTitle: "Canjear código",
     metaDescription: "Canjea tu código promocional y activa Centavos+.",
+    metaOfferDescription: (code) => `Actívalo con el código ${code}. Sin tarjeta y sin cobros cuando termine.`,
+    ogAlt: (code, n) => `Cupón de Centavos: ${n} ${n === 1 ? "día" : "días"} de Centavos+ gratis con el código ${code}.`,
     eyebrow: "Código promocional",
     giftNote: "¡es para ti!",
     offerLead: "Actívalo en un minuto. Sin tarjeta y sin cobros cuando termine.",
@@ -189,6 +194,8 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
   en: {
     metaTitle: "Redeem a code",
     metaDescription: "Redeem your promo code and unlock Centavos+.",
+    metaOfferDescription: (code) => `Activate it with the code ${code}. No card needed, and no charge when it ends.`,
+    ogAlt: (code, n) => `Centavos coupon: ${n} ${n === 1 ? "day" : "days"} of Centavos+ free with the code ${code}.`,
     eyebrow: "Promo code",
     giftNote: "it's yours!",
     offerLead: "Activate it in a minute. No card needed, and no charge when it ends.",

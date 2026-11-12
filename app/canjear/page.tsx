@@ -5,6 +5,8 @@ import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
 import { HtmlLang } from "@/components/legal/HtmlLang";
 import { LANG_PARAM, OG_LOCALE, HREFLANG, otherLang, resolveLang } from "@/lib/lang";
+import { fetchPromoPreview, normalizeCode } from "@/lib/promo-preview";
+import { SITE } from "@/lib/seo";
 
 // Promo-code redemption. Marketing shares `/canjear?code=XXX`. It is a utility
 // page, not content: noindex, no canonical/hreflang, and not in the sitemap.
@@ -14,13 +16,44 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
+// A shared link is read by chat apps and social networks before anyone opens
+// it, so the preview states the offer itself: the title, a line on how to use
+// the code, and an image of the coupon. Without a valid code it falls back to
+// the generic text and the site's own image.
+//
+// `openGraph` and `twitter` are spelled out in full because Next.js does not
+// deep-merge them with the layout's: defining either here drops the inherited
+// fields, the file-based image included.
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const t = CANJEAR_COPY[resolveLang((await searchParams)[LANG_PARAM])];
+  const params = await searchParams;
+  const lang = resolveLang(params[LANG_PARAM]);
+  const t = CANJEAR_COPY[lang];
+  const preview = await fetchPromoPreview(normalizeCode(params.code));
+
+  const title = preview ? t.offerBody(preview.grantDays) : t.metaTitle;
+  const description = preview ? t.metaOfferDescription(preview.code) : t.metaDescription;
+  const image = preview
+    ? {
+        url: `/canjear/og?code=${encodeURIComponent(preview.code)}&${LANG_PARAM}=${lang}`,
+        width: 1200,
+        height: 630,
+        alt: t.ogAlt(preview.code, preview.grantDays),
+      }
+    : { url: "/opengraph-image.png", width: 1200, height: 630, alt: SITE.name };
+
   return {
-    title: t.metaTitle,
-    description: t.metaDescription,
+    title,
+    description,
     robots: { index: false, follow: false },
-    openGraph: { locale: OG_LOCALE[resolveLang((await searchParams)[LANG_PARAM])] },
+    openGraph: {
+      type: "website",
+      siteName: SITE.name,
+      locale: OG_LOCALE[lang],
+      title,
+      description,
+      images: [image],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 

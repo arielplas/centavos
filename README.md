@@ -31,6 +31,7 @@ app/
     terminos/page.tsx        → términos (es/en)
     eliminar-cuenta/page.tsx → cómo eliminar la cuenta
   canjear/page.tsx           → canje de códigos promocionales (/canjear?code=XXX), es/en, noindex
+  canjear/og/route.tsx       → imagen social del enlace compartido (cupón con los días y el código)
   api/
     soporte/route.ts         → endpoint del formulario (stub 503 hasta reconectar backend)
 
