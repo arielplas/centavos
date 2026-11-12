@@ -21,12 +21,19 @@ const nextConfig: NextConfig = {
         ],
       },
       // Hashed Next.js static bundles — safe to cache forever (immutable).
-      {
-        source: "/_next/static/(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
+      // Production only: in `next dev` the chunk names are stable across edits,
+      // so a year-long cache leaves the browser on stale CSS and JS (Next warns
+      // about exactly this at startup).
+      ...(process.env.NODE_ENV === "production"
+        ? [
+            {
+              source: "/_next/static/(.*)",
+              headers: [
+                { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+              ],
+            },
+          ]
+        : []),
       // Public image assets.
       {
         source: "/images/(.*)",
