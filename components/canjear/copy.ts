@@ -8,6 +8,19 @@ export type CanjearCopy = {
   metaTitle: string;
   metaDescription: string;
   eyebrow: string;
+  // Offer visuals
+  giftNote: string;
+  offerLead: string;
+  ticketCodeLabel: string;
+  ticketUnit: (days: number) => string;
+  ticketRest: string;
+  stampRedeemed: string;
+  stampClaimed: string;
+  benefitsHeading: string;
+  hasAccountHint: string;
+  isNewHint: string;
+  redeemedKicker: string;
+  claimedKicker: string;
   title: string;
   loading: string;
   // Step 0: no code in the URL
@@ -65,6 +78,18 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     metaTitle: "Canjear código",
     metaDescription: "Canjea tu código promocional y activa Centavos+.",
     eyebrow: "Código promocional",
+    giftNote: "¡es para ti!",
+    offerLead: "Actívalo en un minuto. Sin tarjeta y sin cobros cuando termine.",
+    ticketCodeLabel: "Tu código",
+    ticketUnit: (n) => (n === 1 ? "día" : "días"),
+    ticketRest: "gratis",
+    stampRedeemed: "Activado",
+    stampClaimed: "Guardado",
+    benefitsHeading: "Con Centavos+ tienes",
+    hasAccountHint: "Inicia sesión y se activa al momento.",
+    isNewHint: "Guárdalo con tu correo y regístrate después.",
+    redeemedKicker: "¡a disfrutar!",
+    claimedKicker: "un paso más",
     title: "Canjea tu código",
     loading: "Revisando tu código…",
     codeIntro: "Escribe tu código para ver qué incluye.",
@@ -150,6 +175,18 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     metaTitle: "Redeem a code",
     metaDescription: "Redeem your promo code and unlock Centavos+.",
     eyebrow: "Promo code",
+    giftNote: "it's yours!",
+    offerLead: "Activate it in a minute. No card needed, and no charge when it ends.",
+    ticketCodeLabel: "Your code",
+    ticketUnit: (n) => (n === 1 ? "day" : "days"),
+    ticketRest: "free",
+    stampRedeemed: "Active",
+    stampClaimed: "Saved",
+    benefitsHeading: "With Centavos+ you get",
+    hasAccountHint: "Sign in and it's active right away.",
+    isNewHint: "Save it with your email and sign up later.",
+    redeemedKicker: "enjoy!",
+    claimedKicker: "one more step",
     title: "Redeem your code",
     loading: "Checking your code…",
     codeIntro: "Enter your code to see what it includes.",

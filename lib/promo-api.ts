@@ -108,6 +108,23 @@ function post<T>(path: string, body: unknown, token?: string): Promise<T> {
   });
 }
 
+/** One Centavos+ benefit as the paywall advertises it, in both languages. */
+export type Benefit = {
+  key: string;
+  emoji: string;
+  title: { es: string; en: string };
+  description: { es: string; en: string };
+};
+
+/**
+ * Public: the benefits Centavos+ really includes right now (the same list the
+ * app's paywall shows), so the page never promises something the plan lacks.
+ */
+export async function premiumBenefits(): Promise<Benefit[]> {
+  const body = await request<{ benefits?: unknown }>("/api/premium/benefits");
+  return Array.isArray(body.benefits) ? (body.benefits as Benefit[]) : [];
+}
+
 /** Public: what the code gives, or a code error. */
 export function previewCode(code: string): Promise<Preview> {
   return request<Preview>(`/api/promo-codes/preview?code=${encodeURIComponent(code)}`);

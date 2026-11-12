@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { AppStoreBadges } from "@/components/home/AppStoreBadges";
 import { HTML_LANG, type SiteLang } from "@/lib/lang";
 import { getAppLinks } from "@/lib/store-links";
@@ -11,8 +11,10 @@ import {
   claimCode,
   loginWithGoogle,
   loginWithPassword,
+  premiumBenefits,
   previewCode,
   redeemCode,
+  type Benefit,
   type PromoErrorCode,
   type Preview,
   type Redemption,
@@ -27,7 +29,7 @@ type Stage =
   | { kind: "offer"; preview: Preview }
   | { kind: "code-error"; code: PromoErrorCode }
   | { kind: "redeemed"; result: Redemption; isNewUser: boolean }
-  | { kind: "claimed"; email: string; grantDays: number };
+  | { kind: "claimed"; email: string; code: string; grantDays: number };
 
 type Path = "account" | "new" | null;
 
@@ -49,6 +51,16 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<PromoApiError | null>(null);
   const [googleOff, setGoogleOff] = useState(false);
+  // What Centavos+ includes, straight from the paywall endpoint. Decoration
+  // only: if it fails the list is simply not shown.
+  const [benefits, setBenefits] = useState<Benefit[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    premiumBenefits().then((list) => !cancelled && setBenefits(list), () => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Focus moves to the new step's heading when the step changes, so keyboard
   // and screen-reader users land on what just replaced the old content.
@@ -131,7 +143,7 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
     setError(null);
     try {
       await claimCode(code, email);
-      setStage({ kind: "claimed", email, grantDays });
+      setStage({ kind: "claimed", email, code, grantDays });
     } catch (e) {
       fail(e);
     } finally {
@@ -148,38 +160,55 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
     setStage({ kind: "ask-code" });
   }
 
-  const heading = (text: string) => (
+  const heading = (content: ReactNode, size = "text-3xl md:text-4xl") => (
     <h1
       ref={headingRef}
       tabIndex={-1}
-      className="font-display text-3xl md:text-4xl font-extrabold tracking-[-0.03em] leading-[1.05] mb-4 outline-none"
+      // Focus lands here only from script (step changes); the global
+      // :focus-visible ring is unlayered CSS, so a utility cannot switch it off.
+      style={{ outline: "none" }}
+      className={`font-display ${size} font-extrabold tracking-[-0.03em] leading-[1.02] mb-4`}
     >
-      {text}
+      {content}
     </h1>
+  );
+  // The single-column steps (typing a code, an error) sit in a centred card.
+  const narrow = (children: ReactNode) => (
+    <div className="mx-auto max-w-[520px] rounded-3xl border border-rule bg-surface/80 p-6 shadow-[0_24px_48px_-32px_rgba(42,26,16,0.35)] md:p-8">
+      {children}
+    </div>
+  );
+  // The result steps: the stamped coupon next to what to do now.
+  const result = (ticket: ReactNode, children: ReactNode) => (
+    <div className="grid items-center gap-10 md:grid-cols-[minmax(0,400px)_minmax(0,1fr)] md:gap-14">
+      <div className="pt-6">{ticket}</div>
+      <div>{children}</div>
+    </div>
   );
 
   switch (stage.kind) {
     case "checking":
-      return (
+      return narrow(
         <div role="status" className="text-[15px] text-ink-soft">
           {heading(t.title)}
           {t.loading}
-        </div>
+        </div>,
       );
 
     case "ask-code":
-      return (
+      return narrow(
         <div>
+          <p className="font-hand text-2xl leading-none text-mandarina-deep mb-2">{t.eyebrow}</p>
           {heading(t.title)}
           <p className="text-[15px] leading-relaxed text-ink-soft mb-6">{t.codeIntro}</p>
           <CodeForm t={t} busy={busy} error={error} onSubmit={checkCode} />
-        </div>
+        </div>,
       );
 
     case "code-error": {
       const message = t.errors[stage.code];
       const isCodeProblem = CODE_ERRORS.includes(stage.code);
-      return (
+      return narrow(
         <div>
           {heading(message.title ?? t.title)}
           <p role="alert" className="text-[15px] leading-relaxed text-ink-soft mb-6">
@@ -188,44 +217,62 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
           <button type="button" onClick={startOver} className={primaryButton}>
             {isCodeProblem ? t.tryAnother : t.retry}
           </button>
-        </div>
+        </div>,
       );
     }
 
     case "offer":
       return (
-        <div>
-          <p className="text-[12px] font-bold tracking-wide text-mandarina-deep uppercase mb-2">{t.eyebrow}</p>
-          {heading(`${t.offerTitle(stage.preview.code)}: ${t.offerBody(stage.preview.grantDays)}`)}
-          <button type="button" onClick={startOver} className={`${linkButton} mb-4`}>
-            {t.changeCode}
-          </button>
+        // Phone order: offer, the action card, then the benefits. On desktop the
+        // card moves to a second column that spans both rows.
+        <div className="grid gap-y-8 md:grid-cols-[minmax(0,1fr)_minmax(0,400px)] md:items-start md:gap-x-14">
+          <div>
+            <p className="text-[12px] font-bold tracking-[0.14em] text-mandarina-deep uppercase mb-3">{t.eyebrow}</p>
+            {heading(
+              <>
+                <span className="sr-only">{t.offerTitle(stage.preview.code)}: </span>
+                {t.offerBody(stage.preview.grantDays)}
+              </>,
+              "text-4xl md:text-[56px]",
+            )}
+            <p className="text-[16px] leading-relaxed text-ink-soft mb-10 max-w-[440px]">{t.offerLead}</p>
 
-          <fieldset className="mb-6">
-            <legend className="text-[13px] font-bold text-ink mb-2">{t.pathsLegend}</legend>
-            <div className="flex flex-wrap gap-2">
-              {(["account", "new"] as const).map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  aria-pressed={path === p}
-                  aria-controls={`canjear-${p}`}
-                  onClick={() => {
-                    setPath(p);
-                    setError(null);
-                  }}
-                  className={`rounded-full border px-4 py-2.5 text-[14px] font-bold cursor-pointer ${
-                    path === p ? "bg-ink text-bg border-ink" : "bg-surface text-ink border-rule-strong hover:bg-sand"
-                  }`}
-                >
-                  {p === "account" ? t.hasAccount : t.isNew}
-                </button>
-              ))}
-            </div>
-          </fieldset>
+            <Ticket t={t} code={stage.preview.code} days={stage.preview.grantDays} note={t.giftNote} />
+
+            <button type="button" onClick={startOver} className={`${linkButton} mt-6`}>
+              {t.changeCode}
+            </button>
+          </div>
+
+          <div className="rounded-3xl border border-rule bg-surface p-5 shadow-[0_24px_48px_-32px_rgba(42,26,16,0.35)] md:sticky md:top-6 md:col-start-2 md:row-span-2 md:row-start-1 md:p-6">
+            <fieldset>
+              <legend className="font-display text-xl font-extrabold tracking-[-0.02em] text-ink mb-4">{t.pathsLegend}</legend>
+              <div className="grid grid-cols-2 gap-2">
+                {(["account", "new"] as const).map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    aria-pressed={path === p}
+                    aria-controls={`canjear-${p}`}
+                    onClick={() => {
+                      setPath(p);
+                      setError(null);
+                    }}
+                    className={`rounded-2xl border px-4 py-3.5 text-left cursor-pointer transition-colors duration-150 motion-reduce:transition-none ${
+                      path === p ? "bg-ink text-bg border-ink" : "bg-bg text-ink border-rule-strong hover:bg-sand"
+                    }`}
+                  >
+                    <span className="block text-[15px] font-bold leading-tight">{p === "account" ? t.hasAccount : t.isNew}</span>
+                    <span className={`mt-1 block text-[12px] leading-snug ${path === p ? "text-bg/75" : "text-ink-soft"}`}>
+                      {p === "account" ? t.hasAccountHint : t.isNewHint}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
 
           {path === "account" && (
-            <section id="canjear-account" aria-label={t.hasAccount} className="bg-surface border border-rule rounded-2xl p-6">
+            <section id="canjear-account" aria-label={t.hasAccount} className="mt-5 border-t border-rule pt-5">
               <AccountForm
                 key="account"
                 t={t}
@@ -239,43 +286,131 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
             </section>
           )}
           {path === "new" && (
-            <section id="canjear-new" aria-label={t.isNew} className="bg-surface border border-rule rounded-2xl p-6">
+            <section id="canjear-new" aria-label={t.isNew} className="mt-5 border-t border-rule pt-5">
               <NewForm key="new" t={t} busy={busy} error={error} onSubmit={claim} />
             </section>
           )}
+          </div>
+
+          <div className="md:col-start-1 md:row-start-2">
+            <BenefitList t={t} lang={lang} benefits={benefits} />
+          </div>
         </div>
       );
 
     case "redeemed": {
       const date = new Intl.DateTimeFormat(HTML_LANG[lang], { dateStyle: "long" }).format(new Date(stage.result.premiumUntil));
-      return (
+      return result(
+        <Ticket t={t} code={stage.result.code} days={stage.result.grantDays} stamp={t.stampRedeemed} />,
         <div role="status">
-          {heading(t.redeemedTitle)}
-          <p className="text-[16px] leading-relaxed text-ink-soft mb-6">{t.redeemedBody(date)}</p>
+          <p className="font-hand text-3xl leading-none text-mandarina-deep mb-2">{t.redeemedKicker}</p>
+          {heading(t.redeemedTitle, "text-4xl md:text-5xl")}
+          <p className="text-[17px] leading-relaxed text-ink-soft mb-6">{t.redeemedBody(date)}</p>
           {stage.isNewUser && (
             <p className="text-[14px] leading-relaxed font-semibold text-ink bg-sand rounded-xl px-4 py-3 mb-6">
               {t.newGoogleAccountNote}
             </p>
           )}
           <StoreButtons lang={lang} label={t.openApp} />
-        </div>
+        </div>,
       );
     }
 
     case "claimed":
-      return (
+      return result(
+        <Ticket t={t} code={stage.code} days={stage.grantDays} stamp={t.stampClaimed} />,
         <div role="status">
-          {heading(t.claimedTitle)}
-          <p className="text-[16px] leading-relaxed text-ink-soft mb-4">
+          <p className="font-hand text-3xl leading-none text-mandarina-deep mb-2">{t.claimedKicker}</p>
+          {heading(t.claimedTitle, "text-4xl md:text-5xl")}
+          <p className="text-[17px] leading-relaxed text-ink-soft mb-4">
             {t.claimedBody(stage.email, stage.grantDays)}
           </p>
           <p className="text-[14px] leading-relaxed font-semibold text-ink bg-sand rounded-xl px-4 py-3 mb-6">
             {t.sameEmailNote}
           </p>
           <StoreButtons lang={lang} label={t.downloadHeading} />
-        </div>
+        </div>,
       );
   }
+}
+
+/**
+ * The offer drawn as a coupon: the days on top, a tear line, the code on the
+ * stub. Decorative: the heading next to it already says all of it.
+ */
+function Ticket({ t, code, days, note, stamp }: { t: CanjearCopy; code: string; days: number; note?: string; stamp?: string }) {
+  return (
+    <div aria-hidden className="relative w-full max-w-[400px]">
+      {note && (
+        <span className="absolute -top-10 right-2 z-10 rotate-6 font-hand text-[28px] leading-none text-mandarina-deep">
+          {note}
+        </span>
+      )}
+      <div className="relative -rotate-2 overflow-hidden rounded-[28px] bg-ink text-bg shadow-[0_28px_48px_-24px_rgba(42,26,16,0.65)] transition-transform duration-300 hover:rotate-0 motion-reduce:rotate-0 motion-reduce:transition-none">
+        <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-mandarina/35" />
+        <div className="absolute -bottom-16 -left-10 h-36 w-36 rounded-full bg-yolk/15" />
+
+        <div className="relative px-7 pb-6 pt-7">
+          <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-bg/70">Centavos+</div>
+          <div className="mt-4 flex items-end gap-3">
+            <span className="font-display text-[92px] font-extrabold leading-[0.78] tracking-[-0.05em] text-yolk">{days}</span>
+            <span className="pb-0.5 font-display text-[22px] font-extrabold leading-[1.05] tracking-[-0.02em]">
+              {t.ticketUnit(days)}
+              <br />
+              {t.ticketRest}
+            </span>
+          </div>
+        </div>
+
+        {/* Tear line: the page colour bites a notch out of each edge. */}
+        <div className="relative h-6">
+          <span className="absolute -left-3 top-0 h-6 w-6 rounded-full bg-bg" />
+          <span className="absolute -right-3 top-0 h-6 w-6 rounded-full bg-bg" />
+          <div className="absolute inset-x-6 top-1/2 border-t-2 border-dashed border-bg/25" />
+        </div>
+
+        <div className="relative flex items-center justify-between gap-4 px-7 pb-7 pt-4">
+          <div className="min-w-0">
+            <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-bg/70">{t.ticketCodeLabel}</div>
+            <div className="mt-1 break-all font-display text-[30px] font-extrabold leading-tight tracking-[0.12em]">{code}</div>
+          </div>
+          {stamp ? (
+            <span className="flex-shrink-0 rotate-[-8deg] rounded-lg border-2 border-yolk px-2.5 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.16em] text-yolk">
+              ✓ {stamp}
+            </span>
+          ) : (
+            <span className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-full bg-mandarina font-display text-[28px] font-extrabold leading-none text-ink">
+              +
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BenefitList({ t, lang, benefits }: { t: CanjearCopy; lang: SiteLang; benefits: Benefit[] }) {
+  if (benefits.length === 0) return null;
+  return (
+    <section aria-labelledby="canjear-benefits" className="max-w-[440px]">
+      <h2 id="canjear-benefits" className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-3">
+        {t.benefitsHeading}
+      </h2>
+      <ul className="flex flex-col gap-3">
+        {benefits.map((b) => (
+          <li key={b.key} className="flex items-start gap-3">
+            <span aria-hidden className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-2xl bg-sand text-lg">
+              {b.emoji}
+            </span>
+            <span>
+              <span className="block text-[15px] font-bold leading-tight text-ink">{b.title[lang]}</span>
+              <span className="mt-0.5 block text-[13px] leading-snug text-ink-soft">{b.description[lang]}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }
 
 function StoreButtons({ lang, label }: { lang: SiteLang; label: string }) {
@@ -333,7 +468,7 @@ function CodeForm({
 
   const message = missing ? t.codeRequired : fieldError(error, "code", t.fieldErrors.code);
   return (
-    <form onSubmit={submit} noValidate className="bg-surface border border-rule rounded-2xl p-6 flex flex-col gap-4">
+    <form onSubmit={submit} noValidate className="flex flex-col gap-4">
       <div>
         <label htmlFor="canjear-code" className={labelClass}>{t.codeLabel}</label>
         <input

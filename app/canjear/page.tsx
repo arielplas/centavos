@@ -41,9 +41,12 @@ export default async function CanjearPage({ searchParams }: PageProps) {
     <>
       <HtmlLang lang={lang} />
       <Header lang={lang} mobileCta={false} />
-      <main id="contenido" className="mx-auto max-w-screen-lg px-5 pb-20 pt-10 md:pt-14">
-        <div className="max-w-[520px] mx-auto">
-          <div className="flex justify-end mb-4">
+      <main id="contenido" className="relative overflow-hidden">
+        {/* Same soft colour washes as the landing hero. */}
+        <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-yolk/25 blur-2xl" aria-hidden />
+        <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-peach/40 blur-2xl" aria-hidden />
+        <div className="relative mx-auto max-w-[980px] px-5 pb-20 pt-8 md:pt-12">
+          <div className="flex justify-end mb-6 md:mb-8">
             <a
               href={`/canjear?${switchParams}`}
               hrefLang={HREFLANG[target]}
