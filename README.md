@@ -30,6 +30,7 @@ app/
     privacidad/page.tsx      → aviso de privacidad (es/en)
     terminos/page.tsx        → términos (es/en)
     eliminar-cuenta/page.tsx → cómo eliminar la cuenta
+  canjear/page.tsx           → canje de códigos promocionales (/canjear?code=XXX), es/en, noindex
   api/
     soporte/route.ts         → endpoint del formulario (stub 503 hasta reconectar backend)
 
@@ -39,10 +40,12 @@ components/
   legal/*                    → LegalShell, BackToTop, LanguageSwitcher, HtmlLang
   legal/docs/*               → el texto legal, un módulo por documento e idioma
   soporte/SoporteForm.tsx
+  canjear/*                  → CanjearFlow (flujo cliente), GoogleButton, copy (es/en)
 
 proxy.ts                     → idioma de la landing: ?lang=, cookie o idioma del dispositivo
 
 lib/
+  promo-api.ts              → cliente de la API de códigos promocionales (el contrato vive aquí)
   store-links.ts             → URLs de App Store / Google Play
   seo.ts                     → helpers de JSON-LD y Open Graph por página
   config.ts                  → flags (formulario de soporte, correo)
@@ -63,6 +66,8 @@ bun run dev                           # http://localhost:3000
 | Variable | Default | Para qué sirve |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | `https://centavos.mx` | URL canónica usada en metadata/sitemap/JSON-LD |
+| `NEXT_PUBLIC_API_URL` | _(vacío)_ | URL base de la API de Centavos; `/canjear` la llama directo desde el navegador |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | _(vacío)_ | Client ID web de Google; si falta, `/canjear` oculta el botón de Google |
 
 ## Comandos
 
@@ -125,6 +130,28 @@ Si el resultado es inglés, `/` redirige con 307 a `/?lang=en`.
 - Las calculadoras son solo en español, así que la sección de calculadoras y el
   enlace a la de MSI no salen en la landing en inglés.
 - Soporte y eliminar cuenta siguen solo en español.
+
+## Canjear códigos promocionales
+
+`https://centavos.mx/canjear?code=PDM` es el enlace que se comparte en marketing.
+El canje se hace **solo en el sitio web**, nunca dentro de la app (la guideline
+3.1.1 del App Store prohíbe mecanismos de códigos propios en la app).
+
+- Lee `?code=`, consulta `GET /api/promo-codes/preview` y muestra la oferta. Sin
+  código muestra un campo para escribirlo. Un error del código (no existe,
+  inactivo, vencido, agotado, ya canjeado) muestra su mensaje y ningún formulario.
+- **Ya tengo cuenta:** correo y contraseña (o Google) contra `/api/auth/*`, y luego
+  `POST /api/promo-codes/redeem` con el token. El token vive solo en memoria: no
+  va a localStorage, cookies ni a la URL.
+- **Soy nuevo:** `POST /api/promo-codes/claims` con el correo; después se pide
+  descargar la app y registrarse con **ese mismo correo**.
+- Idioma por `?lang=en` (sin detección automática: el proxy solo toca `/`). El
+  texto está en `components/canjear/copy.ts`, con un mensaje por código de error.
+- Es `noindex` y no está en `app/sitemap.ts`.
+- Todo el contrato de la API está en `lib/promo-api.ts`. La API debe aceptar CORS
+  desde el origen del sitio (usa Bearer tokens, sin cookies).
+- Google necesita `NEXT_PUBLIC_GOOGLE_CLIENT_ID`; sin él, el botón no aparece.
+  Sign in with Apple en web queda fuera de alcance.
 
 ## Notas
 
