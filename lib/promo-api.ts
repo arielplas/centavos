@@ -111,7 +111,10 @@ function post<T>(path: string, body: unknown, token?: string): Promise<T> {
 /** One Centavos+ benefit as the paywall advertises it, in both languages. */
 export type Benefit = {
   key: string;
+  /** Sent by the API as a cross-client fallback; this site never draws it. */
   emoji: string;
+  /** Illustration uploaded from the admin panel, when the benefit has one. */
+  imageUrl?: string;
   title: { es: string; en: string };
   description: { es: string; en: string };
 };
@@ -122,7 +125,11 @@ export type Benefit = {
  */
 export async function premiumBenefits(): Promise<Benefit[]> {
   const body = await request<{ benefits?: unknown }>("/api/premium/benefits");
-  return Array.isArray(body.benefits) ? (body.benefits as Benefit[]) : [];
+  const list = Array.isArray(body.benefits) ? (body.benefits as Benefit[]) : [];
+  // A storage URL can come back relative to the API: make it absolute.
+  return list.map((b) =>
+    b.imageUrl && !/^https?:\/\//.test(b.imageUrl) ? { ...b, imageUrl: `${API_URL}${b.imageUrl}` } : b,
+  );
 }
 
 /** Public: what the code gives, or a code error. */

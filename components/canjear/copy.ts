@@ -19,6 +19,7 @@ export type CanjearCopy = {
   benefitsHeading: string;
   hasAccountHint: string;
   isNewHint: string;
+  isNewCta: string;
   redeemedKicker: string;
   claimedKicker: string;
   title: string;
@@ -88,6 +89,7 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     benefitsHeading: "Con Centavos+ tienes",
     hasAccountHint: "Inicia sesión y se activa al momento.",
     isNewHint: "Guárdalo con tu correo y regístrate después.",
+    isNewCta: "Empieza ahora",
     redeemedKicker: "¡a disfrutar!",
     claimedKicker: "un paso más",
     title: "Canjea tu código",
@@ -185,6 +187,7 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     benefitsHeading: "With Centavos+ you get",
     hasAccountHint: "Sign in and it's active right away.",
     isNewHint: "Save it with your email and sign up later.",
+    isNewCta: "Get started",
     redeemedKicker: "enjoy!",
     claimedKicker: "one more step",
     title: "Redeem your code",

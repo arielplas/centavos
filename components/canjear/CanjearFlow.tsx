@@ -20,6 +20,7 @@ import {
   type Redemption,
   type Session,
 } from "@/lib/promo-api";
+import { BenefitGlyph } from "./BenefitGlyph";
 import { CANJEAR_COPY, type CanjearCopy } from "./copy";
 import { GoogleButton } from "./GoogleButton";
 
@@ -258,14 +259,24 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
                       setPath(p);
                       setError(null);
                     }}
-                    className={`rounded-2xl border px-4 py-3.5 text-left cursor-pointer transition-colors duration-150 motion-reduce:transition-none ${
-                      path === p ? "bg-ink text-bg border-ink" : "bg-bg text-ink border-rule-strong hover:bg-sand"
-                    }`}
+                    // "Soy nuevo" is the main action of a shared code (most people
+                    // arriving have no account yet), so it carries the brand colour
+                    // and a call to action. A ring marks whichever one is open.
+                    className={`flex flex-col rounded-2xl border px-4 py-3.5 text-left cursor-pointer transition-colors duration-150 motion-reduce:transition-none ${
+                      p === "new"
+                        ? "bg-mandarina text-ink border-mandarina hover:bg-[#f08b4d]"
+                        : "bg-bg text-ink border-rule-strong hover:bg-sand"
+                    } ${path === p ? "ring-2 ring-ink ring-offset-2 ring-offset-surface" : ""}`}
                   >
                     <span className="block text-[15px] font-bold leading-tight">{p === "account" ? t.hasAccount : t.isNew}</span>
-                    <span className={`mt-1 block text-[12px] leading-snug ${path === p ? "text-bg/75" : "text-ink-soft"}`}>
+                    <span className={`mt-1 block text-[12px] leading-snug ${p === "new" ? "text-ink/85" : "text-ink-soft"}`}>
                       {p === "account" ? t.hasAccountHint : t.isNewHint}
                     </span>
+                    {p === "new" && (
+                      <span className="mt-auto pt-3 text-[14px] font-extrabold leading-none">
+                        {t.isNewCta} <span aria-hidden>→</span>
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -396,11 +407,13 @@ function BenefitList({ t, lang, benefits }: { t: CanjearCopy; lang: SiteLang; be
       <h2 id="canjear-benefits" className="text-[12px] font-bold uppercase tracking-[0.14em] text-ink-soft mb-3">
         {t.benefitsHeading}
       </h2>
-      <ul className="flex flex-col gap-3">
+      {/* Same row as the app's paywall: a 34px sand chip with the drawn icon
+          (never the emoji), inside one bordered card. */}
+      <ul className="rounded-2xl border border-rule bg-surface px-4 py-1">
         {benefits.map((b) => (
-          <li key={b.key} className="flex items-start gap-3">
-            <span aria-hidden className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-2xl bg-sand text-lg">
-              {b.emoji}
+          <li key={b.key} className="flex items-start gap-3 py-3">
+            <span className="grid h-[34px] w-[34px] flex-shrink-0 place-items-center rounded-[11px] bg-sand text-ink">
+              <BenefitGlyph benefitKey={b.key} imageUrl={b.imageUrl} />
             </span>
             <span>
               <span className="block text-[15px] font-bold leading-tight text-ink">{b.title[lang]}</span>
