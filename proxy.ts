@@ -20,8 +20,13 @@ import {
 //      (`Accept-Language`), then Spanish.
 //
 // Crawlers send no `Accept-Language`, so they keep getting Spanish at `/`.
+//
+// The gastos hormiga calculator is prerendered twice in the same way
+// (`/gastos-hormiga` and `/en/gastos-hormiga`), but only step 1 applies to it:
+// `?lang=en` picks the English one and nothing is detected or remembered, so
+// its Spanish URL always answers in Spanish.
 
-/** Internal route that holds the English landing. */
+/** Internal route that holds the English landing, and the prefix of the other English pages. */
 const EN_ROUTE = "/en";
 
 const ONE_YEAR = 60 * 60 * 24 * 365;
@@ -29,17 +34,19 @@ const ONE_YEAR = 60 * 60 * 24 * 365;
 export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
-  // `/en` is an implementation detail: send direct visits to the public URL.
-  if (pathname === EN_ROUTE) {
+  // `/en…` is an implementation detail: send direct visits to the public URL.
+  if (pathname === EN_ROUTE || pathname.startsWith(`${EN_ROUTE}/`)) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = pathname.slice(EN_ROUTE.length) || "/";
     url.searchParams.set(LANG_PARAM, "en");
     return NextResponse.redirect(url, 308);
   }
 
-  if (pathname !== "/") return NextResponse.next();
-
   const explicit = parseLang(searchParams.get(LANG_PARAM));
+
+  // The calculator: the param alone decides, with no cookie and no detection.
+  if (pathname !== "/") return explicit ? serve(request, explicit) : NextResponse.next();
+
   if (explicit) {
     const response = serve(request, explicit);
     response.cookies.set(LANG_COOKIE, explicit, { path: "/", maxAge: ONE_YEAR, sameSite: "lax" });
@@ -63,14 +70,14 @@ export function proxy(request: NextRequest) {
   return response;
 }
 
-/** Response that renders the landing in `lang` at the current URL. */
+/** Response that renders the page in `lang` at the current URL. */
 function serve(request: NextRequest, lang: SiteLang) {
   if (lang === DEFAULT_LANG) return NextResponse.next();
   const url = request.nextUrl.clone();
-  url.pathname = EN_ROUTE;
+  url.pathname = url.pathname === "/" ? EN_ROUTE : `${EN_ROUTE}${url.pathname}`;
   return NextResponse.rewrite(url);
 }
 
 export const config = {
-  matcher: ["/", "/en"],
+  matcher: ["/", "/en", "/gastos-hormiga", "/en/gastos-hormiga"],
 };

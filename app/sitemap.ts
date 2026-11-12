@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${SITE.url}/`,
-      lastModified: new Date("2026-11-11"),
+      lastModified: new Date("2026-11-12"),
       changeFrequency: "monthly",
       priority: 1.0,
       alternates: { languages: absoluteAlternates("/") },
@@ -34,6 +34,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/vacaciones`, lastModified: new Date("2026-09-11"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE.url}/ptu`, lastModified: new Date("2026-09-11"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE.url}/cetes`, lastModified: new Date("2026-09-11"), changeFrequency: "monthly", priority: 0.8 },
+    {
+      url: `${SITE.url}/gastos-hormiga`,
+      lastModified: new Date("2026-11-12"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: absoluteAlternates("/gastos-hormiga") },
+    },
+    {
+      url: `${SITE.url}/gastos-hormiga?lang=en`,
+      lastModified: new Date("2026-11-12"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: absoluteAlternates("/gastos-hormiga") },
+    },
     { url: `${SITE.url}/app/soporte`,         lastModified: new Date("2026-09-07"), changeFrequency: "yearly",  priority: 0.5 },
     {
       url: `${SITE.url}/app/privacidad`,

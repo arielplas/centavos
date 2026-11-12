@@ -1,7 +1,7 @@
-// Language resolution for the bilingual pages (the landing and the legal
-// documents the app links to). The language travels in a query param —
-// `?lang=en` — so a single URL is shareable: whoever opens the link gets the
-// same language.
+// Language resolution for the bilingual pages (the landing, the legal documents
+// the app links to and the gastos hormiga calculator). The language travels in
+// a query param — `?lang=en` — so a single URL is shareable: whoever opens the
+// link gets the same language.
 //
 // Spanish is the house language and the default: no param, an empty param or
 // anything we do not recognise all fall back to it instead of 404-ing.
@@ -98,7 +98,7 @@ export function explicitLangHref(path: string, lang: SiteLang): string {
  * Paths that are served in both languages. Everything else is Spanish-only, so
  * carrying `?lang=` over to it would promise a translation that is not there.
  */
-export const BILINGUAL_PATHS: readonly string[] = ["/", "/app/terminos", "/app/privacidad"] as const;
+export const BILINGUAL_PATHS: readonly string[] = ["/", "/app/terminos", "/app/privacidad", "/gastos-hormiga"] as const;
 
 /**
  * Path for a navigation link: localised when the destination is bilingual, left

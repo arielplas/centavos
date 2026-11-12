@@ -13,6 +13,10 @@ legal, la fórmula exacta, casos borde, casos de prueba, la estructura de la pá
 | `/finiquito` | calculadora de finiquito | todo el año | Salario mínimo | [spec](./finiquito.md) |
 | `/ptu` | reparto de utilidades | abr–jun | UMA | [spec](./ptu.md) |
 | `/cetes` | calculadora de CETES | todo el año | **Ninguno** (tasa como input) | [spec](./cetes.md) |
+| `/gastos-hormiga` | calculadora de gastos hormiga | todo el año | **Ninguno** | [spec](./gastos-hormiga.md) |
+
+`/gastos-hormiga` es la única bilingüe (`?lang=en`) y la única que deja guardar el resultado
+en la API con un correo; el cómo está en su spec.
 
 **`/sueldo-neto` (ISR) queda fuera a propósito.** Requiere la tarifa del art. 96 LISR,
 subsidio al empleo y cuotas del IMSS: tres tablas que hay que transcribir cada año. Es la
@@ -85,8 +89,11 @@ El tono cambia según el contexto emocional:
 | `/vacaciones` | Planea un viaje | Ligero — resaltar que funciona sin internet |
 | `/finiquito` | Se quedó sin ingreso | **Sobrio.** Nada festivo. Primero PROFEDET, luego la app |
 | `/cetes` | Tiene un excedente y lo va a invertir | "De aquí sale lo que inviertes" |
+| `/gastos-hormiga` | Acaba de ver cuánto suman sus gastos chiquitos | Sin regaño — "no les pierdas la pista" |
 
-Siempre cerrar con el diferenciador: *sin conectar tu banco, sin registro*.
+Siempre cerrar con el diferenciador: *sin conectar tu banco, sin registro*. La excepción es
+`/gastos-hormiga`, que invita a registrarse en la app con el correo: ahí el cierre es *sin
+conectar tu banco, solo tu correo*.
 
 ## Constantes: de dónde salen
 

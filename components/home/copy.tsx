@@ -73,9 +73,10 @@ export type HomeCopy = {
   };
   steps: { kicker: string; title: string; items: { n: string; t: string; d: string }[] };
   /**
-   * Free calculators. `null` in English: they are Spanish-only pages about
-   * Mexican payroll and tax rules, and an English card would promise a
-   * translation that is not there.
+   * Free calculators. `null` in English: all but one are Spanish-only pages
+   * about Mexican payroll and tax rules, and an English card would promise a
+   * translation that is not there. The bilingual one (gastos hormiga) reaches
+   * the English landing through the footer.
    */
   tools: null | {
     kicker: string;
@@ -229,6 +230,7 @@ const es: HomeCopy = {
       { href: "/meses-sin-intereses", tag: "compras a plazos", t: "Meses sin intereses", d: "Tu mensualidad, el calendario de pagos y cuánto cuesta de verdad la promoción." },
       { href: "/ptu", tag: "reparto de utilidades", t: "PTU", d: "Estima cuánto te toca de utilidades, con el tope de la reforma 2021." },
       { href: "/cetes", tag: "ahorro e inversión", t: "CETES", d: "Cuánto ganas según el monto, el plazo y la tasa de la subasta." },
+      { href: "/gastos-hormiga", tag: "cafecitos y antojos", t: "Gastos hormiga", d: "Anota tus gastos chiquitos de todos los días y mira cuánto suman al mes y al año." },
     ],
   },
   // FAQ: answers objections (conversion) and feeds the FAQPage rich result
