@@ -104,7 +104,8 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   throw new PromoApiError("UNKNOWN");
 }
 
-function post<T>(path: string, body: unknown, token?: string): Promise<T> {
+/** Exported for the API's other public endpoint (lib/gastos-hormiga-api.ts). */
+export function post<T>(path: string, body: unknown, token?: string): Promise<T> {
   return request<T>(path, {
     method: "POST",
     body: JSON.stringify(body),

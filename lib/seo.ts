@@ -98,17 +98,20 @@ export function webApplicationJsonLd(args: {
   name: string;
   description: string;
   path: string;
+  /** Idioma de la página; español si no se indica. */
+  lang?: SiteLang;
 }) {
+  const lang = args.lang ?? DEFAULT_LANG;
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": args.name,
     "description": args.description,
-    "url": `${SITE_URL}${args.path}`,
+    "url": `${SITE_URL}${langHref(args.path, lang)}`,
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Any",
-    "browserRequirements": "Requiere JavaScript",
-    "inLanguage": "es-MX",
+    "browserRequirements": lang === DEFAULT_LANG ? "Requiere JavaScript" : "Requires JavaScript",
+    "inLanguage": HTML_LANG[lang],
     "isAccessibleForFree": true,
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
     "publisher": { "@type": "Organization", "name": SITE_NAME, "url": SITE_URL },

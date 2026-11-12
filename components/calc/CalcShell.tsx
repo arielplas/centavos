@@ -3,8 +3,12 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
 import { AppStoreBadges } from "@/components/home/AppStoreBadges";
+import { HtmlLang } from "@/components/legal/HtmlLang";
+import { LanguageSwitcher } from "@/components/legal/LanguageSwitcher";
+import { DEFAULT_LANG, navHref, type SiteLang } from "@/lib/lang";
 import { getAppLinks } from "@/lib/store-links";
 import { faqJsonLd, webApplicationJsonLd } from "@/lib/seo";
+import { UI } from "@/lib/ui-strings";
 
 export type FaqItem = { q: string; a: string };
 
@@ -24,6 +28,10 @@ type Props = {
   aviso: ReactNode;
   /** El calculador + las secciones de contenido. */
   children: ReactNode;
+  /** Idioma del andamiaje (header, breadcrumb, FAQ, badges, footer). Español por defecto. */
+  lang?: SiteLang;
+  /** La página existe en los dos idiomas: agrega el selector y ajusta `<html lang>`. */
+  bilingual?: boolean;
 };
 
 /**
@@ -31,19 +39,44 @@ type Props = {
  * (WebApplication + FAQPage), sección de FAQ, CTA y footer. El calculador y el
  * contenido específico se pasan como `children`.
  */
-export function CalcShell({ breadcrumb, h1, intro, jsonLd, faq, cta, aviso, children }: Props) {
+export function CalcShell({
+  breadcrumb,
+  h1,
+  intro,
+  jsonLd,
+  faq,
+  cta,
+  aviso,
+  children,
+  lang = DEFAULT_LANG,
+  bilingual = false,
+}: Props) {
   const { storeUrl, playUrl } = getAppLinks();
+  const strings = UI[lang];
+
+  const ruta = (
+    <nav aria-label={strings.breadcrumbNav} className={`text-[12px] text-ink-soft${bilingual ? "" : " mb-4"}`}>
+      <Link href={navHref("/", lang)} className="hover:text-ink underline underline-offset-2">
+        {strings.breadcrumbHome}
+      </Link>
+      <span aria-hidden className="mx-1.5">
+        ›
+      </span>
+      <span className="text-ink font-semibold">{breadcrumb}</span>
+    </nav>
+  );
 
   return (
     <>
-      <Header />
+      {bilingual && <HtmlLang lang={lang} />}
+      <Header lang={lang} />
 
       {/* JSON-LD en el HTML del servidor (script plano, no next/script). */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            webApplicationJsonLd({ name: jsonLd.name, description: jsonLd.description, path: jsonLd.path }),
+            webApplicationJsonLd({ name: jsonLd.name, description: jsonLd.description, path: jsonLd.path, lang }),
           ),
         }}
       />
@@ -54,15 +87,15 @@ export function CalcShell({ breadcrumb, h1, intro, jsonLd, faq, cta, aviso, chil
 
       <main id="contenido">
         <section className="mx-auto max-w-screen-lg px-5 pt-8 pb-10 md:pt-12">
-          <nav aria-label="Ruta" className="text-[12px] text-ink-soft mb-4">
-            <Link href="/" className="hover:text-ink underline underline-offset-2">
-              Inicio
-            </Link>
-            <span aria-hidden className="mx-1.5">
-              ›
-            </span>
-            <span className="text-ink font-semibold">{breadcrumb}</span>
-          </nav>
+          {/* En una página bilingüe el selector de idioma comparte fila con la ruta. */}
+          {bilingual ? (
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-4">
+              {ruta}
+              <LanguageSwitcher path={jsonLd.path} lang={lang} />
+            </div>
+          ) : (
+            ruta
+          )}
 
           <div className="max-w-2xl">
             <h1 className="font-display text-4xl md:text-6xl font-extrabold tracking-[-0.035em] leading-[0.95] mb-4">
@@ -85,7 +118,7 @@ export function CalcShell({ breadcrumb, h1, intro, jsonLd, faq, cta, aviso, chil
                 {cta.title}
               </h2>
               <p className="text-[15px] md:text-lg leading-relaxed mb-7 opacity-90">{cta.body}</p>
-              <AppStoreBadges storeUrl={storeUrl} playUrl={playUrl} />
+              <AppStoreBadges storeUrl={storeUrl} playUrl={playUrl} lang={lang} />
               {cta.note && <p className="text-[13px] mt-5 opacity-80">{cta.note}</p>}
             </div>
           </div>
@@ -96,10 +129,10 @@ export function CalcShell({ breadcrumb, h1, intro, jsonLd, faq, cta, aviso, chil
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
-                Dudas comunes
+                {strings.faqKicker}
               </div>
               <h2 id="faq-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">
-                Preguntas frecuentes
+                {strings.faqTitle}
               </h2>
             </div>
             <div className="space-y-2">
@@ -126,7 +159,7 @@ export function CalcShell({ breadcrumb, h1, intro, jsonLd, faq, cta, aviso, chil
         </section>
       </main>
 
-      <AppFooter />
+      <AppFooter lang={lang} />
     </>
   );
 }

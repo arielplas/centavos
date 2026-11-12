@@ -23,7 +23,8 @@ export function AppFooter({
     // The calculators are Spanish-only pages about Mexican payroll and tax
     // concepts, so their labels stay in Spanish in both footers: an English
     // label pointing at a Spanish page would promise a translation that is
-    // not there.
+    // not there. The gastos hormiga calculator is the exception: it exists in
+    // both languages, so its label and its link follow the page.
     { h: "Calculadoras", items: [
       { name: "Aguinaldo",           href: "/aguinaldo" },
       { name: "Finiquito",           href: "/finiquito" },
@@ -31,6 +32,7 @@ export function AppFooter({
       { name: "Meses sin intereses", href: "/meses-sin-intereses" },
       { name: "PTU",                 href: "/ptu" },
       { name: "CETES",               href: "/cetes" },
+      { name: strings.footerGastosHormiga, href: navHref("/gastos-hormiga", lang) },
     ]},
     { h: strings.footerSupportHeading, items: [
       { name: strings.footerSupportLink,   href: navHref("/app/soporte", lang) },

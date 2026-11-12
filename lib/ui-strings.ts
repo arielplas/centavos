@@ -1,4 +1,4 @@
-// Chrome copy (header, footer, legal shell) in both languages.
+// Chrome copy (header, footer, legal shell, calculator shell) in both languages.
 //
 // Only the pages that can be served in English read the `en` side; every other
 // page keeps the Spanish default.
@@ -17,6 +17,11 @@ export type UIStrings = {
   tableOfContents: string;
   lastUpdated: string;
   backToTop: string;
+  /** Calculator shell: breadcrumb and FAQ heading. */
+  breadcrumbNav: string;
+  breadcrumbHome: string;
+  faqKicker: string;
+  faqTitle: string;
   footerNav: string;
   footerTagline: string;
   footerSupportHeading: string;
@@ -26,6 +31,8 @@ export type UIStrings = {
   footerTerms: string;
   footerPrivacy: string;
   footerMadeIn: string;
+  /** Footer link to the one calculator that exists in both languages. */
+  footerGastosHormiga: string;
   /** Label of the link that switches to the other language. */
   switchToLabel: string;
   /** Accessible name for that link. */
@@ -44,6 +51,10 @@ export const UI: Record<SiteLang, UIStrings> = {
     tableOfContents: "Tabla de contenidos",
     lastUpdated: "Última actualización",
     backToTop: "Volver arriba",
+    breadcrumbNav: "Ruta",
+    breadcrumbHome: "Inicio",
+    faqKicker: "Dudas comunes",
+    faqTitle: "Preguntas frecuentes",
     footerNav: "Pie de página",
     footerTagline: "Le ayudamos a la gente a perderle el miedo a las finanzas.",
     footerSupportHeading: "Soporte",
@@ -53,6 +64,7 @@ export const UI: Record<SiteLang, UIStrings> = {
     footerTerms: "Términos y Condiciones",
     footerPrivacy: "Aviso de Privacidad",
     footerMadeIn: "Hecho en México 🇲🇽",
+    footerGastosHormiga: "Gastos hormiga",
     switchToLabel: "English",
     switchToAria: "Read this page in English",
   },
@@ -67,6 +79,10 @@ export const UI: Record<SiteLang, UIStrings> = {
     tableOfContents: "Table of contents",
     lastUpdated: "Last updated",
     backToTop: "Back to top",
+    breadcrumbNav: "Breadcrumb",
+    breadcrumbHome: "Home",
+    faqKicker: "Common questions",
+    faqTitle: "Frequently asked questions",
     footerNav: "Footer",
     footerTagline: "We help people stop being afraid of their finances.",
     footerSupportHeading: "Support",
@@ -76,6 +92,7 @@ export const UI: Record<SiteLang, UIStrings> = {
     footerTerms: "Terms and Conditions",
     footerPrivacy: "Privacy Notice",
     footerMadeIn: "Made in Mexico 🇲🇽",
+    footerGastosHormiga: "Small expenses",
     switchToLabel: "Español",
     switchToAria: "Leer esta página en español",
   },

@@ -19,6 +19,8 @@ app/
   layout.tsx                 → fuentes, metadata raíz, JSON-LD Organización + WebSite
   page.tsx                   → home (landing de la app) en español
   en/page.tsx                → la misma landing en inglés (se sirve en /?lang=en)
+  gastos-hormiga/page.tsx    → calculadora de gastos hormiga (es); deja guardar la lista en la API
+  en/gastos-hormiga/page.tsx → la misma calculadora en inglés (se sirve en /gastos-hormiga?lang=en)
   sitemap.ts                 → sitemap
   robots.ts                  → robots.txt
   manifest.ts                → PWA manifest
@@ -43,11 +45,14 @@ components/
   legal/docs/*               → el texto legal, un módulo por documento e idioma
   soporte/SoporteForm.tsx
   canjear/*                  → CanjearFlow (flujo cliente), GoogleButton, copy (es/en)
+  gastos-hormiga/*           → GastosHormigaPage, GastosHormigaCalculator (isla cliente), copy y page-copy (es/en)
 
-proxy.ts                     → idioma de la landing: ?lang=, cookie o idioma del dispositivo
+proxy.ts                     → idioma de la landing (?lang=, cookie o idioma del dispositivo) y ?lang=en de /gastos-hormiga
 
 lib/
   promo-api.ts              → cliente de la API de códigos promocionales (el contrato vive aquí)
+  gastos-hormiga.ts          → la cuenta y los límites de la calculadora de gastos hormiga (los mismos de la API)
+  gastos-hormiga-api.ts      → cliente del endpoint que guarda la lista de gastos hormiga
   store-links.ts             → URLs de App Store / Google Play
   seo.ts                     → helpers de JSON-LD y Open Graph por página
   config.ts                  → flags (formulario de soporte, correo)
@@ -68,7 +73,7 @@ bun run dev                           # http://localhost:3000
 | Variable | Default | Para qué sirve |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | `https://centavos.mx` | URL canónica usada en metadata/sitemap/JSON-LD |
-| `NEXT_PUBLIC_API_URL` | _(vacío)_ | URL base de la API de Centavos; `/canjear` la llama directo desde el navegador |
+| `NEXT_PUBLIC_API_URL` | _(vacío)_ | URL base de la API de Centavos; `/canjear` y `/gastos-hormiga` la llaman directo desde el navegador. Si falta, `/gastos-hormiga` no ofrece guardar la lista |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | _(vacío)_ | Client ID web de Google; si falta, `/canjear` oculta el botón de Google |
 
 ## Comandos
@@ -129,8 +134,9 @@ Si el resultado es inglés, `/` redirige con 307 a `/?lang=en`.
 - El copy vive en `components/home/copy.tsx`, tipado: una clave que falte en un
   idioma rompe el typecheck. **El español es la fuente de verdad.** Las maquetas
   de teléfono tienen su propio texto en `components/home/PhoneMock.tsx`.
-- Las calculadoras son solo en español, así que la sección de calculadoras y el
-  enlace a la de MSI no salen en la landing en inglés.
+- Las calculadoras son solo en español (salvo la de gastos hormiga), así que la
+  sección de calculadoras y el enlace a la de MSI no salen en la landing en
+  inglés. La de gastos hormiga se enlaza ahí desde el footer.
 - Soporte y eliminar cuenta siguen solo en español.
 
 ## Canjear códigos promocionales
@@ -147,13 +153,31 @@ El canje se hace **solo en el sitio web**, nunca dentro de la app (la guideline
   va a localStorage, cookies ni a la URL.
 - **Soy nuevo:** `POST /api/promo-codes/claims` con el correo; después se pide
   descargar la app y registrarse con **ese mismo correo**.
-- Idioma por `?lang=en` (sin detección automática: el proxy solo toca `/`). El
-  texto está en `components/canjear/copy.ts`, con un mensaje por código de error.
+- Idioma por `?lang=en` (sin detección automática: el proxy no toca `/canjear`).
+  El texto está en `components/canjear/copy.ts`, con un mensaje por código de error.
 - Es `noindex` y no está en `app/sitemap.ts`.
 - Todo el contrato de la API está en `lib/promo-api.ts`. La API debe aceptar CORS
   desde el origen del sitio (usa Bearer tokens, sin cookies).
 - Google necesita `NEXT_PUBLIC_GOOGLE_CLIENT_ID`; sin él, el botón no aparece.
   Sign in with Apple en web queda fuera de alcance.
+
+## Calculadora de gastos hormiga
+
+`/gastos-hormiga` es la única calculadora bilingüe y la única que usa la API.
+Especificación completa en [docs/calculadoras/gastos-hormiga.md](./docs/calculadoras/gastos-hormiga.md).
+
+- Español en `/gastos-hormiga`, inglés en `/gastos-hormiga?lang=en`. Como en la
+  landing, las dos versiones son **estáticas** y `proxy.ts` reescribe `?lang=en`
+  hacia `/en/gastos-hormiga`; una visita directa a esa ruta redirige a la URL
+  pública. Aquí no hay detección de idioma ni cookie: sin el param es español.
+- La lista se conserva en `localStorage`, nada más.
+- **¿Quieres guardarlo?** Después del resultado se ofrece guardar la lista con un
+  correo (`POST /api/gastos-hormiga/claims`). No crea ninguna cuenta en la web:
+  cuando ese correo se registra en la app, la API crea el presupuesto «Gastos
+  Hormiga» con esos gastos. Sin `NEXT_PUBLIC_API_URL` la tarjeta no aparece y la
+  calculadora funciona igual.
+- La cuenta está en `lib/gastos-hormiga.ts` y es la misma que implementa la API;
+  el contrato del endpoint, en `lib/gastos-hormiga-api.ts`.
 
 ## Notas
 
