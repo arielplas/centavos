@@ -89,6 +89,12 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
   }, [initialCode]);
 
   const code = stage.kind === "offer" ? stage.preview.code : "";
+  // The paths this code is open to. With only one, there is nothing to choose:
+  // that path's form shows straight away.
+  const audience = stage.kind === "offer" ? stage.preview.audience : { existing: true, new: true };
+  const paths = (["account", "new"] as const).filter((p) => (p === "account" ? audience.existing : audience.new));
+  const onlyPath = paths.length === 1 ? paths[0] : null;
+  const openPath: Path = onlyPath ?? path;
   const grantDays = stage.kind === "offer" ? stage.preview.grantDays : 0;
 
   /** A failure of a request made with the code: code errors replace the forms, the rest stay inline. */
@@ -246,6 +252,16 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
           </div>
 
           <div className="rounded-3xl border border-rule bg-surface p-5 shadow-[0_24px_48px_-32px_rgba(42,26,16,0.35)] md:sticky md:top-6 md:col-start-2 md:row-span-2 md:row-start-1 md:p-6">
+            {onlyPath ? (
+              <div>
+                <h2 className="font-display text-xl font-extrabold tracking-[-0.02em] text-ink mb-1.5">
+                  {onlyPath === "new" ? t.onlyNewLegend : t.onlyExistingLegend}
+                </h2>
+                <p className="text-[13px] leading-snug text-ink-soft">
+                  {onlyPath === "new" ? t.onlyNewHint : t.onlyExistingHint}
+                </p>
+              </div>
+            ) : (
             <fieldset>
               <legend className="font-display text-xl font-extrabold tracking-[-0.02em] text-ink mb-4">{t.pathsLegend}</legend>
               <div className="grid grid-cols-2 gap-2">
@@ -281,8 +297,9 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
                 ))}
               </div>
             </fieldset>
+            )}
 
-          {path === "account" && (
+          {openPath === "account" && (
             <section id="canjear-account" aria-label={t.hasAccount} className="mt-5 border-t border-rule pt-5">
               <AccountForm
                 key="account"
@@ -296,9 +313,9 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
               />
             </section>
           )}
-          {path === "new" && (
+          {openPath === "new" && (
             <section id="canjear-new" aria-label={t.isNew} className="mt-5 border-t border-rule pt-5">
-              <NewForm key="new" t={t} busy={busy} error={error} onSubmit={claim} />
+              <NewForm key="new" t={t} busy={busy} error={error} onSubmit={claim} intro={!onlyPath} />
             </section>
           )}
           </div>
@@ -616,11 +633,14 @@ function NewForm({
   busy,
   error,
   onSubmit,
+  intro = true,
 }: {
   t: CanjearCopy;
   busy: boolean;
   error: PromoApiError | null;
   onSubmit: (email: string) => void;
+  /** Off when the card above already explains this path (a new-accounts-only code). */
+  intro?: boolean;
 }) {
   const [email, setEmail] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
@@ -638,7 +658,7 @@ function NewForm({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
-      <p className="text-[14px] leading-relaxed text-ink-soft">{t.newIntro}</p>
+      {intro && <p className="text-[14px] leading-relaxed text-ink-soft">{t.newIntro}</p>}
       <div>
         <label htmlFor="canjear-new-email" className={labelClass}>{t.emailLabel}</label>
         <input

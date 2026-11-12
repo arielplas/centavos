@@ -14,7 +14,9 @@ export const API_CONFIGURED = API_URL !== "";
 /** Web client ID for Google sign-in; the Google button is hidden when unset. */
 export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 
-export type Preview = { code: string; grantDays: number };
+/** Who a code is open to: accounts that already existed, and/or new ones. */
+export type Audience = { existing: boolean; new: boolean };
+export type Preview = { code: string; grantDays: number; audience: Audience };
 export type Redemption = { code: string; grantDays: number; premiumUntil: string };
 
 /** Error codes the page knows how to explain. */
@@ -24,6 +26,7 @@ export type PromoErrorCode =
   | "PROMO_CODE_EXPIRED"
   | "PROMO_CODE_EXHAUSTED"
   | "PROMO_CODE_ALREADY_REDEEMED"
+  | "PROMO_CODE_NOT_ELIGIBLE"
   | "AUTH_INVALID_CREDENTIALS"
   | "AUTH_EMAIL_UNVERIFIED"
   | "AUTH_GOOGLE_TOKEN_INVALID"
@@ -43,6 +46,7 @@ export const CODE_ERRORS: readonly PromoErrorCode[] = [
   "PROMO_CODE_EXPIRED",
   "PROMO_CODE_EXHAUSTED",
   "PROMO_CODE_ALREADY_REDEEMED",
+  "PROMO_CODE_NOT_ELIGIBLE",
 ];
 
 const KNOWN_CODES: readonly string[] = [
@@ -133,8 +137,18 @@ export async function premiumBenefits(): Promise<Benefit[]> {
 }
 
 /** Public: what the code gives, or a code error. */
-export function previewCode(code: string): Promise<Preview> {
-  return request<Preview>(`/api/promo-codes/preview?code=${encodeURIComponent(code)}`);
+export async function previewCode(code: string): Promise<Preview> {
+  const body = await request<Omit<Preview, "audience"> & { audience?: Partial<Audience> }>(
+    `/api/promo-codes/preview?code=${encodeURIComponent(code)}`,
+  );
+  // An API that predates the audience switches sends none: such a code is open
+  // to everyone. The server enforces the rule either way; this only decides
+  // which paths the page offers.
+  return {
+    code: body.code,
+    grantDays: body.grantDays,
+    audience: { existing: body.audience?.existing !== false, new: body.audience?.new !== false },
+  };
 }
 
 /** Grants the code to the account the token belongs to. */

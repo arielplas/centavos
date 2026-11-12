@@ -36,6 +36,11 @@ export type CanjearCopy = {
   offerBody: (days: number) => string;
   changeCode: string;
   pathsLegend: string;
+  // A code open to only one kind of account: the chooser is replaced by these.
+  onlyNewLegend: string;
+  onlyNewHint: string;
+  onlyExistingLegend: string;
+  onlyExistingHint: string;
   hasAccount: string;
   isNew: string;
   // Existing account
@@ -104,6 +109,10 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     offerBody: (n) => `${n} ${n === 1 ? "día" : "días"} de Centavos+ gratis`,
     changeCode: "Usar otro código",
     pathsLegend: "¿Ya tienes cuenta en Centavos?",
+    onlyNewLegend: "Empieza ahora",
+    onlyNewHint: "Este código es para cuentas nuevas. Déjanos tu correo y regístrate con él en la app.",
+    onlyExistingLegend: "Inicia sesión para activarlo",
+    onlyExistingHint: "Este código es para quienes ya tenían cuenta en Centavos.",
     hasAccount: "Ya tengo cuenta",
     isNew: "Soy nuevo",
     emailLabel: "Correo",
@@ -160,6 +169,10 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
         title: "Ya canjeaste este código",
         message: "Tu cuenta ya lo usó. Cada código se puede canjear una sola vez por cuenta.",
       },
+      PROMO_CODE_NOT_ELIGIBLE: {
+        title: "Este código no aplica para tu cuenta",
+        message: "Algunos códigos son solo para cuentas nuevas y otros solo para quienes ya tenían cuenta. Este no corresponde a la tuya.",
+      },
       AUTH_INVALID_CREDENTIALS: { message: "Correo o contraseña incorrectos. Inténtalo de nuevo." },
       AUTH_EMAIL_UNVERIFIED: {
         message: "Tu correo aún no está verificado. Abre el mensaje de verificación que te enviamos y vuelve a intentarlo.",
@@ -202,6 +215,10 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     offerBody: (n) => `${n} ${n === 1 ? "day" : "days"} of Centavos+ free`,
     changeCode: "Use a different code",
     pathsLegend: "Do you already have a Centavos account?",
+    onlyNewLegend: "Get started",
+    onlyNewHint: "This code is for new accounts. Leave your email and sign up with it in the app.",
+    onlyExistingLegend: "Sign in to activate it",
+    onlyExistingHint: "This code is for people who already had a Centavos account.",
     hasAccount: "I have an account",
     isNew: "I'm new",
     emailLabel: "Email",
@@ -257,6 +274,10 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
       PROMO_CODE_ALREADY_REDEEMED: {
         title: "You already redeemed this code",
         message: "Your account has already used it. Each code can be redeemed once per account.",
+      },
+      PROMO_CODE_NOT_ELIGIBLE: {
+        title: "This code doesn't apply to your account",
+        message: "Some codes are only for new accounts and others only for people who already had one. This one doesn't match yours.",
       },
       AUTH_INVALID_CREDENTIALS: { message: "Wrong email or password. Please try again." },
       AUTH_EMAIL_UNVERIFIED: {
