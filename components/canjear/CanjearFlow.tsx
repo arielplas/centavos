@@ -27,7 +27,7 @@ type Stage =
   | { kind: "offer"; preview: Preview }
   | { kind: "code-error"; code: PromoErrorCode }
   | { kind: "redeemed"; result: Redemption; isNewUser: boolean }
-  | { kind: "claimed"; email: string };
+  | { kind: "claimed"; email: string; grantDays: number };
 
 type Path = "account" | "new" | null;
 
@@ -76,6 +76,7 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
   }, [initialCode]);
 
   const code = stage.kind === "offer" ? stage.preview.code : "";
+  const grantDays = stage.kind === "offer" ? stage.preview.grantDays : 0;
 
   /** A failure of a request made with the code: code errors replace the forms, the rest stay inline. */
   function fail(e: unknown) {
@@ -130,7 +131,7 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
     setError(null);
     try {
       await claimCode(code, email);
-      setStage({ kind: "claimed", email });
+      setStage({ kind: "claimed", email, grantDays });
     } catch (e) {
       fail(e);
     } finally {
@@ -266,7 +267,7 @@ export function CanjearFlow({ lang, initialCode }: { lang: SiteLang; initialCode
         <div role="status">
           {heading(t.claimedTitle)}
           <p className="text-[16px] leading-relaxed text-ink-soft mb-4">
-            {t.claimedBody(stage.email)}
+            {t.claimedBody(stage.email, stage.grantDays)}
           </p>
           <p className="text-[14px] leading-relaxed font-semibold text-ink bg-sand rounded-xl px-4 py-3 mb-6">
             {t.sameEmailNote}

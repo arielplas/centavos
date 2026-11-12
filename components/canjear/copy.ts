@@ -46,7 +46,7 @@ export type CanjearCopy = {
   redeemedBody: (date: string) => string;
   openApp: string;
   claimedTitle: string;
-  claimedBody: (email: string) => string;
+  claimedBody: (email: string, days: number) => string;
   sameEmailNote: string;
   newGoogleAccountNote: string;
   downloadHeading: string;
@@ -74,7 +74,7 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     codeChecking: "Revisando…",
     codeRequired: "Escribe tu código.",
     offerTitle: (code) => `Código ${code}`,
-    offerBody: (days) => `${days} ${days === 1 ? "día" : "días"} de Centavos+ gratis`,
+    offerBody: (n) => `${n} ${n === 1 ? "día" : "días"} de Centavos+ gratis`,
     changeCode: "Usar otro código",
     pathsLegend: "¿Ya tienes cuenta en Centavos?",
     hasAccount: "Ya tengo cuenta",
@@ -98,7 +98,8 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     redeemedBody: (date) => `Tienes Centavos+ hasta el ${date}. Abre la app.`,
     openApp: "Descarga o abre la app",
     claimedTitle: "Código guardado",
-    claimedBody: (email) => `Descarga Centavos y regístrate con ${email} para activar tu mes.`,
+    claimedBody: (email, n) =>
+      `Descarga Centavos y regístrate con ${email} para activar tus ${n === 1 ? "1 día" : `${n} días`} de Centavos+.`,
     sameEmailNote: "Importante: tiene que ser exactamente el mismo correo. Si te registras con otro, no se activa.",
     downloadHeading: "Descarga Centavos",
     newGoogleAccountNote: "Creamos tu cuenta con Google. Descarga la app e inicia sesión con Google para usar tu Centavos+.",
@@ -158,7 +159,7 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     codeChecking: "Checking…",
     codeRequired: "Enter your code.",
     offerTitle: (code) => `Code ${code}`,
-    offerBody: (days) => `${days} ${days === 1 ? "day" : "days"} of Centavos+ free`,
+    offerBody: (n) => `${n} ${n === 1 ? "day" : "days"} of Centavos+ free`,
     changeCode: "Use a different code",
     pathsLegend: "Do you already have a Centavos account?",
     hasAccount: "I have an account",
@@ -182,7 +183,8 @@ export const CANJEAR_COPY: Record<SiteLang, CanjearCopy> = {
     redeemedBody: (date) => `You have Centavos+ until ${date}. Open the app.`,
     openApp: "Download or open the app",
     claimedTitle: "Code saved",
-    claimedBody: (email) => `Download Centavos and sign up with ${email} to activate your month.`,
+    claimedBody: (email, n) =>
+      `Download Centavos and sign up with ${email} to activate your ${n === 1 ? "1 day" : `${n} days`} of Centavos+.`,
     sameEmailNote: "Important: it has to be exactly the same email. If you sign up with a different one, it won't activate.",
     downloadHeading: "Download Centavos",
     newGoogleAccountNote: "We created your account with Google. Download the app and sign in with Google to use your Centavos+.",
