@@ -67,6 +67,32 @@ body {
 .bg-mandarina :focus-visible {
   outline-color: var(--color-ink);
 }
+/* Sobre tinta (sección de privacidad, footer) el anillo es amarillo. */
+.bg-ink :focus-visible {
+  outline-color: var(--color-yolk);
+}
+
+::selection {
+  background: var(--color-yolk);
+  color: var(--color-ink);
+}
+
+/* Hoja de cuaderno: renglones cada 28px y, en pantallas anchas, el margen. */
+.paper {
+  background-color: var(--color-surface);
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 27px, #b4cdd8 27px 28px);
+  /* Los renglones caen ~2px bajo la línea base del texto de 16px con
+     leading-7 (paso de 28px); medido en el navegador. */
+  background-position-y: 20px;
+}
+@media (min-width: 768px) {
+  .paper {
+    background-image:
+      linear-gradient(to right, transparent 47px, rgba(237,126,60,.55) 47px 48px, transparent 48px),
+      repeating-linear-gradient(to bottom, transparent 0 27px, #b4cdd8 27px 28px);
+  }
+}
 
 /* A11y: respeta la preferencia de movimiento reducido (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
@@ -77,8 +103,8 @@ body {
 /* ──────────────────────────────────────────────────────────────
    Maqueta de teléfono (página de la app)
    ────────────────────────────────────────────────────────────── */
-/* Contenedor: reserva el alto del teléfono (620 + 2×9 de marco + holgura por
-   la inclinación) para que el escalado en móvil no deje huecos. */
+/* Contenedor: reserva el alto del teléfono (620 + 2×9 de marco + holgura)
+   para que el escalado en móvil no deje huecos. */
 .phone-wrap {
   display: flex;
   justify-content: center;
@@ -97,13 +123,12 @@ body {
   background: #15110d;
   padding: 9px;
   box-shadow: 0 40px 80px -20px rgba(42, 26, 16, .45), 0 12px 30px -12px rgba(42, 26, 16, .35);
-  transform: rotate(var(--tilt, 0deg));
   transform-origin: top center;
 }
 @media (max-width: 767px) {
   .phone-wrap { height: 495px; }
   .phone-wrap--crop { height: 320px; }
-  .phone { transform: rotate(var(--tilt, 0deg)) scale(.75); }
+  .phone { transform: scale(.75); }
 }
 .phone-screen {
   position: relative;
@@ -123,3 +148,89 @@ body {
   border-radius: 0 0 16px 16px;
   z-index: 20;
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Demo del hero (anotar un gasto de $85, una sola vez)
+   ────────────────────────────────────────────────────────────── */
+/* Los estilos base de la maqueta ya son el estado FINAL (gasto anotado, hoja
+   cerrada). Cada elemento con data-a anima desde el estado "antes" hacia ese
+   final; fill-mode backwards + delay > 0 + pausa lo mantienen en "antes" hasta
+   que HeroDemo pone data-play. Con movimiento reducido (media query) y sin JS
+   (<noscript><style> en HeroDemo) se anulan las animaciones: estado final.
+   Sin ese <noscript> el estado sin data-play sería el "antes".
+   Solo longhands de animation-* (el shorthand reiniciaría play-state).
+   --d = inicio, --t = duración (se fijan en línea en el marcado). */
+.demo [data-a] {
+  animation-duration: var(--t, 300ms);
+  animation-delay: var(--d, 0s);
+  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+  animation-fill-mode: backwards;
+  animation-play-state: paused;
+}
+.demo[data-play] [data-a] { animation-play-state: running; }
+@media (prefers-reduced-motion: reduce) {
+  .demo [data-a] { animation: none !important; }
+}
+
+/* Cifras que "ruedan": la vieja sale hacia arriba y la nueva entra desde abajo. */
+.roll { display: inline-grid; overflow: hidden; padding-block: .1em; margin-block: -.1em; }
+.roll > * { grid-area: 1 / 1; }
+.demo .roll > [data-a="roll-old"] { transform: translateY(-120%); animation-name: demo-roll-old; }
+.demo .roll > [data-a="roll-new"] { animation-name: demo-roll-new; }
+@keyframes demo-roll-old { from { transform: translateY(0); } to { transform: translateY(-120%); } }
+@keyframes demo-roll-new { from { transform: translateY(120%); } to { transform: translateY(0); } }
+
+/* Hoja "Anotar gasto" y su velo: suben (420ms), esperan y bajan (300ms). Los
+   porcentajes son sobre 1.95s: 21.5% = 0.42s, 84.6% = 1.65s. */
+.demo [data-a="sheet"] { transform: translateY(100%); animation-name: demo-sheet; }
+.demo [data-a="scrim"] { animation-name: demo-scrim; }
+@keyframes demo-sheet {
+  0%    { transform: translateY(100%); animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+  21.5% { transform: translateY(0); animation-timing-function: linear; }
+  84.6% { transform: translateY(0); animation-timing-function: cubic-bezier(.4, 0, 1, 1); }
+  100%  { transform: translateY(100%); }
+}
+@keyframes demo-scrim {
+  0%    { opacity: 0; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+  21.5% { opacity: 1; animation-timing-function: linear; }
+  84.6% { opacity: 1; animation-timing-function: cubic-bezier(.4, 0, 1, 1); }
+  100%  { opacity: 0; }
+}
+
+/* Monto tecleado: $0 (gris) → $8 → $85, con cortes secos. El final ($85) es el
+   estado base; mientras la hoja está abierta se ocultan los dos primeros. */
+.demo [data-a^="amt-"] { animation-timing-function: steps(1, end); }
+.demo [data-a="amt-0"]  { animation-name: demo-amt-0; }
+.demo [data-a="amt-8"]  { animation-name: demo-amt-8; }
+.demo [data-a="amt-85"] { animation-name: demo-amt-85; }
+@keyframes demo-amt-0  { from, to { opacity: 1; } }
+@keyframes demo-amt-8  { 0%, 71.4% { opacity: 0; } 71.5%, 100% { opacity: 1; } }
+@keyframes demo-amt-85 { from, to { opacity: 0; } }
+
+/* Toques: fila "Anotar un gasto" y botón de la hoja. */
+.demo [data-a="log-row"] { animation-name: demo-tap-row; animation-timing-function: ease-out; }
+.demo [data-a="cta"] { animation-name: demo-tap; animation-timing-function: ease-out; }
+@keyframes demo-tap-row {
+  0%, 100% { transform: scale(1); background-color: var(--color-surface); }
+  50%      { transform: scale(.97); background-color: var(--color-sand); }
+}
+@keyframes demo-tap { 0%, 100% { transform: scale(1); } 50% { transform: scale(.97); } }
+
+/* Categoría elegida (🌮). */
+.demo [data-a="chip"] { animation-name: demo-chip; }
+@keyframes demo-chip {
+  from { transform: scale(.94); background-color: var(--color-surface); border-color: var(--color-rule); color: var(--color-ink); }
+  to   { transform: scale(1); background-color: var(--color-mandarina); border-color: var(--color-mandarina); color: var(--color-bg); }
+}
+
+/* Barras de progreso (las únicas que animan width) y destello de la fila Comida. */
+.demo [data-a="bar-main"] { animation-name: demo-bar-main; }
+.demo [data-a="bar-food"] { animation-name: demo-bar-food; }
+.demo [data-a="food-row"] { animation-name: demo-flash; animation-timing-function: ease-out; }
+@keyframes demo-bar-main { from { width: 70%; } to { width: 71%; } }
+@keyframes demo-bar-food { from { width: 80%; } to { width: 83%; } }
+@keyframes demo-flash { from { border-color: var(--color-mandarina); } to { border-color: var(--color-rule); } }
+
+/* Nota a mano: aparece al final, cuando el gasto ya quedó anotado. */
+.demo [data-a="note"] { animation-name: demo-note; }
+@keyframes demo-note { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
