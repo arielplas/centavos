@@ -104,7 +104,7 @@ export function AppFooter({
                         href={it.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 py-2 text-[13px] text-bg/75 hover:text-bg"
+                        className="flex items-center gap-2 min-h-11 text-[13px] text-bg/75 hover:text-bg"
                       >
                         {it.icon}
                         <span>
@@ -113,7 +113,7 @@ export function AppFooter({
                         </span>
                       </a>
                     ) : (
-                      <Link href={it.href} className="block py-2 text-[13px] text-bg/75 hover:text-bg">
+                      <Link href={it.href} className="flex items-center min-h-11 text-[13px] text-bg/75 hover:text-bg">
                         {it.name}
                       </Link>
                     )}

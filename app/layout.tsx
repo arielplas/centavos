@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { organizationJsonLd, websiteJsonLd, SITE } from "@/lib/seo";
@@ -95,11 +94,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Analytics />
         <SpeedInsights />
 
-        {/* JSON-LD raíz: organización + sitio */}
-        <Script id="ld-organization" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd({ storeUrl, playUrl })) }} />
-        <Script id="ld-website" type="application/ld+json" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }} />
+        {/* JSON-LD raíz: organización + sitio, en el HTML del servidor (script plano, no next/script). */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd({ storeUrl, playUrl })) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+        />
       </body>
     </html>
   );

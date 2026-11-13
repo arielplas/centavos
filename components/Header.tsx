@@ -37,13 +37,13 @@ export function Header({
         <div className="mx-auto max-w-screen-lg flex items-center justify-between px-5 py-3">
           <Logo size={26} href={navHref("/", lang)} label={strings.homeLabel} />
           <nav aria-label={strings.mainNav} className="flex items-center gap-2 sm:gap-4 text-[13px] font-semibold">
-            <Link href={navHref("/app/soporte", lang)} className="text-ink-soft hover:text-ink px-2 py-2.5">
+            <Link href={navHref("/app/soporte", lang)} className="inline-flex items-center min-h-11 text-ink-soft hover:text-ink px-2">
               {strings.support}
             </Link>
             {switcherPath && <LanguageSwitcher path={switcherPath} lang={lang} explicit />}
             <Link
               href={`${navHref("/", lang)}#descargar`}
-              className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center whitespace-nowrap bg-ink text-bg rounded-full px-4 py-2 hover:opacity-85`}
+              className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center min-h-11 whitespace-nowrap bg-ink text-bg rounded-full px-4 hover:opacity-85`}
             >
               <span className="md:hidden">{strings.download}</span>
               <span className="hidden md:inline">{strings.downloadFull}</span>

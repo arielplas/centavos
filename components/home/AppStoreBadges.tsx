@@ -94,9 +94,10 @@ export function InlineStoreLinks({
 }) {
   if (!storeUrl && !playUrl) return null;
   const strings = HOME_COPY[lang].store;
-  const link = "font-bold text-ink underline underline-offset-4 decoration-mandarina hover:decoration-ink py-2";
+  const link =
+    "inline-flex items-center min-h-11 font-bold text-ink underline underline-offset-4 decoration-mandarina hover:decoration-ink";
   return (
-    <p className={`text-[14px] ${className}`}>
+    <p className={`text-[15px] ${className}`}>
       {label ?? strings.inlineLabel}{" "}
       {storeUrl && (
         <a href={storeUrl} target="_blank" rel="noopener noreferrer" className={link}>

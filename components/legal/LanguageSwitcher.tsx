@@ -30,7 +30,7 @@ export function LanguageSwitcher({
       hrefLang={HREFLANG[target]}
       lang={HTML_LANG_SHORT[target]}
       aria-label={strings.switchToAria}
-      className="inline-flex items-center gap-1.5 rounded-full border border-rule bg-surface px-3 py-1.5 text-[12px] font-bold tracking-wide text-ink-soft hover:border-mandarina-deep hover:text-mandarina-deep"
+      className="inline-flex items-center gap-1.5 min-h-11 rounded-full border border-rule bg-surface px-3 text-[12px] font-bold tracking-wide text-ink-soft hover:border-mandarina-deep hover:text-mandarina-deep"
     >
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
         <circle cx="8" cy="8" r="6.4" />
