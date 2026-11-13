@@ -204,7 +204,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
           <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
             <div>
               <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
-                {c.split.titleLead}<br />{c.split.titleRest}
+                <mark className="mark">{c.split.titleLead}</mark><br />{c.split.titleRest}
               </h2>
               <p className="text-base leading-relaxed text-ink/75 max-w-md">
                 {c.split.body}

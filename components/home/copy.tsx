@@ -9,7 +9,7 @@ import type { SiteLang } from "@/lib/lang";
 
 type Feature = {
   t: string;
-  d: string;
+  d: ReactNode;
   /** Link to a free tool. The tools are Spanish-only, so English leaves it out. */
   tool?: { href: string; label: string };
 };
@@ -131,15 +131,15 @@ const es: HomeCopy = {
     items: [
       {
         t: "Presupuestos",
-        d: "Ponle un límite a cada categoría y ve de un vistazo cuánto te queda para llegar a fin de mes.",
+        d: <>Ponle un límite a cada categoría y ve de un vistazo <mark className="mark">cuánto te queda</mark> para llegar a fin de mes.</>,
       },
       {
         t: "Suscripciones",
-        d: "Netflix, Spotify, el gym, el iCloud que ya ni usas. Centavos suma tus cargos recurrentes y te dice cuánto se te va al mes y al año.",
+        d: <>Netflix, Spotify, el gym, el iCloud que ya ni usas. Centavos suma tus cargos recurrentes y te dice <mark className="mark">cuánto se te va al mes y al año</mark>.</>,
       },
       {
         t: "Meses sin intereses",
-        d: "Registra tus compras a meses y ve tu calendario de pagos: cuánto pagas este mes y cuántas mensualidades te faltan. Lo anotas tú, como todo lo demás.",
+        d: <>Registra tus compras a meses y ve tu calendario de pagos: cuánto pagas este mes y <mark className="mark">cuántas mensualidades te faltan</mark>. Lo anotas tú, como todo lo demás.</>,
         tool: { href: "/meses-sin-intereses", label: "Calcula tu mensualidad a MSI" },
       },
     ],
@@ -281,15 +281,15 @@ const en: HomeCopy = {
     items: [
       {
         t: "Budgets",
-        d: "Set a limit for each category and see at a glance how much you have left to reach the end of the month.",
+        d: <>Set a limit for each category and see at a glance <mark className="mark">how much you have left</mark> to reach the end of the month.</>,
       },
       {
         t: "Subscriptions",
-        d: "Netflix, Spotify, the gym, the iCloud plan you don't even use anymore. Centavos adds up your recurring charges and tells you how much goes out every month and every year.",
+        d: <>Netflix, Spotify, the gym, the iCloud plan you don&apos;t even use anymore. Centavos adds up your recurring charges and tells you <mark className="mark">how much goes out every month and every year</mark>.</>,
       },
       {
         t: "Installments",
-        d: "Log what you buy in interest-free monthly installments (meses sin intereses) and see your payment calendar: how much is due this month and how many payments are left. You log it yourself, like everything else.",
+        d: <>Log what you buy in interest-free monthly installments (meses sin intereses) and see your payment calendar: how much is due this month and <mark className="mark">how many payments are left</mark>. You log it yourself, like everything else.</>,
       },
     ],
   },

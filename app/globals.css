@@ -72,9 +72,27 @@ body {
   outline-color: var(--color-yolk);
 }
 
+/* La selección es celeste para que nunca se confunda con el marcador (amarillo). */
 ::selection {
-  background: var(--color-yolk);
+  background: var(--color-sky);
   color: var(--color-ink);
+}
+
+/* Marcador: subraya solo la mitad inferior de las letras, como un resaltador
+   sobre el cuaderno, para que no parezca texto seleccionado. Se mantiene el
+   <mark> nativo (resaltado semántico) y se anula su fondo amarillo y texto negro. */
+.mark {
+  color: inherit;
+  background: linear-gradient(transparent 52%, rgb(245 184 51 / .85) 52% 92%, transparent 92%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-inline: .12em;
+  margin-inline: -.12em;
+}
+/* En texto corrido (16px) la franja sube para cubrir casi toda la altura de la
+   x; con el corte de los títulos parecía un subrayado grueso. */
+p .mark {
+  background: linear-gradient(transparent 36%, rgb(245 184 51 / .7) 36% 90%, transparent 90%);
 }
 
 /* Hoja de cuaderno: renglones cada 28px y, en pantallas anchas, el margen. */

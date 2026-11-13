@@ -298,15 +298,15 @@ export function PresupuestosSnippet({ lang = DEFAULT_LANG }: MockProps) {
       </div>
       <div className="hidden md:block mt-2 space-y-2">
         {budgets.map((b) => (
-          <div key={b.name} className="bg-surface border border-rule rounded-2xl px-4 py-3">
-            <div className="flex justify-between items-baseline text-[13px] font-bold mb-2">
+          <div key={b.name} className="bg-surface border border-rule rounded-2xl px-4 py-2">
+            <div className="flex justify-between items-baseline text-[13px] font-bold mb-1.5">
               <span>{b.emoji} {b.name}</span>
               <span className="text-mandarina-deep">{m.leftOf(b.left)}</span>
             </div>
             <div className="h-1.5 bg-sand rounded-full">
               <div className={`h-full ${b.bar} rounded-full`} style={{ width: `${b.pct}%` }} />
             </div>
-            <div className="text-[10px] text-ink-soft mt-1.5">{m.spentOf(b.spent, b.total)}</div>
+            <div className="text-[10px] text-ink-soft mt-1">{m.spentOf(b.spent, b.total)}</div>
           </div>
         ))}
       </div>
