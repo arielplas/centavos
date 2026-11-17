@@ -229,6 +229,10 @@ p .mark {
 }
 .phone-screen {
   position: relative;
+  /* Keeps the demo's z-indexed layers (notch, scrim, sheet at z-30) inside
+     the phone; otherwise they compete with the sticky header (also z-30)
+     and, coming later in the page, paint over it. */
+  isolation: isolate;
   border-radius: 36px;
   overflow: hidden;
   height: 620px;
