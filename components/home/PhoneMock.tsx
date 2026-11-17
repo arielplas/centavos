@@ -431,7 +431,7 @@ export function ReminderCards({ lang = DEFAULT_LANG, className = "" }: MockProps
   return (
     <div className={`space-y-3 ${className}`}>
       {[first, second].map((n, i) => (
-        <div key={i} className={`bg-surface border border-rule rounded-2xl px-4 py-3.5 shadow-sm ${i === 1 ? "md:ml-8" : ""}`}>
+        <div key={i} className={`glass rounded-2xl px-4 py-3.5 ${i === 1 ? "md:ml-8" : ""}`}>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-5 h-5 rounded-md bg-mandarina text-bg grid place-items-center text-[11px] font-display font-extrabold">C</span>
             <span className="text-[11px] font-bold text-ink-soft">Centavos</span>

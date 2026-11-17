@@ -62,17 +62,18 @@ export function MobileDownloadBar({
       aria-hidden={!visible}
       inert={!visible}
     >
-      <div className="mx-3 mb-3 rounded-2xl bg-ink text-bg shadow-[0_12px_30px_-8px_rgba(42,26,16,.6)] px-4 py-3 flex items-center gap-3">
+      {/* Floating glass, like the app's tab bar; glass-strong keeps ink-soft at AA over the ink band. */}
+      <div className="glass glass-strong mx-3 mb-3 rounded-[24px] text-ink px-4 py-3 flex items-center gap-3">
         <div className="flex-1 min-w-0 leading-tight">
           <div className="text-[13px] font-bold">{strings.title}</div>
-          <div className="text-[11px] font-semibold text-bg/70">{strings.subtitle}</div>
+          <div className="text-[11px] font-semibold text-ink-soft">{strings.subtitle}</div>
         </div>
         {platform === "other" ? (
           <div className="flex items-center gap-2 text-[13px] font-bold">
-            <a href={storeUrl} target="_blank" rel="noopener noreferrer" className="bg-bg text-ink rounded-full px-3 py-2">
+            <a href={storeUrl} target="_blank" rel="noopener noreferrer" className="bg-ink text-bg rounded-full px-3 py-2">
               iOS<span className="sr-only"> · App Store {strings.newTab}</span>
             </a>
-            <a href={playUrl} target="_blank" rel="noopener noreferrer" className="bg-bg text-ink rounded-full px-3 py-2">
+            <a href={playUrl} target="_blank" rel="noopener noreferrer" className="bg-ink text-bg rounded-full px-3 py-2">
               Android<span className="sr-only"> · Google Play {strings.newTab}</span>
             </a>
           </div>

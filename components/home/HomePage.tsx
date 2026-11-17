@@ -88,6 +88,11 @@ export function HomePage({ lang }: { lang: SiteLang }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(c.faq.items)) }}
       />
 
+      {/* The pastel blobs the glass frosts. Fixed at z-0; the page sits above
+          it at z-10 (the body's own cream would otherwise paint over it). */}
+      <div aria-hidden className="glass-backdrop" />
+
+      <div className="relative z-10">
       <Header mobileCta={false} lang={lang} switcherPath={PATH} />
 
       <main id="contenido">
@@ -103,9 +108,9 @@ export function HomePage({ lang }: { lang: SiteLang }) {
                 {c.hero.body}
               </p>
               <AppStoreBadges storeUrl={storeUrl} playUrl={playUrl} lang={lang} priority />
-              <ul className="flex flex-wrap gap-x-5 gap-y-1.5 mt-6 text-[15px] font-semibold text-ink-soft" aria-label={c.hero.commitmentsLabel}>
+              <ul className="flex flex-wrap gap-2 mt-6 text-[14px] font-semibold text-ink-soft" aria-label={c.hero.commitmentsLabel}>
                 {c.hero.commitments.map((t) => (
-                  <li key={t} className="flex items-center gap-2">
+                  <li key={t} className="glass flex items-center gap-2 rounded-full px-3.5 py-1.5">
                     <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-mandarina-deep" /> {t}
                   </li>
                 ))}
@@ -141,14 +146,14 @@ export function HomePage({ lang }: { lang: SiteLang }) {
         </section>
 
         {/* MAIN FEATURES — screen fragments on a notebook sheet */}
-        <section className="bg-surface border-y border-rule">
+        <section>
           <div className="mx-auto max-w-screen-lg px-5 py-16">
             <h2 className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.05] max-w-2xl mb-10 md:mb-14">
               {c.features.title}
             </h2>
 
             {/* Everything inside the sheet sits on the 28px pitch of the rules. */}
-            <div className="paper rounded-[20px] border border-rule px-5 py-7 md:pl-[76px] md:pr-10">
+            <div className="paper rounded-[20px] border border-rule shadow-[0_10px_30px_-14px_rgb(42_26_16/.22)] px-5 py-7 md:pl-[76px] md:pr-10">
               <div className="grid md:grid-cols-3 gap-x-6 gap-y-7">
                 {c.features.items.map((f, i) => {
                   const Snippet = FEATURE_SNIPPETS[i];
@@ -242,7 +247,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
 
         {/* FREE TOOLS — calculators (organic traffic + internal links). Spanish only. */}
         {c.tools && (
-          <section className="bg-surface border-y border-rule" aria-labelledby="tools-title">
+          <section aria-labelledby="tools-title">
             <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">
               <div className="max-w-2xl mb-10">
                 <h2 id="tools-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">
@@ -260,10 +265,10 @@ export function HomePage({ lang }: { lang: SiteLang }) {
                         as the accent. Ink text on an orange fill read too weakly. */}
                     <Link
                       href={t.href}
-                      className={`card-hover block h-full border rounded-2xl p-4 sm:p-5 ${
+                      className={`card-hover block h-full rounded-2xl p-4 sm:p-5 ${
                         t.featured
-                          ? "bg-ink border-ink text-bg hover:border-mandarina"
-                          : "bg-bg border-rule hover:border-rule-strong"
+                          ? "bg-ink border border-ink text-bg hover:border-mandarina"
+                          : "glass hover:border-rule-strong"
                       }`}
                     >
                       <div className="font-display text-xl font-extrabold tracking-[-0.02em]">{t.t}</div>
@@ -288,10 +293,10 @@ export function HomePage({ lang }: { lang: SiteLang }) {
           </div>
           <div className="space-y-2">
             {c.faq.items.map((it) => (
-              <details key={it.q} className="group bg-surface border border-rule rounded-2xl px-5 open:border-rule-strong">
+              <details key={it.q} className="group glass rounded-2xl px-5 open:border-rule-strong">
                 <summary className="cursor-pointer list-none flex items-center justify-between gap-4 py-4 text-[15px] font-bold text-ink [&::-webkit-details-marker]:hidden">
                   {it.q}
-                  <span aria-hidden className="w-7 h-7 rounded-full bg-bg border border-rule relative flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none before:absolute before:left-1/2 before:top-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-3 before:h-0.5 before:bg-ink after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:w-3 after:h-0.5 after:bg-ink after:rotate-90" />
+                  <span aria-hidden className="w-7 h-7 rounded-full glass-lite relative flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none before:absolute before:left-1/2 before:top-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-3 before:h-0.5 before:bg-ink after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:w-3 after:h-0.5 after:bg-ink after:rotate-90" />
                 </summary>
                 <p className="text-[14px] leading-relaxed text-ink-soft pb-4 pr-8">{it.a}</p>
               </details>
@@ -332,6 +337,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
       {/* Leaves room for the mobile bottom bar above the footer. */}
       <AppFooter className="pb-24 md:pb-0" lang={lang} />
       <MobileDownloadBar storeUrl={storeUrl} playUrl={playUrl} strings={c.bar} />
+      </div>
     </>
   );
 }

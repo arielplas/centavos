@@ -96,8 +96,11 @@ p .mark {
 }
 
 /* Hoja de cuaderno: renglones cada 28px y, en pantallas anchas, el margen. */
+/* The sheet is translucent: the backdrop tints it faintly through the rules.
+   No blur: only the smooth fixed gradient sits behind it, so blurring would
+   change nothing and a ~1150px filtered layer is costly on phones. */
 .paper {
-  background-color: var(--color-surface);
+  background-color: rgb(255 255 255 / .8);
   background-image:
     repeating-linear-gradient(to bottom, transparent 0 27px, #b4cdd8 27px 28px);
   /* Los renglones caen ~2px bajo la línea base del texto de 16px con
@@ -110,6 +113,64 @@ p .mark {
       linear-gradient(to right, transparent 47px, rgba(237,126,60,.55) 47px 48px, transparent 48px),
       repeating-linear-gradient(to bottom, transparent 0 27px, #b4cdd8 27px 28px);
   }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Glass (same language as the app's Liquid-Glass look)
+   ────────────────────────────────────────────────────────────── */
+/* Frosted surface: white at --glass-alpha over a blur of what sits behind,
+   hairline border and soft shadow. Floating chrome uses glass-strong (0.86):
+   ink-soft text stays ≥4.5:1 even with the ink band fully under it.
+   Cards over the pastel backdrop are fine at 0.72 (worst case ≈6:1). */
+@utility glass {
+  background-color: rgb(255 255 255 / var(--glass-alpha, .72));
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid var(--color-rule);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / .7),
+    0 10px 30px -14px rgb(42 26 16 / .22);
+}
+@utility glass-strong {
+  --glass-alpha: .86;
+}
+/* Translucent without blur: for elements nested inside another glass layer
+   (a nested backdrop-filter cannot see through its parent) or sitting over a
+   smooth gradient, where blurring changes nothing and only costs paint time. */
+@utility glass-lite {
+  background-color: rgb(255 255 255 / var(--glass-alpha, .72));
+  border: 1px solid var(--color-rule);
+}
+/* Browsers without backdrop-filter: nothing frosts, so go nearly opaque. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { --glass-alpha: .94; }
+}
+/* A11y: users who ask for less transparency get solid surfaces. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-lite {
+    --glass-alpha: 1;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .glass-backdrop { display: none; }
+  .paper { background-color: var(--color-surface); }
+}
+
+/* Soft colour behind the glass: large radial blobs in the brand pastels on
+   the cream page. Fixed, so cards slide over it while scrolling. Gradients
+   rather than filter: blur() blobs, which are expensive to repaint. */
+.glass-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38vmax 34vmax at 88% 8%,  rgb(237 126 60 / .30), transparent 70%),
+    radial-gradient(42vmax 38vmax at 6% 30%,  rgb(207 225 232 / .95), transparent 70%),
+    radial-gradient(36vmax 32vmax at 70% 62%, rgb(247 209 187 / .85), transparent 70%),
+    radial-gradient(34vmax 30vmax at 14% 92%, rgb(237 126 60 / .18), transparent 70%),
+    radial-gradient(40vmax 34vmax at 96% 96%, rgb(207 225 232 / .8), transparent 70%),
+    var(--color-bg);
 }
 
 /* A11y: respeta la preferencia de movimiento reducido (WCAG 2.3.3) */

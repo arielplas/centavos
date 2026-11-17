@@ -33,8 +33,10 @@ export function Header({
       >
         {strings.skipToContent}
       </a>
-      <header className="md:sticky top-0 z-30 bg-bg/95 backdrop-blur-sm border-b border-rule/70">
-        <div className="mx-auto max-w-screen-lg flex items-center justify-between px-5 py-3">
+      {/* A floating glass bar, like the app's tab bar. glass-strong keeps the
+          ink-soft links at AA even while the bar passes over the ink band. */}
+      <header className="md:sticky top-0 z-30 px-3 pt-3 md:pt-4">
+        <div className="glass glass-strong mx-auto max-w-screen-lg flex items-center justify-between rounded-[24px] pl-4 pr-2 py-1.5">
           <Logo size={26} href={navHref("/", lang)} label={strings.homeLabel} />
           <nav aria-label={strings.mainNav} className="flex items-center gap-2 sm:gap-4 text-[13px] font-semibold">
             <Link href={navHref("/app/soporte", lang)} className="inline-flex items-center min-h-11 text-ink-soft hover:text-ink px-2">
