@@ -111,7 +111,7 @@ export function PhoneFrame({
   return (
     <div className={`phone-wrap ${crop ? "phone-wrap--crop" : ""} ${className}`}>
       <div className="phone">
-        <div className="phone-screen">
+        <div className="phone-screen app-backdrop">
           <div className="phone-notch" aria-hidden />
           <div className="h-full overflow-hidden">{children}</div>
         </div>
@@ -191,7 +191,7 @@ export function PulsoMock({ lang = DEFAULT_LANG }: MockProps) {
         </div>
       </div>
 
-      <div data-a="log-row" style={at("600ms", "240ms")} className="mx-4 mt-3 flex items-center gap-3 bg-surface border border-rule rounded-2xl px-4 py-3">
+      <div data-a="log-row" style={at("600ms", "240ms")} className="mx-4 mt-3 flex items-center gap-3 glass-lite rounded-2xl px-4 py-3">
         <span className="w-9 h-9 rounded-full bg-mandarina text-bg grid place-items-center text-xl font-light">+</span>
         <div className="flex-1">
           <div className="text-[13px] font-bold">{m.log}</div>
@@ -202,7 +202,7 @@ export function PulsoMock({ lang = DEFAULT_LANG }: MockProps) {
 
       <div className="px-5 mt-5 text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase">{m.budgets}</div>
       <div className="px-4 mt-2 space-y-2">
-        <div data-a="food-row" style={at("2.95s", "900ms")} className="bg-surface border border-rule rounded-2xl px-4 py-3">
+        <div data-a="food-row" style={at("2.95s", "900ms")} className="glass-lite rounded-2xl px-4 py-3">
           <div className="flex justify-between text-[13px] font-bold mb-2">
             <span>🌮 {m.food}</span>
             <span className="text-ink-soft">
@@ -213,7 +213,7 @@ export function PulsoMock({ lang = DEFAULT_LANG }: MockProps) {
             <div data-a="bar-food" style={at("2.95s", "600ms")} className="h-full w-[83%] bg-mandarina rounded-full" />
           </div>
         </div>
-        <div className="bg-surface border border-rule rounded-2xl px-4 py-3">
+        <div className="glass-lite rounded-2xl px-4 py-3">
           <div className="flex justify-between text-[13px] font-bold mb-2">
             <span>🎬 {m.fun}</span>
             <span className="text-ink-soft">$640 / $1,200</span>
@@ -246,7 +246,7 @@ function AnotarSheet({ lang }: { lang: SiteLang }) {
       <div
         data-a="sheet"
         style={at("800ms", "1.95s")}
-        className="absolute inset-x-0 bottom-0 z-30 h-[400px] rounded-t-[28px] bg-bg px-5 pt-3 shadow-[0_-12px_30px_-12px_rgba(42,26,16,.35)]"
+        className="absolute inset-x-0 bottom-0 z-30 h-[400px] rounded-t-[28px] glass glass-strong px-5 pt-3 shadow-[0_-12px_30px_-12px_rgba(42,26,16,.35)]"
       >
         <div className="mx-auto h-1 w-10 rounded-full bg-rule-strong/50" />
         <div className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-center mt-3">{m.title}</div>
@@ -264,7 +264,7 @@ function AnotarSheet({ lang }: { lang: SiteLang }) {
             <div
               key={c.name}
               {...(i === 0 ? { "data-a": "chip", style: at("1.85s", "150ms") } : {})}
-              className={`rounded-2xl py-2.5 grid place-items-center gap-0.5 border ${i === 0 ? "bg-mandarina text-bg border-mandarina" : "bg-surface border-rule"}`}
+              className={`rounded-2xl py-2.5 grid place-items-center gap-0.5 border ${i === 0 ? "bg-mandarina text-bg border-mandarina" : "bg-white/[.72] border-rule"}`}
             >
               <span className="text-xl leading-none">{c.emoji}</span>
               <span className="text-[10px] font-bold leading-none">{c.name}</span>
@@ -298,7 +298,7 @@ export function PresupuestosSnippet({ lang = DEFAULT_LANG }: MockProps) {
       </div>
       <div className="hidden md:block mt-2 space-y-2">
         {budgets.map((b) => (
-          <div key={b.name} className="bg-surface border border-rule rounded-2xl px-4 py-2">
+          <div key={b.name} className="glass-lite rounded-2xl px-4 py-2">
             <div className="flex justify-between items-baseline text-[13px] font-bold mb-1.5">
               <span>{b.emoji} {b.name}</span>
               <span className="text-mandarina-deep">{m.leftOf(b.left)}</span>
@@ -317,8 +317,8 @@ export function PresupuestosSnippet({ lang = DEFAULT_LANG }: MockProps) {
 export function SuscripcionesSnippet({ lang = DEFAULT_LANG }: MockProps) {
   const m = MOCK[lang].suscripciones;
   const subs = [
-    { emoji: "📺", name: "Netflix", days: 3, amount: "$219", bg: "bg-peach" },
-    { emoji: "🎧", name: "Spotify", days: 8, amount: "$115", bg: "bg-sky" },
+    { emoji: "📺", name: "Netflix", days: 3, amount: "$219", bg: "bg-peach/75 ring-1 ring-inset ring-white/70" },
+    { emoji: "🎧", name: "Spotify", days: 8, amount: "$115", bg: "bg-sky/75 ring-1 ring-inset ring-white/70" },
   ];
   return (
     <>
@@ -329,7 +329,7 @@ export function SuscripcionesSnippet({ lang = DEFAULT_LANG }: MockProps) {
       </div>
       <div className="hidden md:block mt-2 space-y-2">
         {subs.map((s) => (
-          <div key={s.name} className="flex items-center gap-3 bg-surface border border-rule rounded-2xl px-3.5 py-2.5">
+          <div key={s.name} className="flex items-center gap-3 glass-lite rounded-2xl px-3.5 py-2.5">
             <span className={`w-9 h-9 rounded-xl ${s.bg} grid place-items-center text-lg`}>{s.emoji}</span>
             <div className="flex-1">
               <div className="text-[13px] font-bold leading-tight">{s.name}</div>
@@ -346,8 +346,8 @@ export function SuscripcionesSnippet({ lang = DEFAULT_LANG }: MockProps) {
 export function MsiSnippet({ lang = DEFAULT_LANG }: MockProps) {
   const m = MOCK[lang].msi;
   const plans = [
-    { emoji: "📱", name: m.names[0], per: "$1,000", n: 5, of: 12, bg: "bg-sky" },
-    { emoji: "🛋️", name: m.names[1], per: "$625", n: 2, of: 6, bg: "bg-peach" },
+    { emoji: "📱", name: m.names[0], per: "$1,000", n: 5, of: 12, bg: "bg-sky/75 ring-1 ring-inset ring-white/70" },
+    { emoji: "🛋️", name: m.names[1], per: "$625", n: 2, of: 6, bg: "bg-peach/75 ring-1 ring-inset ring-white/70" },
   ];
   return (
     <>
@@ -358,7 +358,7 @@ export function MsiSnippet({ lang = DEFAULT_LANG }: MockProps) {
       </div>
       <div className="hidden md:block mt-2 space-y-2">
         {plans.map((p) => (
-          <div key={p.name} className="flex items-center gap-3 bg-surface border border-rule rounded-2xl px-3.5 py-2.5">
+          <div key={p.name} className="flex items-center gap-3 glass-lite rounded-2xl px-3.5 py-2.5">
             <span className={`w-9 h-9 rounded-xl ${p.bg} grid place-items-center text-lg`}>{p.emoji}</span>
             <div className="flex-1">
               <div className="text-[13px] font-bold leading-tight">{p.name}</div>
@@ -384,7 +384,7 @@ export function DivideMock({ lang = DEFAULT_LANG }: MockProps) {
     <>
       <StatusRow />
       <div className="px-5 pt-3 flex items-center gap-3">
-        <span className="w-9 h-9 rounded-xl bg-peach grid place-items-center text-lg">🏠</span>
+        <span className="w-9 h-9 rounded-xl bg-peach/75 ring-1 ring-inset ring-white/70 grid place-items-center text-lg">🏠</span>
         <div>
           <div className="text-[10px] font-extrabold tracking-wider text-mandarina-deep uppercase">{m.kicker}</div>
           <div className="font-display text-[22px] font-extrabold tracking-[-0.03em] leading-none mt-0.5">{m.title}</div>
@@ -400,10 +400,10 @@ export function DivideMock({ lang = DEFAULT_LANG }: MockProps) {
       <div className="px-5 mt-5 text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase">{m.list}</div>
       <div className="px-4 mt-2 space-y-2">
         {[
-          { who: "Ana", amount: "$680", pos: true, ini: "A", bg: "bg-sky" },
-          { who: "Luis", amount: "$250", pos: false, ini: "L", bg: "bg-sand" },
+          { who: "Ana", amount: "$680", pos: true, ini: "A", bg: "bg-sky/75 ring-1 ring-inset ring-white/70" },
+          { who: "Luis", amount: "$250", pos: false, ini: "L", bg: "bg-sand/75 ring-1 ring-inset ring-white/70" },
         ].map((r) => (
-          <div key={r.who} className="flex items-center gap-3 bg-surface border border-rule rounded-2xl px-3.5 py-2.5">
+          <div key={r.who} className="flex items-center gap-3 glass-lite rounded-2xl px-3.5 py-2.5">
             <span className={`w-9 h-9 rounded-full ${r.bg} grid place-items-center text-[13px] font-display font-extrabold`}>{r.ini}</span>
             <div className="flex-1">
               <div className="text-[13px] font-bold leading-tight">{r.who}</div>
@@ -451,13 +451,13 @@ export function ReminderCards({ lang = DEFAULT_LANG, className = "" }: MockProps
 /** The sign-up card (decorative: divs, not inputs) and the margin note under it. */
 export function SignupMock({ lang = DEFAULT_LANG }: MockProps) {
   const m = MOCK[lang].signup;
-  const field = "h-12 rounded-2xl bg-surface border border-rule px-4 flex items-center text-[15px]";
+  const field = "h-12 rounded-2xl glass-lite px-4 flex items-center text-[15px]";
   const label = "text-[12px] font-bold mb-1.5";
   return (
     <div className="w-full max-w-sm mx-auto md:mx-0 md:ml-auto">
       <div
         aria-hidden
-        className="bg-bg text-ink rounded-[28px] p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,.5)]"
+        className="app-backdrop text-ink rounded-[28px] p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,.5)]"
       >
         <span className="w-9 h-9 rounded-xl bg-mandarina text-bg grid place-items-center font-display font-extrabold">C</span>
         <div className="font-display text-2xl font-extrabold tracking-[-0.03em] mt-4 mb-5">{m.title}</div>

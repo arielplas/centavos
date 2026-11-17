@@ -160,7 +160,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
                   return (
                     <div key={f.t}>
                       <div aria-hidden className="h-[168px] md:h-[308px] overflow-hidden mb-7">
-                        <div className="rounded-[28px] border border-rule bg-bg p-3">
+                        <div className="app-backdrop rounded-[28px] border border-rule p-3">
                           <Snippet lang={lang} />
                         </div>
                       </div>

@@ -173,6 +173,21 @@ p .mark {
     var(--color-bg);
 }
 
+/* The same backdrop, scaled to an app screen (phone mocks, snippet cards):
+   the app's screens now sit on pastel blobs too. Mandarina is kept faint and
+   low so mandarina-deep kickers at the top stay ≥4.5:1 on it. */
+.app-backdrop {
+  background:
+    radial-gradient(220px 200px at 0% 18%,   rgb(207 225 232 / .95), transparent 70%),
+    radial-gradient(240px 220px at 100% 45%, rgb(247 209 187 / .9),  transparent 70%),
+    radial-gradient(220px 200px at 85% 100%, rgb(237 126 60 / .16),  transparent 70%),
+    radial-gradient(200px 180px at 10% 95%,  rgb(207 225 232 / .8),  transparent 70%),
+    var(--color-bg);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .app-backdrop { background: var(--color-bg); }
+}
+
 /* A11y: respeta la preferencia de movimiento reducido (WCAG 2.3.3) */
 @media (prefers-reduced-motion: reduce) {
   .card-hover { transition: none; }
@@ -213,7 +228,6 @@ p .mark {
   position: relative;
   border-radius: 36px;
   overflow: hidden;
-  background: var(--color-bg);
   height: 620px;
 }
 .phone-notch {
@@ -290,7 +304,7 @@ p .mark {
 .demo [data-a="log-row"] { animation-name: demo-tap-row; animation-timing-function: ease-out; }
 .demo [data-a="cta"] { animation-name: demo-tap; animation-timing-function: ease-out; }
 @keyframes demo-tap-row {
-  0%, 100% { transform: scale(1); background-color: var(--color-surface); }
+  0%, 100% { transform: scale(1); background-color: rgb(255 255 255 / .72); }
   50%      { transform: scale(.97); background-color: var(--color-sand); }
 }
 @keyframes demo-tap { 0%, 100% { transform: scale(1); } 50% { transform: scale(.97); } }
@@ -298,7 +312,7 @@ p .mark {
 /* Categoría elegida (🌮). */
 .demo [data-a="chip"] { animation-name: demo-chip; }
 @keyframes demo-chip {
-  from { transform: scale(.94); background-color: var(--color-surface); border-color: var(--color-rule); color: var(--color-ink); }
+  from { transform: scale(.94); background-color: rgb(255 255 255 / .72); border-color: var(--color-rule); color: var(--color-ink); }
   to   { transform: scale(1); background-color: var(--color-mandarina); border-color: var(--color-mandarina); color: var(--color-bg); }
 }
 
