@@ -24,7 +24,7 @@ const TOPICS = [
 
 function ContactoDirecto() {
   return (
-    <div className="bg-surface border border-rule rounded-2xl p-6">
+    <div className="glass rounded-2xl p-6">
       <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
         Escríbenos
       </div>
@@ -44,7 +44,7 @@ function ContactoDirecto() {
           <li key={tp.s}>
             <a
               href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(tp.s)}`}
-              className="inline-block bg-bg border border-rule-strong rounded-full px-4 py-2 text-[13px] font-semibold text-ink hover:bg-sand"
+              className="inline-block bg-white/[.72] border border-rule-strong rounded-full px-4 py-2 text-[13px] font-semibold text-ink hover:bg-sand"
             >
               {tp.t}
             </a>

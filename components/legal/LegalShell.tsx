@@ -54,7 +54,7 @@ export function LegalShell({
       <main id="contenido" className="mx-auto max-w-screen-lg px-5 pb-16 md:grid md:grid-cols-[230px_1fr] md:gap-10">
         {/* Side TOC (desktop only) */}
         <aside className="hidden md:block pt-12" aria-label={strings.tableOfContents}>
-          <nav className="sticky top-20">
+          <nav className="sticky top-24 glass rounded-[20px] p-4">
             <div className="text-[11px] font-extrabold tracking-[0.06em] text-ink-soft uppercase mb-3">
               {strings.onThisPage}
             </div>
@@ -62,8 +62,8 @@ export function LegalShell({
           </nav>
         </aside>
 
-        {/* Content */}
-        <article className="max-w-[720px] pt-10 md:pt-12">
+        {/* Content: a glass sheet over the backdrop, like the notebook on the landing. */}
+        <article className="glass max-w-[720px] mt-6 md:mt-12 rounded-[28px] px-5 py-8 md:px-10 md:py-10">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
             <p className="text-[12px] font-bold tracking-wide text-ink-soft uppercase">
               {strings.lastUpdated}: {doc.updated}
@@ -76,7 +76,7 @@ export function LegalShell({
           <div className="text-[15px] leading-relaxed text-ink-soft mb-8">{doc.intro}</div>
 
           {/* Collapsible TOC (mobile only): without it, 13–17 sections and no way to jump. */}
-          <details className="md:hidden mb-10 bg-surface border border-rule rounded-2xl px-4 py-3">
+          <details className="md:hidden mb-10 glass rounded-2xl px-4 py-3">
             <summary className="cursor-pointer text-[13px] font-extrabold tracking-wide uppercase text-ink py-1">
               {strings.onThisPage} ({doc.sections.length})
             </summary>

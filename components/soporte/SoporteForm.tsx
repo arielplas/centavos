@@ -12,7 +12,7 @@ const DESC_MIN = 5;
 const DESC_MAX = 2000;
 
 const fieldClass =
-  "w-full bg-bg border border-rule-strong px-4 py-3 rounded-xl text-[14px] text-ink placeholder:text-ink-soft outline-none focus:ring-2 focus:ring-ink focus:border-ink disabled:opacity-60";
+  "w-full bg-white/[.72] border border-rule-strong px-4 py-3 rounded-xl text-[14px] text-ink placeholder:text-ink-soft outline-none focus:ring-2 focus:ring-ink focus:border-ink disabled:opacity-60";
 const labelClass = "text-[12px] font-bold text-ink mb-1.5 block";
 
 /** Contador de caracteres; solo lo anuncia el lector de pantalla cerca del límite. */
@@ -74,7 +74,7 @@ export function SoporteForm() {
   if (status === "success") {
     return (
       <div
-        className="bg-surface border border-rule rounded-2xl p-6 text-center"
+        className="glass rounded-2xl p-6 text-center"
         role="status"
       >
         <div className="font-display text-2xl font-extrabold tracking-[-0.02em] mb-2">
@@ -94,7 +94,7 @@ export function SoporteForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-surface border border-rule rounded-2xl p-6 flex flex-col gap-4"
+      className="glass rounded-2xl p-6 flex flex-col gap-4"
     >
       {/* Honeypot — visually hidden, ignored by humans, catches bots. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">

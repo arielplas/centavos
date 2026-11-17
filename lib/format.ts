@@ -25,7 +25,7 @@ export function limpiarNumero(v: string): string {
 
 // Clases de formulario, para que todas las calculadoras se vean iguales.
 export const campoCls =
-  "w-full bg-surface border border-rule-strong rounded-xl px-4 py-3 text-[16px] font-semibold text-ink " +
+  "w-full bg-white/[.72] border border-rule-strong rounded-xl px-4 py-3 text-[16px] font-semibold text-ink " +
   "placeholder:text-ink-soft/60 placeholder:font-normal";
 export const etiquetaCls = "block text-[13px] font-bold text-ink mb-1.5";
 export const ayudaCls = "text-[12px] text-ink-soft mt-1.5 leading-snug";

@@ -31,7 +31,7 @@ export function AguinaldoCalculator() {
   );
 
   return (
-    <div className="bg-sand/40 border border-rule rounded-[28px] p-5 md:p-7">
+    <div className="glass rounded-[28px] p-5 md:p-7">
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label htmlFor="ag-salario" className={etiquetaCls}>
@@ -86,7 +86,7 @@ export function AguinaldoCalculator() {
                 onClick={() => setCompleto(o.v)}
                 aria-pressed={activo}
                 className={`rounded-full px-4 py-2.5 text-[14px] font-bold border transition-colors ${
-                  activo ? "bg-ink text-bg border-ink" : "bg-surface text-ink border-rule-strong hover:border-ink"
+                  activo ? "bg-ink text-bg border-ink" : "bg-white/[.72] text-ink border-rule-strong hover:border-ink"
                 }`}
               >
                 {o.t}
@@ -117,7 +117,7 @@ export function AguinaldoCalculator() {
           <p className="text-[14px] text-ink-soft text-center py-6">Escribe tu sueldo para ver tu aguinaldo.</p>
         ) : (
           <>
-            <div aria-live="polite" aria-atomic="true" className="bg-surface border border-rule rounded-3xl p-6 text-center">
+            <div aria-live="polite" aria-atomic="true" className="glass-lite rounded-3xl p-6 text-center">
               <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
                 Tu aguinaldo
               </div>

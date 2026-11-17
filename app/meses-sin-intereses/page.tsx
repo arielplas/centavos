@@ -213,7 +213,7 @@ export default function MesesSinInteresesPage() {
           </div>
           <ul className="grid gap-3 md:grid-cols-2 max-w-4xl">
             {CHECKLIST.map((c, i) => (
-              <li key={c.t} className="bg-surface border border-rule rounded-2xl p-5">
+              <li key={c.t} className="glass rounded-2xl p-5">
                 <div aria-hidden className="font-display text-3xl font-extrabold tracking-[-0.04em] text-ink/15 leading-none mb-2">
                   {String(i + 1).padStart(2, "0")}
                 </div>
@@ -261,12 +261,12 @@ export default function MesesSinInteresesPage() {
             </div>
             <div className="space-y-2">
               {FAQ.map((it) => (
-                <details key={it.q} className="group bg-surface border border-rule rounded-2xl px-5 open:border-rule-strong">
+                <details key={it.q} className="group glass rounded-2xl px-5 open:border-rule-strong">
                   <summary className="cursor-pointer list-none flex items-center justify-between gap-4 py-4 text-[15px] font-bold text-ink [&::-webkit-details-marker]:hidden">
                     {it.q}
                     <span
                       aria-hidden
-                      className="w-7 h-7 rounded-full bg-bg border border-rule grid place-items-center text-lg leading-none flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none"
+                      className="w-7 h-7 rounded-full glass-lite grid place-items-center text-lg leading-none flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none"
                     >
                       +
                     </span>

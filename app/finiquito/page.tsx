@@ -64,7 +64,7 @@ export default function FiniquitoPage() {
       <FiniquitoCalculator />
 
       <div className="max-w-2xl mt-8">
-        <div className="bg-sky/40 border border-rule rounded-2xl p-5 mb-10">
+        <div className="bg-sky/50 backdrop-blur-xl border border-rule rounded-2xl p-5 mb-10">
           <p className="text-[14px] leading-relaxed text-ink">
             <strong>¿Te despidieron?</strong> La{" "}
             <a href="https://www.gob.mx/profedet" target="_blank" rel="noopener noreferrer" className="text-mandarina-deep underline underline-offset-2 font-semibold">

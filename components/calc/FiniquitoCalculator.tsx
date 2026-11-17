@@ -32,7 +32,7 @@ export function FiniquitoCalculator() {
   }, [tipo, salario, ingreso, salida, diasVac]);
 
   return (
-    <div className="bg-sand/40 border border-rule rounded-[28px] p-5 md:p-7">
+    <div className="glass rounded-[28px] p-5 md:p-7">
       <fieldset className="mb-5">
         <legend className={etiquetaCls}>¿Cómo terminó la relación laboral?</legend>
         <div className="flex flex-wrap gap-2">
@@ -45,7 +45,7 @@ export function FiniquitoCalculator() {
                 onClick={() => setTipo(o.v)}
                 aria-pressed={activo}
                 className={`rounded-full px-4 py-2.5 text-[14px] font-bold border transition-colors ${
-                  activo ? "bg-ink text-bg border-ink" : "bg-surface text-ink border-rule-strong hover:border-ink"
+                  activo ? "bg-ink text-bg border-ink" : "bg-white/[.72] text-ink border-rule-strong hover:border-ink"
                 }`}
               >
                 {o.t}
@@ -108,7 +108,7 @@ export function FiniquitoCalculator() {
           <p className="text-[14px] text-ink-soft text-center py-6">Captura las fechas de ingreso y salida para ver el desglose.</p>
         ) : (
           <div aria-live="polite" aria-atomic="true">
-            <div className="bg-surface border border-rule rounded-3xl overflow-hidden">
+            <div className="glass-lite rounded-3xl overflow-hidden">
               <ul className="divide-y divide-rule">
                 {resultado.finiquito.map((l) => (
                   <li key={l.concepto} className="flex items-baseline justify-between gap-4 px-5 py-3">

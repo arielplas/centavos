@@ -88,11 +88,6 @@ export function HomePage({ lang }: { lang: SiteLang }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(c.faq.items)) }}
       />
 
-      {/* The pastel blobs the glass frosts. Fixed at z-0; the page sits above
-          it at z-10 (the body's own cream would otherwise paint over it). */}
-      <div aria-hidden className="glass-backdrop" />
-
-      <div className="relative z-10">
       <Header mobileCta={false} lang={lang} switcherPath={PATH} />
 
       <main id="contenido">
@@ -337,7 +332,6 @@ export function HomePage({ lang }: { lang: SiteLang }) {
       {/* Leaves room for the mobile bottom bar above the footer. */}
       <AppFooter className="pb-24 md:pb-0" lang={lang} />
       <MobileDownloadBar storeUrl={storeUrl} playUrl={playUrl} strings={c.bar} />
-      </div>
     </>
   );
 }

@@ -137,12 +137,12 @@ export function CalcShell({
             </div>
             <div className="space-y-2">
               {faq.map((it) => (
-                <details key={it.q} className="group bg-surface border border-rule rounded-2xl px-5 open:border-rule-strong">
+                <details key={it.q} className="group glass rounded-2xl px-5 open:border-rule-strong">
                   <summary className="cursor-pointer list-none flex items-center justify-between gap-4 py-4 text-[15px] font-bold text-ink [&::-webkit-details-marker]:hidden">
                     {it.q}
                     <span
                       aria-hidden
-                      className="w-7 h-7 rounded-full bg-bg border border-rule grid place-items-center text-lg leading-none flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none"
+                      className="w-7 h-7 rounded-full glass-lite grid place-items-center text-lg leading-none flex-shrink-0 transition-transform group-open:rotate-45 motion-reduce:transition-none"
                     >
                       +
                     </span>

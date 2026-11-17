@@ -90,7 +90,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es-MX" className={`${bricolage.variable} ${manrope.variable} ${caveat.variable}`}>
       <body className="bg-bg text-ink antialiased">
-        {children}
+        {/* The pastel blobs the glass frosts, on every page. Fixed at z-0; the
+            page sits above it at z-10 (the body's own cream would otherwise
+            paint over it). */}
+        <div aria-hidden className="glass-backdrop" />
+        <div className="relative z-10">{children}</div>
         <Analytics />
         <SpeedInsights />
 

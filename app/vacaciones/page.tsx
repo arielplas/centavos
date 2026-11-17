@@ -78,16 +78,16 @@ export default function VacacionesPage() {
           Los días crecen con tu antigüedad, según el artículo 76 de la LFT. Esta es la tabla vigente:
         </p>
         <div className="overflow-x-auto -mx-1 mb-4">
-          <table className="w-full text-[14px] border border-rule rounded-2xl overflow-hidden">
+          <table className="glass w-full text-[14px] rounded-2xl overflow-hidden">
             <thead>
-              <tr className="bg-surface text-left">
+              <tr className="bg-white/60 text-left">
                 <th className="px-4 py-2.5 font-bold text-ink">Antigüedad</th>
                 <th className="px-4 py-2.5 font-bold text-ink text-right">Días de vacaciones</th>
               </tr>
             </thead>
             <tbody>
               {TABLA.map((r, i) => (
-                <tr key={r.anios} className={i % 2 ? "bg-surface/50" : ""}>
+                <tr key={r.anios} className={i % 2 ? "bg-white/40" : ""}>
                   <td className="px-4 py-2.5 text-ink border-t border-rule">{r.anios}</td>
                   <td className="px-4 py-2.5 text-ink font-bold text-right border-t border-rule tabular-nums">{r.dias}</td>
                 </tr>

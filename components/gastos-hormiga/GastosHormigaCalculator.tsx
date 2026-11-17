@@ -82,7 +82,7 @@ function readStored(): Omit<Row, "id">[] {
 }
 
 const chip =
-  "min-h-11 rounded-full px-4 py-2.5 text-[14px] font-bold border bg-surface text-ink border-rule-strong " +
+  "min-h-11 rounded-full px-4 py-2.5 text-[14px] font-bold border bg-white/[.72] text-ink border-rule-strong " +
   "hover:border-ink transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
 const primaryButton =
   "bg-ink text-bg px-5 py-3 rounded-xl text-[14px] font-bold cursor-pointer hover:opacity-80 transition-opacity " +
@@ -158,7 +158,7 @@ export function GastosHormigaCalculator({ lang }: { lang: SiteLang }) {
   const counted = new Set(lines.map((line) => line.id));
 
   return (
-    <div className="bg-sand/40 border border-rule rounded-[28px] p-5 md:p-7">
+    <div className="glass rounded-[28px] p-5 md:p-7">
       {/* ─── Suggestions ─── */}
       <fieldset>
         <legend className={etiquetaCls}>{t.presetsLegend}</legend>
@@ -281,7 +281,7 @@ export function GastosHormigaCalculator({ lang }: { lang: SiteLang }) {
                     type="button"
                     onClick={() => remove(row.id)}
                     aria-label={t.remove(row.name.trim())}
-                    className="col-start-2 row-start-1 md:col-start-3 grid h-[50px] w-11 place-items-center rounded-xl border border-rule-strong bg-surface text-ink-soft hover:border-ink hover:text-ink transition-colors cursor-pointer"
+                    className="col-start-2 row-start-1 md:col-start-3 grid h-[50px] w-11 place-items-center rounded-xl border border-rule-strong bg-white/[.72] text-ink-soft hover:border-ink hover:text-ink transition-colors cursor-pointer"
                   >
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
                       <path d="M2 2l10 10M12 2L2 12" />
@@ -315,12 +315,12 @@ export function GastosHormigaCalculator({ lang }: { lang: SiteLang }) {
         <div aria-live="polite" aria-atomic="true">
           {result ? (
             <div className="grid sm:grid-cols-2 gap-3">
-              <div className="bg-surface border border-rule rounded-3xl p-6 text-center">
+              <div className="glass-lite rounded-3xl p-6 text-center">
                 <div className={kicker}>{t.monthlyKicker}</div>
                 <p className={bigNumber}>{pesos.format(round2(result.monthly))}</p>
                 <p className="text-[14px] text-ink-soft mt-2">{t.monthlyNote}</p>
               </div>
-              <div className="bg-surface border border-rule rounded-3xl p-6 text-center">
+              <div className="glass-lite rounded-3xl p-6 text-center">
                 <div className={kicker}>{t.yearlyKicker}</div>
                 <p className={bigNumber}>{pesos.format(round2(result.yearly))}</p>
                 <p className="text-[14px] text-ink-soft mt-2">{t.yearlyNote}</p>
@@ -335,7 +335,7 @@ export function GastosHormigaCalculator({ lang }: { lang: SiteLang }) {
           <>
             <div className="mt-4">
               <h3 className="text-[13px] font-bold text-ink mb-2">{t.breakdownHeading}</h3>
-              <ol className="bg-surface border border-rule rounded-2xl divide-y divide-rule overflow-hidden">
+              <ol className="glass-lite rounded-2xl divide-y divide-rule overflow-hidden">
                 {biggestFirst.map(({ id, item, monthly, yearly }) => (
                   <li key={id} className="flex items-center justify-between gap-4 px-4 py-2.5">
                     <span className="min-w-0">
@@ -357,7 +357,7 @@ export function GastosHormigaCalculator({ lang }: { lang: SiteLang }) {
               </ol>
             </div>
 
-            <div className="bg-peach border border-mandarina/40 rounded-3xl p-5 md:p-6 mt-4">
+            <div className="bg-peach/75 backdrop-blur-xl border border-mandarina/40 rounded-3xl p-5 md:p-6 mt-4">
               <div className="text-[11px] font-extrabold tracking-wider text-ink/70 uppercase mb-2">{t.aheadKicker}</div>
               <p className="font-display text-2xl md:text-3xl font-extrabold tracking-[-0.02em] leading-tight text-ink mb-3">
                 {t.aheadTitle(YEARS_AHEAD, pesos.format(round2(result.yearly * YEARS_AHEAD)))}
@@ -424,7 +424,7 @@ function SaveCard({ t, lang, items }: { t: GastosHormigaCopy; lang: SiteLang; it
   if (stage === "done") {
     const { storeUrl, playUrl } = getAppLinks();
     return (
-      <section aria-labelledby="gh-save-title" className="mt-4 bg-surface border-2 border-ink rounded-3xl p-5 md:p-6">
+      <section aria-labelledby="gh-save-title" className="mt-4 glass border-2! border-ink! rounded-3xl p-5 md:p-6">
         <div role="status">
           <p className={hand}>{t.savedKicker}</p>
           {/* Focus lands here only from script; the global :focus-visible ring is
@@ -455,7 +455,7 @@ function SaveCard({ t, lang, items }: { t: GastosHormigaCopy; lang: SiteLang; it
   }
 
   return (
-    <section aria-labelledby="gh-save-title" className="mt-4 bg-surface border-2 border-ink rounded-3xl p-5 md:p-6">
+    <section aria-labelledby="gh-save-title" className="mt-4 glass border-2! border-ink! rounded-3xl p-5 md:p-6">
       <p className={hand}>{t.saveKicker}</p>
       <h2 id="gh-save-title" className={title}>
         {t.saveTitle}

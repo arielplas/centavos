@@ -158,18 +158,21 @@ p .mark {
 
 /* Soft colour behind the glass: large radial blobs in the brand pastels on
    the cream page. Fixed, so cards slide over it while scrolling. Gradients
-   rather than filter: blur() blobs, which are expensive to repaint. */
+   rather than filter: blur() blobs, which are expensive to repaint.
+   Mounted once in the root layout, so every page has it. Blob strengths are
+   capped so mandarina-deep links (the darkest-demanding text that sits
+   straight on the page) stay ≥4.6:1 even at a blob's centre. */
 .glass-backdrop {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(38vmax 34vmax at 88% 8%,  rgb(237 126 60 / .30), transparent 70%),
-    radial-gradient(42vmax 38vmax at 6% 30%,  rgb(207 225 232 / .95), transparent 70%),
-    radial-gradient(36vmax 32vmax at 70% 62%, rgb(247 209 187 / .85), transparent 70%),
-    radial-gradient(34vmax 30vmax at 14% 92%, rgb(237 126 60 / .18), transparent 70%),
-    radial-gradient(40vmax 34vmax at 96% 96%, rgb(207 225 232 / .8), transparent 70%),
+    radial-gradient(38vmax 34vmax at 88% 8%,  rgb(237 126 60 / .12), transparent 70%),
+    radial-gradient(42vmax 38vmax at 6% 30%,  rgb(207 225 232 / .5),  transparent 70%),
+    radial-gradient(36vmax 32vmax at 70% 62%, rgb(247 209 187 / .4),  transparent 70%),
+    radial-gradient(34vmax 30vmax at 14% 92%, rgb(237 126 60 / .1),  transparent 70%),
+    radial-gradient(40vmax 34vmax at 96% 96%, rgb(207 225 232 / .45), transparent 70%),
     var(--color-bg);
 }
 

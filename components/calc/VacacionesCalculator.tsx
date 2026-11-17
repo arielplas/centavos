@@ -19,7 +19,7 @@ export function VacacionesCalculator() {
   }, [salario, anios, prima]);
 
   return (
-    <div className="bg-sand/40 border border-rule rounded-[28px] p-5 md:p-7">
+    <div className="glass rounded-[28px] p-5 md:p-7">
       <div className="grid gap-5 md:grid-cols-3">
         <div>
           <label htmlFor="va-salario" className={etiquetaCls}>
@@ -77,7 +77,7 @@ export function VacacionesCalculator() {
           <p className="text-[14px] text-ink-soft text-center py-6">Escribe tu sueldo y antigüedad para ver el cálculo.</p>
         ) : (
           <div aria-live="polite" aria-atomic="true" className="grid sm:grid-cols-2 gap-3">
-            <div className="bg-surface border border-rule rounded-3xl p-6 text-center">
+            <div className="glass-lite rounded-3xl p-6 text-center">
               <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
                 Te tocan
               </div>
@@ -86,7 +86,7 @@ export function VacacionesCalculator() {
               </p>
               <p className="text-[14px] text-ink-soft mt-2">días de vacaciones al año</p>
             </div>
-            <div className="bg-surface border border-rule rounded-3xl p-6 text-center">
+            <div className="glass-lite rounded-3xl p-6 text-center">
               <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
                 Prima vacacional
               </div>

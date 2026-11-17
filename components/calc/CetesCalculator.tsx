@@ -21,7 +21,7 @@ export function CetesCalculator() {
   }, [inversion, tasa, plazo, reinvertir]);
 
   return (
-    <div className="bg-sand/40 border border-rule rounded-[28px] p-5 md:p-7">
+    <div className="glass rounded-[28px] p-5 md:p-7">
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label htmlFor="ce-inv" className={etiquetaCls}>
@@ -72,7 +72,7 @@ export function CetesCalculator() {
                 onClick={() => setPlazo(n)}
                 aria-pressed={activo}
                 className={`min-w-[76px] rounded-full px-4 py-2.5 text-[14px] font-bold border transition-colors ${
-                  activo ? "bg-ink text-bg border-ink" : "bg-surface text-ink border-rule-strong hover:border-ink"
+                  activo ? "bg-ink text-bg border-ink" : "bg-white/[.72] text-ink border-rule-strong hover:border-ink"
                 }`}
               >
                 {n} días
@@ -97,7 +97,7 @@ export function CetesCalculator() {
           <p className="text-[14px] text-ink-soft text-center py-6">Escribe el monto y la tasa para ver tu rendimiento.</p>
         ) : (
           <>
-            <div aria-live="polite" aria-atomic="true" className="bg-surface border border-rule rounded-3xl p-6 text-center">
+            <div aria-live="polite" aria-atomic="true" className="glass-lite rounded-3xl p-6 text-center">
               <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
                 {reinvertir ? "Al final del año recibes" : "Al vencimiento recibes"}
               </div>
@@ -114,7 +114,7 @@ export function CetesCalculator() {
             {resultado.ciclos.length > 0 && (
               <div className="mt-4">
                 <h3 className="text-[13px] font-bold text-ink mb-2">Reinversión, ciclo por ciclo</h3>
-                <ol className="bg-surface border border-rule rounded-2xl divide-y divide-rule overflow-hidden">
+                <ol className="glass-lite rounded-2xl divide-y divide-rule overflow-hidden">
                   {resultado.ciclos.map((ci) => (
                     <li key={ci.numero} className="flex items-center justify-between gap-4 px-4 py-2.5">
                       <span className="text-[13px] text-ink-soft">

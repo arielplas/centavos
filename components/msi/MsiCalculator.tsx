@@ -18,7 +18,7 @@ function limpiarNumero(v: string): string {
 }
 
 const campo =
-  "w-full bg-surface border border-rule-strong rounded-xl px-4 py-3 text-[16px] font-semibold text-ink " +
+  "w-full bg-white/[.72] border border-rule-strong rounded-xl px-4 py-3 text-[16px] font-semibold text-ink " +
   "placeholder:text-ink-soft/60 placeholder:font-normal";
 
 const etiqueta = "block text-[13px] font-bold text-ink mb-1.5";
@@ -53,7 +53,7 @@ export function MsiCalculator() {
     contadoNum !== null && Number.isFinite(contadoNum) && Number.isFinite(montoNum) && contadoNum > montoNum;
 
   return (
-    <div className="bg-sand/40 border border-rule rounded-[28px] p-5 md:p-7">
+    <div className="glass rounded-[28px] p-5 md:p-7">
       {/* ─── Entradas ─── */}
       <div className="grid gap-5 md:grid-cols-2">
         <div>
@@ -117,7 +117,7 @@ export function MsiCalculator() {
                 className={`min-w-[64px] rounded-full px-4 py-2.5 text-[14px] font-bold border transition-colors ${
                   activo
                     ? "bg-ink text-bg border-ink"
-                    : "bg-surface text-ink border-rule-strong hover:border-ink"
+                    : "bg-white/[.72] text-ink border-rule-strong hover:border-ink"
                 }`}
               >
                 {n} meses
@@ -159,7 +159,7 @@ export function MsiCalculator() {
           </p>
         ) : (
           <>
-            <div aria-live="polite" aria-atomic="true" className="bg-surface border border-rule rounded-3xl p-6 text-center">
+            <div aria-live="polite" aria-atomic="true" className="glass-lite rounded-3xl p-6 text-center">
               <div className="text-[11px] font-extrabold tracking-wider text-mandarina-deep uppercase mb-2">
                 Tu mensualidad
               </div>
@@ -180,7 +180,7 @@ export function MsiCalculator() {
 
             {/* Costo real de la promoción */}
             {resultado.tasaAnual !== null && resultado.sobrecosto !== null && (
-              <div className="bg-peach border border-mandarina/40 rounded-3xl p-5 md:p-6 mt-4">
+              <div className="bg-peach/75 backdrop-blur-xl border border-mandarina/40 rounded-3xl p-5 md:p-6 mt-4">
                 <div className="text-[11px] font-extrabold tracking-wider text-ink/70 uppercase mb-2">
                   Ojo con esto
                 </div>
@@ -199,7 +199,7 @@ export function MsiCalculator() {
             )}
 
             {resultado.tasaAnual === null && contadoNum !== null && !contadoMayor && Number.isFinite(contadoNum) && (
-              <div className="bg-sky/50 border border-rule rounded-3xl p-5 mt-4">
+              <div className="bg-sky/55 backdrop-blur-xl border border-rule rounded-3xl p-5 mt-4">
                 <p className="text-[14px] leading-relaxed text-ink">
                   <strong className="font-bold">Aquí sí es sin intereses de verdad.</strong> El precio de
                   contado y el precio a meses son iguales, así que diferir el pago no te cuesta nada.
@@ -212,7 +212,7 @@ export function MsiCalculator() {
               {resultado.pagos[0].fecha ? (
                 <>
                   <h3 className="text-[13px] font-bold text-ink mb-2">Tu calendario de pagos</h3>
-                  <ol className="bg-surface border border-rule rounded-2xl divide-y divide-rule overflow-hidden">
+                  <ol className="glass-lite rounded-2xl divide-y divide-rule overflow-hidden">
                     {resultado.pagos.map((p) => (
                       <li key={p.numero} className="flex items-center justify-between gap-4 px-4 py-2.5">
                         <span className="text-[13px] text-ink-soft">

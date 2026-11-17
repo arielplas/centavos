@@ -34,7 +34,7 @@ export type GastosHormigaPageCopy = {
 };
 
 const list = "list-disc pl-5 space-y-1.5 text-[16px] leading-relaxed text-ink mb-4";
-const formula = "bg-surface border border-rule rounded-2xl px-4 py-3 text-[15px] font-semibold text-ink mb-4";
+const formula = "glass rounded-2xl px-4 py-3 text-[15px] font-semibold text-ink mb-4";
 const link = "text-mandarina-deep underline underline-offset-2 font-semibold";
 
 const es: GastosHormigaPageCopy = {

@@ -19,7 +19,7 @@ export function BackToTop({ lang = DEFAULT_LANG }: { lang?: SiteLang }) {
     <button
       aria-label={UI[lang].backToTop}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-5 right-5 z-40 w-11 h-11 rounded-full bg-ink text-bg grid place-items-center shadow-lg transition-all duration-200 ${
+      className={`fixed bottom-5 right-5 z-40 w-11 h-11 rounded-full glass glass-strong text-ink grid place-items-center shadow-lg transition-all duration-200 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3 pointer-events-none"
       }`}
     >
