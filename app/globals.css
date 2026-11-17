@@ -212,6 +212,9 @@ p .mark {
   mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
 }
 .phone {
+  /* Own height (screen + bezel), not the wrapper's: stretched to the 495px
+     mobile wrapper, the 620px screen spilled out below the bezel. */
+  align-self: flex-start;
   width: 300px;
   border-radius: 44px;
   background: #15110d;
