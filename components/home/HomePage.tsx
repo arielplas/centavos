@@ -74,6 +74,7 @@ const FEATURE_SNIPPETS = [PresupuestosSnippet, SuscripcionesSnippet, MsiSnippet]
 export function HomePage({ lang }: { lang: SiteLang }) {
   const { storeUrl, playUrl } = getAppLinks();
   const c = HOME_COPY[lang];
+  const tools = c.tools;
 
   return (
     <>
@@ -241,26 +242,26 @@ export function HomePage({ lang }: { lang: SiteLang }) {
         </section>
 
         {/* FREE TOOLS — calculators (organic traffic + internal links). Spanish only. */}
-        {c.tools && (
+        {tools && (
           <section aria-labelledby="tools-title">
             <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20">
               <div className="max-w-2xl mb-10">
                 <h2 id="tools-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0]">
-                  {c.tools.title}
+                  {tools.title}
                 </h2>
                 <p className="text-base text-ink-soft mt-4">
-                  {c.tools.body}
+                  {tools.body}
                 </p>
               </div>
               <ul className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                {c.tools.items.map((t) => (
+                {tools.items.map((t) => (
                   <li key={t.href} className={t.featured ? "col-span-2 lg:col-span-3" : undefined}>
                     {/* The featured card is the dark one, like the footer and the
                         download button: cream text on ink, with the primary orange
                         as the accent. Ink text on an orange fill read too weakly. */}
                     <Link
                       href={t.href}
-                      className={`card-hover block h-full rounded-2xl p-4 sm:p-5 ${
+                      className={`group card-hover flex flex-col h-full rounded-2xl p-4 sm:p-5 ${
                         t.featured
                           ? "bg-ink border border-ink text-bg hover:border-mandarina"
                           : "glass hover:border-rule-strong"
@@ -269,6 +270,17 @@ export function HomePage({ lang }: { lang: SiteLang }) {
                       <div className="font-display text-xl font-extrabold tracking-[-0.02em]">{t.t}</div>
                       <div className={`text-[13px] mb-1.5 ${t.featured ? "text-bg/70" : "text-ink-soft"}`}>{t.tag}</div>
                       <p className={`text-[14px] leading-relaxed ${t.featured ? "text-bg/80" : "hidden sm:block text-ink-soft"}`}>{t.d}</p>
+                      {/* The whole card is the link; this only makes the action visible. */}
+                      <span aria-hidden className="mt-auto pt-4 block">
+                        <span
+                          className={`inline-flex items-center gap-1.5 text-[14px] font-bold ${
+                            t.featured ? "rounded-full bg-mandarina text-ink px-4 py-2" : "text-mandarina-deep"
+                          }`}
+                        >
+                          {t.featured ? tools.featuredCta : tools.cta}
+                          <span className="transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none">→</span>
+                        </span>
+                      </span>
                     </Link>
                   </li>
                 ))}

@@ -72,6 +72,9 @@ export type HomeCopy = {
     body: string;
     /** `featured` makes the card the dark one with orange accents: the one we most want opened. */
     items: { href: string; tag: string; t: string; d: string; featured?: boolean }[];
+    /** Visible call to action at the foot of each card; the featured card has its own. */
+    cta: string;
+    featuredCta: string;
   };
   /** Answers must be plain text: they also feed the FAQPage JSON-LD. */
   faq: {
@@ -183,6 +186,8 @@ const es: HomeCopy = {
       { href: "/ptu", tag: "reparto de utilidades", t: "PTU", d: "Estima cuánto te toca de utilidades, con el tope de la reforma 2021." },
       { href: "/cetes", tag: "ahorro e inversión", t: "CETES", d: "Cuánto ganas según el monto, el plazo y la tasa de la subasta." },
     ],
+    cta: "Calcular",
+    featuredCta: "Sacar la cuenta",
   },
   // FAQ: answers objections (conversion) and feeds the FAQPage rich result
   // (SEO). Only claims already made on the site or in the terms.
