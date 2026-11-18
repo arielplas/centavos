@@ -9,9 +9,10 @@
 // it when the email is verified. The offer is only shown when the API says the
 // code is live, so a missing or expired code never becomes a broken promise.
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { AppStoreBadges } from "@/components/home/AppStoreBadges";
+import { Logo } from "@/components/Logo";
 import { navHref, type SiteLang } from "@/lib/lang";
 import { claimCode, previewCode } from "@/lib/promo-api";
 import { SignupApiError, resendEmailCode, signup, verifyEmail, type SignupErrorCode } from "@/lib/signup-api";
@@ -39,13 +40,17 @@ const COPY = {
     hidePassword: "Ocultar contraseña",
     cta: "Crear cuenta",
     creating: "Creando tu cuenta…",
+    sending: "Mandándote el código…",
     legalBefore: "Al crear tu cuenta aceptas los",
     terms: "Términos",
     and: "y el",
     privacy: "Aviso de Privacidad",
     note: "y ya, es todo",
     verifyTitle: "Revisa tu correo",
-    verifyBody: (email: string) => `Te mandamos un código de 6 dígitos a ${email}.`,
+    namePlaceholder: "¿Cómo te llamamos?",
+    emailPlaceholder: "tu@correo.com",
+    passwordPlaceholder: "Crea una contraseña",
+    verifyBody: (email: ReactNode) => <>Te mandamos un código de 6 dígitos a {email}.</>,
     codeLabel: "Código",
     verify: "Confirmar",
     verifying: "Confirmando…",
@@ -53,7 +58,7 @@ const COPY = {
     resent: "Listo, te mandamos uno nuevo.",
     changeEmail: "Usar otro correo",
     doneTitle: (name: string) => `¡Listo, ${name}!`,
-    doneBody: (email: string) => `Tu cuenta ya existe. Descarga Centavos y entra con ${email}.`,
+    doneBody: (email: ReactNode) => <>Tu cuenta ya existe. Descarga Centavos y entra con {email}.</>,
     doneGift: (days: number) => `Ya tienes ${days} días de Centavos+ en tu cuenta.`,
     errorPrefix: "Error:",
     fieldErrors: {
@@ -89,13 +94,17 @@ const COPY = {
     hidePassword: "Hide password",
     cta: "Create account",
     creating: "Creating your account…",
+    sending: "Sending your code…",
     legalBefore: "By creating an account you accept the",
     terms: "Terms",
     and: "and the",
     privacy: "Privacy Notice",
     note: "that's the whole form",
     verifyTitle: "Check your email",
-    verifyBody: (email: string) => `We sent a 6-digit code to ${email}.`,
+    namePlaceholder: "What should we call you?",
+    emailPlaceholder: "you@email.com",
+    passwordPlaceholder: "Create a password",
+    verifyBody: (email: ReactNode) => <>We sent a 6-digit code to {email}.</>,
     codeLabel: "Code",
     verify: "Confirm",
     verifying: "Confirming…",
@@ -103,7 +112,7 @@ const COPY = {
     resent: "Done, we sent a new one.",
     changeEmail: "Use another email",
     doneTitle: (name: string) => `You're in, ${name}!`,
-    doneBody: (email: string) => `Your account is ready. Download Centavos and sign in with ${email}.`,
+    doneBody: (email: ReactNode) => <>Your account is ready. Download Centavos and sign in with {email}.</>,
     doneGift: (days: number) => `You now have ${days} days of Centavos+ on your account.`,
     errorPrefix: "Error:",
     fieldErrors: {
@@ -130,11 +139,16 @@ const COPY = {
 
 const label = "text-[12px] font-bold mb-1.5 block";
 const field =
-  "h-12 w-full rounded-2xl glass-lite px-4 text-[15px] text-ink placeholder:text-ink-soft outline-none focus:ring-2 focus:ring-ink focus:border-ink disabled:opacity-60 aria-[invalid=true]:border-mandarina-deep";
+  "h-12 w-full rounded-2xl glass-lite px-4 text-[15px] text-ink placeholder:text-ink-soft/70 outline-none focus:ring-2 focus:ring-ink focus:border-ink disabled:opacity-60 aria-[invalid=true]:border-mandarina-deep";
 const primary =
-  "h-12 w-full rounded-2xl bg-ink text-bg font-bold cursor-pointer hover:opacity-85 transition-opacity duration-150 disabled:opacity-60 disabled:cursor-default";
+  "h-12 w-full rounded-2xl bg-ink text-bg font-bold cursor-pointer hover:opacity-85 transition-opacity duration-150 disabled:hover:opacity-100 disabled:cursor-progress";
 const link = "text-[13px] font-semibold text-mandarina-deep underline underline-offset-2 cursor-pointer";
 const fieldErrorClass = "text-[12px] font-semibold text-mandarina-deep mt-1.5";
+
+/** A floor on how long a step takes, so its progress is seen instead of flashing. */
+function pause(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function asError(e: unknown): SignupApiError {
   return e instanceof SignupApiError ? e : new SignupApiError("UNKNOWN");
@@ -189,7 +203,7 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
           () => false,
         );
       }
-      const { userId, verified } = await signup(name, email, password);
+      const [{ userId, verified }] = await Promise.all([signup(name, email, password), pause(1100)]);
       setStep(verified ? { kind: "done", name, email, claimed } : { kind: "verify", userId, name, email, claimed });
     } catch (e) {
       setError(asError(e));
@@ -203,7 +217,7 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
     setBusy(true);
     setError(null);
     try {
-      await verifyEmail(step.userId, code);
+      await Promise.all([verifyEmail(step.userId, code), pause(700)]);
       setStep({ kind: "done", name: step.name, email: step.email, claimed: step.claimed });
     } catch (e) {
       const err = asError(e);
@@ -237,7 +251,7 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
       ref={headingRef}
       tabIndex={-1}
       style={{ outline: "none" }}
-      className="font-display text-2xl font-extrabold tracking-[-0.03em] mt-4 mb-5"
+      className="font-display text-2xl font-extrabold tracking-[-0.03em] mt-5 mb-5"
     >
       {text}
     </h3>
@@ -246,10 +260,9 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
   return (
     <div className="w-full max-w-sm mx-auto md:mx-0 md:ml-auto">
       <div className="app-backdrop text-ink rounded-[28px] p-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,.5)]">
-        <span aria-hidden className="w-9 h-9 rounded-xl bg-mandarina text-bg grid place-items-center font-display font-extrabold">
-          C
-        </span>
+        <Logo size={24} href={null} />
 
+        <div key={step.kind} className="signup-step">
         {step.kind === "form" && (
           <>
             {heading(t.title)}
@@ -265,7 +278,7 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
         {step.kind === "verify" && (
           <>
             {heading(t.verifyTitle)}
-            <p className="text-[14px] leading-relaxed text-ink-soft -mt-2 mb-5">{t.verifyBody(step.email)}</p>
+            <p className="text-[14px] leading-relaxed text-ink-soft -mt-2 mb-5">{t.verifyBody(<strong className="font-bold text-ink break-words">{step.email}</strong>)}</p>
             <CodeForm
               t={t}
               busy={busy}
@@ -282,17 +295,21 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
 
         {step.kind === "done" && (
           <div role="status">
+            <SuccessMark />
             {heading(t.doneTitle(step.name))}
-            <p className="text-[15px] leading-relaxed text-ink-soft -mt-2">{t.doneBody(step.email)}</p>
+            <p className="text-[15px] leading-relaxed text-ink-soft -mt-2">{t.doneBody(<strong className="font-bold text-ink break-words">{step.email}</strong>)}</p>
             {step.claimed && giftDays && (
-              <p className="mt-4 rounded-2xl bg-yolk text-ink px-4 py-3 text-[13px] font-bold leading-snug">
+              <p className="signup-pop mt-4 rounded-2xl bg-yolk text-ink px-4 py-3 text-[13px] font-bold leading-snug" style={{ animationDelay: "300ms" }}>
                 <span aria-hidden>+</span> {t.doneGift(giftDays)}
               </p>
             )}
-            <p className="text-[12px] font-bold mt-6 mb-3">{t.downloadLabel}</p>
-            <AppStoreBadges {...getAppLinks()} lang={lang} />
+            <p className="signup-rise text-[12px] font-bold mt-6 mb-3" style={{ animationDelay: "380ms" }}>{t.downloadLabel}</p>
+            <div className="signup-rise" style={{ animationDelay: "420ms" }}>
+              <AppStoreBadges {...getAppLinks()} lang={lang} />
+            </div>
           </div>
         )}
+        </div>
       </div>
       {step.kind === "form" && (
         <div aria-hidden className="mt-4 flex items-start justify-end gap-2 text-yolk font-hand text-3xl -rotate-2">
@@ -348,6 +365,7 @@ function SignupForm({
 
   return (
     <form onSubmit={submit} className="space-y-4">
+      <Shake on={error} />
       <div>
         <label htmlFor="signup-name" className={label}>{t.name}</label>
         <input
@@ -356,6 +374,7 @@ function SignupForm({
           required
           maxLength={100}
           autoComplete="name"
+          placeholder={t.namePlaceholder}
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={busy}
@@ -373,6 +392,7 @@ function SignupForm({
           required
           maxLength={254}
           autoComplete="email"
+          placeholder={t.emailPlaceholder}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={busy}
@@ -392,6 +412,7 @@ function SignupForm({
             minLength={8}
             maxLength={72}
             autoComplete="new-password"
+            placeholder={t.passwordPlaceholder}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={busy}
@@ -417,7 +438,7 @@ function SignupForm({
       </div>
       <ErrorLine t={t} error={anyField ? null : error} />
       <button type="submit" disabled={busy} className={`${primary} mt-2`}>
-        {busy ? t.creating : t.cta}
+        {busy ? <Busy labels={[t.creating, t.sending]} /> : t.cta}
       </button>
       <p className="text-[12px] leading-snug text-ink-soft">
         {t.legalBefore}{" "}
@@ -467,6 +488,7 @@ function CodeForm({
 
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
+      <Shake on={error ?? (short ? "short" : null)} />
       <div>
         <label htmlFor="signup-code" className={label}>{t.codeLabel}</label>
         <input
@@ -475,6 +497,7 @@ function CodeForm({
           type="text"
           inputMode="numeric"
           autoComplete="one-time-code"
+          placeholder="000000"
           pattern="[0-9]{6}"
           maxLength={6}
           value={code}
@@ -489,7 +512,7 @@ function CodeForm({
       <ErrorLine t={t} error={error} />
       {resent && !error && <p role="status" className="text-[13px] font-semibold text-ink">{t.resent}</p>}
       <button type="submit" disabled={busy} className={primary}>
-        {busy ? t.verifying : t.verify}
+        {busy ? <Busy labels={[t.verifying]} /> : t.verify}
       </button>
       <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
         <button
@@ -505,5 +528,48 @@ function CodeForm({
         </button>
       </div>
     </form>
+  );
+}
+
+/** Spinner plus a label that moves on to the next phase after a beat. */
+function Busy({ labels }: { labels: readonly string[] }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (labels.length < 2) return;
+    const id = setTimeout(() => setI(1), 650);
+    return () => clearTimeout(id);
+  }, [labels.length]);
+  return (
+    <span className="inline-flex items-center justify-center gap-2.5">
+      <span aria-hidden className="signup-spin h-4 w-4 rounded-full border-2 border-bg/30 border-t-bg" />
+      <span key={i} className="signup-fade">{labels[i]}</span>
+    </span>
+  );
+}
+
+/**
+ * Shakes the form it sits in whenever `on` changes to a new truthy value.
+ * Renders nothing; it only toggles a class on its parent.
+ */
+function Shake({ on }: { on: unknown }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const form = ref.current?.parentElement;
+    if (!on || !form) return;
+    form.classList.remove("signup-shake");
+    void form.offsetWidth; // restart the animation
+    form.classList.add("signup-shake");
+  }, [on]);
+  return <span ref={ref} hidden />;
+}
+
+/** Drawn check in a mandarina coin, for the "done" step. */
+function SuccessMark() {
+  return (
+    <span aria-hidden className="signup-pop mt-5 grid h-14 w-14 place-items-center rounded-full bg-mandarina shadow-[inset_0_-3px_0_rgba(0,0,0,0.08)]">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-ink)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path className="signup-check" d="M7 14.5l4.5 4.5L21 9.5" />
+      </svg>
+    </span>
   );
 }

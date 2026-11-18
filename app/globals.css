@@ -337,3 +337,21 @@ p .mark {
 /* Nota a mano: aparece al final, cuando el gasto ya quedó anotado. */
 .demo [data-a="note"] { animation-name: demo-note; }
 @keyframes demo-note { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Landing sign-up card (components/home/SignupCard.tsx) ─────────────── */
+@keyframes signup-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes signup-pop { 0% { opacity: 0; transform: scale(.6); } 60% { opacity: 1; transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes signup-draw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+@keyframes signup-shake { 0%, 100% { transform: none; } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes signup-spin { to { transform: rotate(360deg); } }
+.signup-step { animation: signup-in .38s cubic-bezier(.2,.8,.2,1) both; }
+.signup-rise { animation: signup-in .4s cubic-bezier(.2,.8,.2,1) both; }
+.signup-fade { animation: signup-in .25s ease-out both; }
+.signup-pop { animation: signup-pop .5s cubic-bezier(.2,.8,.2,1) both; }
+.signup-check { stroke-dasharray: 24; animation: signup-draw .4s ease-out .3s both; }
+.signup-shake { animation: signup-shake .4s ease-in-out; }
+.signup-spin { animation: signup-spin .7s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .signup-step, .signup-rise, .signup-fade, .signup-pop, .signup-check, .signup-shake { animation: none; }
+  .signup-spin { animation-duration: 1.6s; }
+}
