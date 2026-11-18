@@ -29,7 +29,9 @@ type Step =
 const COPY = {
   es: {
     title: "Crea tu cuenta",
-    gift: (days: number) => `Regístrate aquí y te regalamos ${days} días de Centavos+`,
+    giftUnit: (days: number) => (days === 1 ? "día gratis" : "días gratis"),
+    giftPlan: "de Centavos+",
+    giftNote: "Tu regalo por crear tu cuenta aquí",
     name: "Nombre",
     email: "Correo",
     password: "Contraseña",
@@ -84,7 +86,9 @@ const COPY = {
   },
   en: {
     title: "Create your account",
-    gift: (days: number) => `Sign up here and get ${days} days of Centavos+ on us`,
+    giftUnit: (days: number) => (days === 1 ? "day free" : "days free"),
+    giftPlan: "of Centavos+",
+    giftNote: "Your gift for signing up here",
     name: "Name",
     email: "Email",
     password: "Password",
@@ -269,9 +273,23 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
           <>
             {heading(t.title)}
             {giftDays && (
-              <p className="-mt-2 mb-5 rounded-2xl bg-yolk text-ink px-4 py-3 text-[13px] font-bold leading-snug">
-                <span aria-hidden>+</span> {t.gift(giftDays)}
-              </p>
+              // A small coupon, like the one on /canjear: the number is the
+              // first thing the eye lands on.
+              <div className="signup-pop relative -mt-1 mb-6 overflow-hidden rounded-2xl bg-ink text-bg px-4 py-4 shadow-[0_16px_32px_-18px_rgba(42,26,16,.7)]">
+                <span aria-hidden className="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-mandarina/40" />
+                <span aria-hidden className="absolute -bottom-12 right-16 h-20 w-20 rounded-full bg-yolk/15" />
+                <p className="relative flex items-center gap-3.5">
+                  <span className="font-display text-[64px] font-extrabold leading-[0.8] tracking-[-0.05em] text-yolk">{giftDays}</span>
+                  <span className="min-w-0">
+                    <span className="block font-display text-[20px] font-extrabold leading-[1.05] tracking-[-0.02em]">
+                      {t.giftUnit(giftDays)}
+                      <br />
+                      {t.giftPlan}
+                    </span>
+                    <span className="mt-1.5 block text-[12px] font-semibold text-bg/75">{t.giftNote}</span>
+                  </span>
+                </p>
+              </div>
             )}
             <SignupForm t={t} lang={lang} busy={busy} error={error} onSubmit={create} />
           </>
