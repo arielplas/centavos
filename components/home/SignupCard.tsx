@@ -156,6 +156,9 @@ function pause(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/** Submitting sooner than this after the page loaded is not a person. */
+const MIN_FILL_MS = 2500;
+
 function asError(e: unknown): SignupApiError {
   return e instanceof SignupApiError ? e : new SignupApiError("UNKNOWN");
 }
@@ -195,9 +198,18 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
     headingRef.current?.focus();
   }, [step.kind]);
 
-  async function create(name: string, email: string, password: string) {
+  async function create(name: string, email: string, password: string, bot: boolean) {
     setBusy(true);
     setError(null);
+    // A bot (see SignupForm): act exactly as if it worked, but never call the
+    // API, so nothing is created and no email is sent. The decoy verify step
+    // has no user and refuses every code.
+    if (bot) {
+      await pause(1100);
+      setStep({ kind: "verify", userId: "", name, email, claimed: false });
+      setBusy(false);
+      return;
+    }
     try {
       // Reserve the code first: the API grants it when the email is verified,
       // and in development signup verifies on the spot. Best-effort: a failed
@@ -223,6 +235,10 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
     setBusy(true);
     setError(null);
     try {
+      if (!step.userId) {
+        await pause(700);
+        throw new SignupApiError("AUTH_CODE_INVALID");
+      }
       await Promise.all([verifyEmail(step.userId, code), pause(700)]);
       setStep({ kind: "done", name: step.name, email: step.email, claimed: step.claimed });
     } catch (e) {
@@ -239,6 +255,7 @@ export function SignupCard({ lang }: { lang: SiteLang }) {
 
   async function resend(): Promise<boolean> {
     if (step.kind !== "verify") return false;
+    if (!step.userId) return true; // decoy step: nothing to resend
     setBusy(true);
     setError(null);
     try {
@@ -368,17 +385,25 @@ function SignupForm({
   lang: SiteLang;
   busy: boolean;
   error: SignupApiError | null;
-  onSubmit: (name: string, email: string, password: string) => void;
+  onSubmit: (name: string, email: string, password: string, bot: boolean) => void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const longEnough = password.length >= 8 && password.length <= 72;
+  const honeypot = useRef<HTMLInputElement>(null);
 
   function submit(e: FormEvent) {
     e.preventDefault();
-    if (!busy) onSubmit(name.trim(), email.trim(), password);
+    if (busy) return;
+    // Light anti-spam, invisible to people: a filled honeypot, or a form sent
+    // faster than anyone can type three fields. The API's rate limits remain
+    // the real defence; this only keeps form-filling bots off it.
+    // Measured from page load (not from this form mounting) so going back with
+    // "use another email" and autofilling never trips it.
+    const tooFast = performance.now() < MIN_FILL_MS;
+    onSubmit(name.trim(), email.trim(), password, honeypot.current?.value !== "" || tooFast);
   }
 
   const bad = { name: rejected(error, "name"), email: rejected(error, "email"), password: rejected(error, "password") };
@@ -386,6 +411,11 @@ function SignupForm({
 
   return (
     <form onSubmit={submit} className="space-y-4">
+      {/* Honeypot: off-screen and out of the tab order, so only bots fill it. */}
+      <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label htmlFor="signup-hp">Deja este campo vacío</label>
+        <input ref={honeypot} id="signup-hp" name="centavos_hp" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
+      </div>
       <Shake on={error} />
       <div>
         <label htmlFor="signup-name" className={label}>{t.name}</label>
