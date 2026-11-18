@@ -125,7 +125,7 @@ export function AppFooter({
         </nav>
 
         <div className="mt-8 pt-5 border-t border-bg/10 text-[11px] text-bg/60 tracking-wide flex flex-wrap items-center gap-x-4 gap-y-1">
-          <span>© {new Date().getFullYear()} Centavos · {strings.footerMadeIn}</span>
+          <span>© {new Date().getFullYear()} Centavos</span>
         </div>
       </div>
     </footer>

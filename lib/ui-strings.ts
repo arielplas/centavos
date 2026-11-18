@@ -33,7 +33,6 @@ export type UIStrings = {
   footerDeleteAccount: string;
   footerTerms: string;
   footerPrivacy: string;
-  footerMadeIn: string;
   /** Footer link to the one calculator that exists in both languages. */
   footerGastosHormiga: string;
   /** Label of the link that switches to the other language. */
@@ -68,7 +67,6 @@ export const UI: Record<SiteLang, UIStrings> = {
     footerDeleteAccount: "Eliminar cuenta",
     footerTerms: "Términos y Condiciones",
     footerPrivacy: "Aviso de Privacidad",
-    footerMadeIn: "Hecho en México",
     footerGastosHormiga: "Gastos hormiga",
     switchToLabel: "English",
     switchToAria: "Read this page in English",
@@ -98,7 +96,6 @@ export const UI: Record<SiteLang, UIStrings> = {
     footerDeleteAccount: "Delete your account",
     footerTerms: "Terms and Conditions",
     footerPrivacy: "Privacy Notice",
-    footerMadeIn: "Made in Mexico",
     footerGastosHormiga: "Small expenses",
     switchToLabel: "Español",
     switchToAria: "Leer esta página en español",

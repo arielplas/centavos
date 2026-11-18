@@ -121,7 +121,7 @@ const es: HomeCopy = {
     titleAccent: "sin conectar tu banco",
     body: "Abres la app, escribes el monto, eliges la categoría y ya quedó. Lo anotas tú, a mano: tu banco y tus tarjetas se quedan fuera.",
     commitmentsLabel: "Compromisos de Centavos",
-    commitments: ["Gratis en iOS y Android", "Hecho en México"],
+    commitments: ["Gratis en iOS y Android"],
     note: "y listo, anotado",
     mockAlt:
       "Pantalla de la app mostrando el Pulso: se anota un gasto de $85 en Comida y tu dinero disponible del mes baja de $3,541 a $3,456.",
@@ -271,7 +271,7 @@ const en: HomeCopy = {
     titleAccent: "without linking your bank",
     body: "Open the app, type the amount, pick a category, done. You log it by hand, so your bank and your cards stay out of it.",
     commitmentsLabel: "What Centavos promises",
-    commitments: ["Free on iOS and Android", "Made in Mexico"],
+    commitments: ["Free on iOS and Android"],
     note: "and done, it's logged",
     mockAlt:
       "App screen showing Pulse: an $85 food expense is logged and the money available this month goes from $3,541 to $3,456.",
