@@ -34,6 +34,7 @@ const COPY = {
     email: "Correo",
     password: "Contraseña",
     passwordHint: "Mínimo 8 caracteres.",
+    passwordOk: "(listo)",
     show: "Ver",
     hide: "Ocultar",
     showPassword: "Mostrar contraseña",
@@ -88,6 +89,7 @@ const COPY = {
     email: "Email",
     password: "Password",
     passwordHint: "At least 8 characters.",
+    passwordOk: "(done)",
     show: "Show",
     hide: "Hide",
     showPassword: "Show password",
@@ -354,6 +356,7 @@ function SignupForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const longEnough = password.length >= 8 && password.length <= 72;
 
   function submit(e: FormEvent) {
     e.preventDefault();
@@ -433,7 +436,27 @@ function SignupForm({
         {bad.password ? (
           <p id="signup-password-error" className={fieldErrorClass}>{t.fieldErrors.password}</p>
         ) : (
-          <p id="signup-password-hint" className="text-[12px] text-ink-soft mt-1.5">{t.passwordHint}</p>
+          <p
+            id="signup-password-hint"
+            className={`mt-1.5 flex items-center gap-1.5 text-[12px] transition-colors duration-150 ${longEnough ? "font-semibold text-ink" : "text-ink-soft"}`}
+          >
+            {/* Empty ring until the password is long enough, then a check. */}
+            <span
+              aria-hidden
+              key={longEnough ? "ok" : "no"}
+              className={`grid h-4 w-4 flex-shrink-0 place-items-center rounded-full ${
+                longEnough ? "signup-pop bg-ink text-bg" : "border-[1.5px] border-rule-strong"
+              }`}
+            >
+              {longEnough && (
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 5.2l2 2L8 3" />
+                </svg>
+              )}
+            </span>
+            {t.passwordHint}
+            {longEnough && <span className="sr-only">{t.passwordOk}</span>}
+          </p>
         )}
       </div>
       <ErrorLine t={t} error={anyField ? null : error} />
