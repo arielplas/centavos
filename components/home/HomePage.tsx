@@ -7,6 +7,7 @@ import { AppStoreBadges, InlineStoreLinks } from "@/components/home/AppStoreBadg
 import { HOME_COPY } from "@/components/home/copy";
 import { HeroDemo } from "@/components/home/HeroDemo";
 import { MobileDownloadBar } from "@/components/home/MobileDownloadBar";
+import { SignupCard } from "@/components/home/SignupCard";
 import {
   PhoneFrame,
   PulsoMock,
@@ -19,6 +20,7 @@ import {
 } from "@/components/home/PhoneMock";
 import { HtmlLang } from "@/components/legal/HtmlLang";
 import { DEFAULT_LANG, OG_LOCALE, langAlternates, langHref, navHref, type SiteLang } from "@/lib/lang";
+import { API_CONFIGURED } from "@/lib/promo-api";
 import { getAppLinks } from "@/lib/store-links";
 import { appStoreId, faqJsonLd, mobileApplicationJsonLd, pageOpenGraph } from "@/lib/seo";
 
@@ -187,8 +189,15 @@ export function HomePage({ lang }: { lang: SiteLang }) {
               {c.privacy.title.lead}<br /><span className="text-yolk">{c.privacy.title.accent}</span>
             </h2>
             <div className="md:col-start-2 md:row-start-1 md:row-span-2">
-              <p className="sr-only">{c.privacy.mockAlt}</p>
-              <SignupMock lang={lang} />
+              {/* A real sign-up form when the API is set; the drawing otherwise. */}
+              {API_CONFIGURED ? (
+                <SignupCard lang={lang} />
+              ) : (
+                <>
+                  <p className="sr-only">{c.privacy.mockAlt}</p>
+                  <SignupMock lang={lang} />
+                </>
+              )}
             </div>
             <div className="md:col-start-1">
               <p className="text-lg leading-relaxed text-bg/75 max-w-md">{c.privacy.body}</p>
