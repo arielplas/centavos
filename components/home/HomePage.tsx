@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { AiSectionViewTracker } from "@/components/home/AiSectionViewTracker";
 import { AppFooter } from "@/components/home/AppFooter";
 import { AppStoreBadges, InlineStoreLinks } from "@/components/home/AppStoreBadges";
 import { HOME_COPY } from "@/components/home/copy";
@@ -184,6 +185,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
 
         {/* AI CONNECTOR — announced as coming soon: no form, no steps */}
         <section aria-labelledby="ai-title" className="bg-sand/40">
+          <AiSectionViewTracker lang={lang} />
           <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-[1fr_1.1fr] gap-10 items-center">
             <div>
               <p className="inline-flex items-center gap-2 rounded-full bg-ink text-bg px-3.5 py-1.5 text-[13px] font-bold mb-5">
