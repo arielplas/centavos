@@ -255,6 +255,20 @@ p .mark {
   .demo [data-a] { animation: none !important; }
 }
 
+/* Chat del conector de IA (usa .demo): la burbuja entra, el "escribiendo…" se
+   ve un instante y luego entra la respuesta. El estado base es el final
+   (respuesta visible, puntos ocultos), así que sin JS o con movimiento
+   reducido se ve la conversación completa. */
+.demo [data-a="chat"] { animation-name: demo-note; }
+.chat-typing { opacity: 0; }
+.demo [data-a="typing"] { animation-name: demo-typing; animation-timing-function: linear; }
+@keyframes demo-typing { 0% { opacity: 0; } 12%, 88% { opacity: 1; } 100% { opacity: 0; } }
+.chat-typing > i { width: 6px; height: 6px; border-radius: 9999px; background: var(--color-ink-soft); animation: chat-dot 1s ease-in-out infinite; }
+.chat-typing > i:nth-child(2) { animation-delay: .15s; }
+.chat-typing > i:nth-child(3) { animation-delay: .3s; }
+@keyframes chat-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-3px); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .chat-typing > i { animation: none; } }
+
 /* Cifras que "ruedan": la vieja sale hacia arriba y la nueva entra desde abajo. */
 .roll { display: inline-grid; overflow: hidden; padding-block: .1em; margin-block: -.1em; }
 .roll > * { grid-area: 1 / 1; }
