@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
+    "@cntvos/icons": "file:./vendor/cntvos-icons-0.1.0.tgz",
+    "@cntvos/tokens": "file:./vendor/cntvos-tokens-0.1.0.tgz",
     "@vercel/analytics": "^2.0.1",
     "@vercel/functions": "^3.6.1",
     "@vercel/speed-insights": "^2.0.0",

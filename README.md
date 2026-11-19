@@ -180,6 +180,16 @@ Especificación completa en [docs/calculadoras/gastos-hormiga.md](./docs/calcula
 - La cuenta está en `lib/gastos-hormiga.ts` y es la misma que implementa la API;
   el contrato del endpoint, en `lib/gastos-hormiga-api.ts`.
 
+## Sistema de diseño
+
+La fuente de verdad visual es el repo **centavos-design** (ADR 0001). La landing no define colores, fuentes ni paths de íconos a mano:
+
+- **Tokens:** `@cntvos/tokens`. `app/globals.css` importa `@cntvos/tokens/tailwind.css` (el `@theme` generado: paleta, fuentes, escala tipográfica, radios `cv-`, sombras `cv-`, easing).
+- **Íconos:** `@cntvos/icons`. `components/canjear/BenefitGlyph.tsx` toma de ahí los paths, el contrato de trazo y el mapeo de beneficios.
+- **Distribución:** mientras no exista GitHub Packages, ambos paquetes viajan como tarballs en `vendor/` (ver `vendor/README.md` para actualizarlos).
+- **Para cambiar un color o un ícono:** se cambia en centavos-design, se empaqueta y se copia el tarball nuevo aquí; no se edita este repo.
+- **Pendiente (fase ui-web):** el vidrio, la hoja de cuaderno, la maqueta del teléfono y varios valores sueltos en componentes aún llevan colores literales.
+
 ## Notas
 
 - El formulario de soporte (`/app/soporte`) apunta a `POST /api/soporte`, que hoy

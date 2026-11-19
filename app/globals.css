@@ -1,32 +1,12 @@
 @import "tailwindcss";
+@import "@cntvos/tokens/tailwind.css";
 
-/* ──────────────────────────────────────────────────────────────
-   Centavo · Design tokens (Tailwind v4 via @theme)
-   ────────────────────────────────────────────────────────────── */
-@theme {
-  /* Brand */
-  --color-bg:             #faf3e3;
-  --color-surface:        #ffffff;
-  --color-sand:           #f5dcb8;
-  --color-peach:          #f7d1bb;
-  --color-sky:            #cfe1e8;
-
-  --color-mandarina:      #ed7e3c;
-  /* Texto naranja: 5.1:1 sobre --color-bg (AA para texto pequeño). */
-  --color-mandarina-deep: #a84a22;
-  --color-yolk:           #f5b833;
-
-  --color-ink:            #2a1a10;
-  --color-ink-soft:       #6e5849;
-  --color-rule:           #ead9c2;
-  /* Borde de controles (inputs, chips): ≥3:1 sobre surface/bg (WCAG 1.4.11). */
-  --color-rule-strong:    #a08a6a;
-
-  /* Fonts — wiring se hace en app/layout.tsx con next/font */
-  --font-display: var(--font-bricolage), system-ui, sans-serif;
-  --font-body:    var(--font-manrope), -apple-system, system-ui, sans-serif;
-  --font-hand:    var(--font-caveat), cursive;
-}
+/* Design tokens (colors, fonts, type scale, radii, shadows, easing) come from
+   @cntvos/tokens, the generated Tailwind output of the centavos-design repo;
+   they are no longer hand-written here. One value moved on purpose:
+   --color-rule-strong is now #9d8977 (was #a08a6a), per ADR 0001 in
+   centavos-design. The glass utilities, paper and phone mock below still carry
+   their own literal values until the ui-web phase migrates them. */
 
 /* Globals */
 html {

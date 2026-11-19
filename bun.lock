@@ -6,6 +6,8 @@
       "name": "centavo",
       "dependencies": {
         "@anthropic-ai/sdk": "^0.100.1",
+        "@cntvos/icons": "file:./vendor/cntvos-icons-0.1.0.tgz",
+        "@cntvos/tokens": "file:./vendor/cntvos-tokens-0.1.0.tgz",
         "@vercel/analytics": "^2.0.1",
         "@vercel/functions": "^3.6.1",
         "@vercel/speed-insights": "^2.0.0",
@@ -33,6 +35,10 @@
     "@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.100.1", "", { "dependencies": { "json-schema-to-ts": "^3.1.1", "standardwebhooks": "^1.0.0" }, "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" }, "optionalPeers": ["zod"], "bin": { "anthropic-ai-sdk": "bin/cli" } }, "sha512-RANcEe7LpiLczkKGOwoXOTuFdPhuubS0i4xaAKOMpcqc55YO0mukgxppV7eygx3DXNjxWT6RYOLPyOy0aIAmwg=="],
 
     "@babel/runtime": ["@babel/runtime@7.29.7", "", {}, "sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw=="],
+
+    "@cntvos/icons": ["@cntvos/icons@./vendor/cntvos-icons-0.1.0.tgz", {}, "sha512-lA8guBkvAVJASNl+USEdXWgkkGte+ZNoEPNwVlAa4P5U1LqRmxuCX93l30vIvDCC7LqqUjybPK8ZZS7pgDvw1g=="],
+
+    "@cntvos/tokens": ["@cntvos/tokens@./vendor/cntvos-tokens-0.1.0.tgz", {}, "sha512-N8dtuVMliRLUSuEzoDMHw/zARbK/m4gQuZuXqUYB4dv+wtf6baLibkgOOI2uHjzeodNac3mC6dTPLMDdMbCPWA=="],
 
     "@emnapi/core": ["@emnapi/core@1.10.0", "", { "dependencies": { "@emnapi/wasi-threads": "1.2.1", "tslib": "^2.4.0" } }, "sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw=="],
 
