@@ -250,6 +250,44 @@ export function HomePage({ lang }: { lang: SiteLang }) {
           </div>
         </section>
 
+        {/* AI CONNECTOR — announced as coming soon: no form, no steps */}
+        <section aria-labelledby="ai-title" className="bg-sand/40">
+          <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-[1fr_1.1fr] gap-10 items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-ink text-bg px-3.5 py-1.5 text-[13px] font-bold mb-5">
+                <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-yolk" /> {c.ai.badge}
+              </p>
+              <h2 id="ai-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
+                {c.ai.titleLead}<br /><mark className="mark">{c.ai.titleAccent}</mark>
+              </h2>
+              <p className="text-base leading-relaxed text-ink-soft max-w-md">{c.ai.body}</p>
+            </div>
+            <div>
+              <ul className="space-y-5" aria-label={c.ai.chatLabel}>
+                {c.ai.chats.map((chat) => (
+                  <li key={chat.you} className="space-y-2">
+                    <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-mandarina text-ink px-4 py-2.5 text-[15px] font-semibold">
+                      <span className="sr-only">{c.ai.youLabel}: </span>{chat.you}
+                    </p>
+                    <p className="glass w-fit max-w-[92%] rounded-2xl rounded-bl-md px-4 py-2.5 text-[15px] leading-snug">
+                      <span className="sr-only">{c.ai.aiLabel}: </span>{chat.ai}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-[12px] text-ink-soft mt-4">{c.ai.note}</p>
+            </div>
+          </div>
+          <ul className="mx-auto max-w-screen-lg px-5 pb-14 md:pb-20 grid md:grid-cols-3 gap-3 -mt-4" aria-label={c.ai.trustLabel}>
+            {c.ai.trust.map((t) => (
+              <li key={t.t} className="glass rounded-2xl px-5 py-4">
+                <h3 className="font-display text-lg font-extrabold tracking-[-0.02em]">{t.t}</h3>
+                <p className="text-[14px] leading-relaxed text-ink-soft mt-1">{t.d}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         {/* FREE TOOLS — calculators (organic traffic + internal links). Spanish only. */}
         {tools && (
           <section aria-labelledby="tools-title">
