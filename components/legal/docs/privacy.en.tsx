@@ -8,7 +8,7 @@ export const privacyEn: LegalDoc = {
   title: "Privacy Notice",
   description:
     "Privacy Notice for the Centavos app under Mexico's LFPDPPP: what data we collect, what we use it for, how we protect it and how to exercise your ARCO rights.",
-  updated: "June 11, 2026",
+  updated: "November 19, 2026",
   intro: (
     <p>
       At <b className="text-ink">Centavos</b>{" "}
@@ -117,6 +117,35 @@ export const privacyEn: LegalDoc = {
             purposes.</b> Beyond the above, we would only share data if a competent authority
             required it of us under the law.
           </p>
+          <p>
+            <b>Connection with Claude (Anthropic), only if you turn it on.</b> You can connect your
+            Centavos account to Claude, Anthropic&rsquo;s assistant, from Settings → Connect to Claude
+            (more at <a href="/app/claude?lang=en">centavos.mx/app/claude</a>). While the connection is
+            active and when you ask Claude to:
+          </p>
+          <ul>
+            <li>
+              Centavos sends Claude the data it needs to answer you: your expenses (amount,
+              category, note and date), budgets, subscriptions and summaries of what you have spent.
+              Claude can also log expenses and create, edit or delete expenses, budgets and
+              subscriptions in your account.
+            </li>
+            <li>
+              This transfer happens at your express request. What Claude receives is subject to
+              Anthropic&rsquo;s terms and privacy policy that apply to your use of Claude.
+            </li>
+            <li>
+              Centavos does not receive your conversations with Claude, only the specific requests
+              Claude makes to your account. We keep the date of the connection, when it was last
+              used, your time zone and which expenses were logged from Claude, to run the service
+              and show you your connections.
+            </li>
+            <li>
+              You can disconnect at any time from Settings → Connect to Claude or by removing the
+              connector in Claude. Once disconnected, Claude loses access immediately; what it
+              already received remains subject to Anthropic&rsquo;s policies.
+            </li>
+          </ul>
         </>
       ),
     },
@@ -228,7 +257,7 @@ export const privacyEn: LegalDoc = {
     },
     {
       title: "Last updated",
-      body: <p>This notice was last updated on <b>June 11, 2026</b>.</p>,
+      body: <p>This notice was last updated on <b>November 19, 2026</b>.</p>,
     },
   ],
 };

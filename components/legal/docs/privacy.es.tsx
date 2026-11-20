@@ -7,7 +7,7 @@ export const privacyEs: LegalDoc = {
   title: "Aviso de Privacidad",
   description:
     "Aviso de Privacidad de la app Centavos conforme a la LFPDPPP: qué datos recabamos, para qué los usamos, cómo los protegemos y cómo ejercer tus derechos ARCO.",
-  updated: "11 de junio de 2026",
+  updated: "19 de noviembre de 2026",
   intro: (
     <p>
       En <b className="text-ink">Centavos</b> tu confianza vale más que cualquier dato. Este
@@ -117,6 +117,35 @@ export const privacyEs: LegalDoc = {
             comerciales.</b> Fuera de lo anterior, solo compartiríamos datos si una autoridad
             competente nos lo requiere conforme a la ley.
           </p>
+          <p>
+            <b>Conexión con Claude (Anthropic), solo si tú la activas.</b> Puedes conectar tu cuenta
+            de Centavos a Claude, el asistente de Anthropic, desde Ajustes → Conectar con Claude
+            (más detalles en <a href="/app/claude">centavos.mx/app/claude</a>). Mientras la conexión
+            esté activa y cuando tú se lo pidas a Claude:
+          </p>
+          <ul>
+            <li>
+              Centavos le envía a Claude los datos necesarios para responderte: tus gastos (monto,
+              categoría, nota y fecha), presupuestos, suscripciones y resúmenes de lo que llevas
+              gastado. Claude también puede registrar gastos y crear, editar o borrar gastos,
+              presupuestos y suscripciones en tu cuenta.
+            </li>
+            <li>
+              Esta transferencia ocurre por tu solicitud expresa. Lo que Claude recibe queda sujeto
+              a los términos y al aviso de privacidad de Anthropic que aplican a tu uso de Claude.
+            </li>
+            <li>
+              Centavos no recibe tus conversaciones con Claude: solo las solicitudes concretas que
+              Claude le hace a tu cuenta. Guardamos la fecha de la conexión, su último uso, tu zona
+              horaria y qué gastos se registraron desde Claude, para operar el servicio y mostrarte
+              tus conexiones.
+            </li>
+            <li>
+              Puedes desconectar en cualquier momento desde Ajustes → Conectar con Claude o quitando
+              el conector en Claude. Al desconectar, Claude pierde el acceso de inmediato; lo que ya
+              recibió sigue sujeto a las políticas de Anthropic.
+            </li>
+          </ul>
         </>
       ),
     },
@@ -226,7 +255,7 @@ export const privacyEs: LegalDoc = {
     },
     {
       title: "Última actualización",
-      body: <p>Este aviso se actualizó por última vez el <b>11 de junio de 2026</b>.</p>,
+      body: <p>Este aviso se actualizó por última vez el <b>19 de noviembre de 2026</b>.</p>,
     },
   ],
 };
