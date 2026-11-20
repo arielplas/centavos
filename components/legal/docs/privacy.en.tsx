@@ -8,7 +8,7 @@ export const privacyEn: LegalDoc = {
   title: "Privacy Notice",
   description:
     "Privacy Notice for the Centavos app under Mexico's LFPDPPP: what data we collect, what we use it for, how we protect it and how to exercise your ARCO rights.",
-  updated: "June 11, 2026",
+  updated: "November 19, 2026",
   intro: (
     <p>
       At <b className="text-ink">Centavos</b>{" "}
@@ -43,7 +43,7 @@ export const privacyEn: LegalDoc = {
               was created.
             </li>
             <li>
-              <b>Authentication data:</b> your password (stored only in hashed form with bcrypt —
+              <b>Authentication data:</b> your password (stored only in hashed form with Argon2id —
               never in plain text) and session tokens (short-lived access tokens and rotating
               refresh tokens).
             </li>
@@ -61,7 +61,33 @@ export const privacyEn: LegalDoc = {
           <p>
             <b>We do not collect sensitive personal data</b> as defined in article 3, section VI of
             the LFPDPPP (such as ethnic origin, health status, religious beliefs or political
-            opinions). We also do not use third-party analytics or advertising SDKs in the app.
+            opinions).
+          </p>
+          <p>
+            <b>Third parties that collect data inside the app.</b> To run the app we use third-party
+            services that, by being integrated into it, may collect information from your device:
+          </p>
+          <ul>
+            <li>
+              <b>Advertising (Google AdMob).</b> On the free plan the app shows non-personalized ads.
+              Google may collect device identifiers and usage data to serve and measure those ads,
+              under its own policies. With Centavos+ no ads are shown.
+            </li>
+            <li>
+              <b>Subscriptions (RevenueCat).</b> To validate and manage your Centavos+ subscription
+              we process your user identifier and the purchase data the store returns to us. We
+              never receive your card details.
+            </li>
+            <li>
+              <b>Product analytics (PostHog).</b> We record app usage events (screens you visit and
+              actions you take) tied to your user identifier, name, email, plan and language, to
+              understand what works and what does not. It does not include the amounts or the notes
+              on your expenses.
+            </li>
+          </ul>
+          <p>
+            These third parties process the data under their own privacy policies, which you can
+            read on their websites.
           </p>
         </>
       ),
@@ -107,8 +133,24 @@ export const privacyEn: LegalDoc = {
           <p>To run the service we use providers that process data on our behalf:</p>
           <ul>
             <li>
-              <b>Transactional email provider:</b> to send you verification emails and account
-              notices.
+              <b>Transactional email provider (Resend):</b> to send you verification emails and
+              account notices.
+            </li>
+            <li>
+              <b>Cloud infrastructure:</b> to host our server, the database and the images you attach
+              to your expenses.
+            </li>
+            <li>
+              <b>Notifications (Expo, with Apple and Google):</b> to send you the notifications you
+              turn on in the app.
+            </li>
+            <li>
+              <b>Error monitoring (Sentry):</b> to detect and fix server failures. We do not send it
+              the content of your expenses.
+            </li>
+            <li>
+              <b>Google AdMob, RevenueCat and PostHog:</b> as described in the &ldquo;Personal data we
+              collect&rdquo; section.
             </li>
           </ul>
           <p>
@@ -117,6 +159,35 @@ export const privacyEn: LegalDoc = {
             purposes.</b> Beyond the above, we would only share data if a competent authority
             required it of us under the law.
           </p>
+          <p>
+            <b>Connection with Claude (Anthropic), only if you turn it on.</b> You can connect your
+            Centavos account to Claude, Anthropic&rsquo;s assistant, from Settings → Connect to Claude
+            (more at <a href="/app/claude?lang=en">centavos.mx/app/claude</a>). While the connection is
+            active and when you ask Claude to:
+          </p>
+          <ul>
+            <li>
+              Centavos sends Claude the data it needs to answer you: your expenses (amount,
+              category, note and date), budgets, subscriptions and summaries of what you have spent.
+              Claude can also log expenses and create, edit or delete expenses, budgets and
+              subscriptions in your account.
+            </li>
+            <li>
+              This transfer happens at your express request. What Claude receives is subject to
+              Anthropic&rsquo;s terms and privacy policy that apply to your use of Claude.
+            </li>
+            <li>
+              Centavos does not receive your conversations with Claude, only the specific requests
+              Claude makes to your account. We keep the date of the connection, when it was last
+              used, your time zone and which expenses were logged from Claude, to run the service
+              and show you your connections.
+            </li>
+            <li>
+              You can disconnect at any time from Settings → Connect to Claude or by removing the
+              connector in Claude. Once disconnected, Claude loses access immediately; what it
+              already received remains subject to Anthropic&rsquo;s policies.
+            </li>
+          </ul>
         </>
       ),
     },
@@ -159,11 +230,14 @@ export const privacyEn: LegalDoc = {
             <b>We do not use cookies in the mobile app.</b>{" "}
             To keep you signed in we use your
             device&rsquo;s secure storage (Keychain on iOS and EncryptedSharedPreferences on
-            Android), where your session tokens are kept.
+            Android), where your session tokens are kept. The advertising and analytics services
+            described in &ldquo;Personal data we collect&rdquo; use device and app-install
+            identifiers.
           </p>
           <p>
             On our website (centavos.mx) we use <b>strictly necessary cookies</b> only, for it to
-            work.
+            work, and we measure visits in aggregate with Vercel Web Analytics, which uses no
+            cookies.
           </p>
         </>
       ),
@@ -175,7 +249,7 @@ export const privacyEn: LegalDoc = {
           <p>We protect your data with reasonable administrative, technical and physical measures:</p>
           <ul>
             <li>TLS encryption for all information in transit.</li>
-            <li>Passwords stored only in hashed form (bcrypt).</li>
+            <li>Passwords stored only in hashed form (Argon2id).</li>
             <li>Tokens kept in your device&rsquo;s encrypted storage.</li>
             <li>Strict access controls on our backend.</li>
           </ul>
@@ -228,7 +302,7 @@ export const privacyEn: LegalDoc = {
     },
     {
       title: "Last updated",
-      body: <p>This notice was last updated on <b>June 11, 2026</b>.</p>,
+      body: <p>This notice was last updated on <b>November 19, 2026</b>.</p>,
     },
   ],
 };

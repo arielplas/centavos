@@ -7,7 +7,7 @@ export const privacyEs: LegalDoc = {
   title: "Aviso de Privacidad",
   description:
     "Aviso de Privacidad de la app Centavos conforme a la LFPDPPP: qué datos recabamos, para qué los usamos, cómo los protegemos y cómo ejercer tus derechos ARCO.",
-  updated: "11 de junio de 2026",
+  updated: "19 de noviembre de 2026",
   intro: (
     <p>
       En <b className="text-ink">Centavos</b> tu confianza vale más que cualquier dato. Este
@@ -41,7 +41,7 @@ export const privacyEs: LegalDoc = {
             </li>
             <li>
               <b>Datos de autenticación:</b> tu contraseña (almacenada únicamente en forma
-              hasheada con bcrypt — nunca en texto plano) y tokens de sesión (tokens de acceso de
+              hasheada con Argon2id — nunca en texto plano) y tokens de sesión (tokens de acceso de
               corta vida y refresh tokens con rotación).
             </li>
             <li>
@@ -58,7 +58,34 @@ export const privacyEs: LegalDoc = {
           <p>
             <b>No recabamos datos personales sensibles</b> en los términos del artículo 3, fracción
             VI de la LFPDPPP (como origen étnico, estado de salud, creencias religiosas u opiniones
-            políticas). Tampoco usamos analytics de terceros ni SDKs de publicidad en la app.
+            políticas).
+          </p>
+          <p>
+            <b>Terceros que recaban datos dentro de la app.</b> Para operar la app usamos servicios
+            de terceros que, al estar integrados, pueden recabar información de tu dispositivo:
+          </p>
+          <ul>
+            <li>
+              <b>Publicidad (Google AdMob).</b> En el plan gratuito la app muestra anuncios no
+              personalizados. Google puede recabar identificadores del dispositivo y datos de uso
+              para servir y medir esos anuncios, conforme a sus propias políticas. Con Centavos+ no
+              se muestran anuncios.
+            </li>
+            <li>
+              <b>Suscripciones (RevenueCat).</b> Para validar y administrar tu suscripción
+              Centavos+ se procesan tu identificador de usuario y los datos de la compra que nos
+              devuelve la tienda. Nunca recibimos los datos de tu tarjeta.
+            </li>
+            <li>
+              <b>Analítica de producto (PostHog).</b> Registramos eventos de uso de la app
+              (pantallas que visitas y acciones que haces) asociados a tu identificador de usuario,
+              tu nombre, tu correo, tu plan y tu idioma, para entender qué funciona y qué no. No
+              incluye los montos ni las notas de tus gastos.
+            </li>
+          </ul>
+          <p>
+            Estos terceros tratan los datos conforme a sus propias políticas de privacidad, que
+            puedes consultar en sus sitios.
           </p>
         </>
       ),
@@ -107,8 +134,24 @@ export const privacyEs: LegalDoc = {
           <p>Para operar el servicio usamos proveedores que tratan datos por cuenta nuestra:</p>
           <ul>
             <li>
-              <b>Proveedor de correo transaccional:</b> para enviarte correos de verificación y
-              avisos de cuenta.
+              <b>Proveedor de correo transaccional (Resend):</b> para enviarte correos de
+              verificación y avisos de cuenta.
+            </li>
+            <li>
+              <b>Infraestructura en la nube:</b> para hospedar nuestro servidor, la base de datos y
+              las imágenes que adjuntas a tus gastos.
+            </li>
+            <li>
+              <b>Notificaciones (Expo, con Apple y Google):</b> para enviarte las notificaciones que
+              activas en la app.
+            </li>
+            <li>
+              <b>Monitoreo de errores (Sentry):</b> para detectar y corregir fallas del servidor. No
+              le enviamos el contenido de tus gastos.
+            </li>
+            <li>
+              <b>Google AdMob, RevenueCat y PostHog:</b> como se describe en la sección «Datos
+              personales que recabamos».
             </li>
           </ul>
           <p>
@@ -117,6 +160,35 @@ export const privacyEs: LegalDoc = {
             comerciales.</b> Fuera de lo anterior, solo compartiríamos datos si una autoridad
             competente nos lo requiere conforme a la ley.
           </p>
+          <p>
+            <b>Conexión con Claude (Anthropic), solo si tú la activas.</b> Puedes conectar tu cuenta
+            de Centavos a Claude, el asistente de Anthropic, desde Ajustes → Conectar con Claude
+            (más detalles en <a href="/app/claude">centavos.mx/app/claude</a>). Mientras la conexión
+            esté activa y cuando tú se lo pidas a Claude:
+          </p>
+          <ul>
+            <li>
+              Centavos le envía a Claude los datos necesarios para responderte: tus gastos (monto,
+              categoría, nota y fecha), presupuestos, suscripciones y resúmenes de lo que llevas
+              gastado. Claude también puede registrar gastos y crear, editar o borrar gastos,
+              presupuestos y suscripciones en tu cuenta.
+            </li>
+            <li>
+              Esta transferencia ocurre por tu solicitud expresa. Lo que Claude recibe queda sujeto
+              a los términos y al aviso de privacidad de Anthropic que aplican a tu uso de Claude.
+            </li>
+            <li>
+              Centavos no recibe tus conversaciones con Claude: solo las solicitudes concretas que
+              Claude le hace a tu cuenta. Guardamos la fecha de la conexión, su último uso, tu zona
+              horaria y qué gastos se registraron desde Claude, para operar el servicio y mostrarte
+              tus conexiones.
+            </li>
+            <li>
+              Puedes desconectar en cualquier momento desde Ajustes → Conectar con Claude o quitando
+              el conector en Claude. Al desconectar, Claude pierde el acceso de inmediato; lo que ya
+              recibió sigue sujeto a las políticas de Anthropic.
+            </li>
+          </ul>
         </>
       ),
     },
@@ -158,11 +230,14 @@ export const privacyEs: LegalDoc = {
           <p>
             <b>En la app móvil no usamos cookies.</b> Para mantener tu sesión usamos el
             almacenamiento seguro de tu dispositivo (Keychain en iOS y EncryptedSharedPreferences en
-            Android), donde se guardan tus tokens de sesión.
+            Android), donde se guardan tus tokens de sesión. Los servicios de publicidad y analítica
+            descritos en «Datos personales que recabamos» usan identificadores del dispositivo y de
+            la instalación de la app.
           </p>
           <p>
             En nuestro sitio web (centavos.mx) usamos únicamente <b>cookies estrictamente
-            necesarias</b> para su funcionamiento.
+            necesarias</b> para su funcionamiento, y medimos visitas de forma agregada con Vercel Web
+            Analytics, que no usa cookies.
           </p>
         </>
       ),
@@ -174,7 +249,7 @@ export const privacyEs: LegalDoc = {
           <p>Protegemos tus datos con medidas administrativas, técnicas y físicas razonables:</p>
           <ul>
             <li>Cifrado TLS para toda la información en tránsito.</li>
-            <li>Contraseñas almacenadas solo en forma hasheada (bcrypt).</li>
+            <li>Contraseñas almacenadas solo en forma hasheada (Argon2id).</li>
             <li>Tokens guardados en el almacenamiento cifrado de tu dispositivo.</li>
             <li>Controles de acceso estrictos a nuestro backend.</li>
           </ul>
@@ -226,7 +301,7 @@ export const privacyEs: LegalDoc = {
     },
     {
       title: "Última actualización",
-      body: <p>Este aviso se actualizó por última vez el <b>11 de junio de 2026</b>.</p>,
+      body: <p>Este aviso se actualizó por última vez el <b>19 de noviembre de 2026</b>.</p>,
     },
   ],
 };
