@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { AiSectionViewTracker } from "@/components/home/AiSectionViewTracker";
 import { AppFooter } from "@/components/home/AppFooter";
 import { AppStoreBadges, InlineStoreLinks } from "@/components/home/AppStoreBadges";
 import { HOME_COPY } from "@/components/home/copy";
@@ -180,6 +181,70 @@ export function HomePage({ lang }: { lang: SiteLang }) {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* AI CONNECTOR — announced as coming soon: no form, no steps */}
+        <section aria-labelledby="ai-title" className="bg-sand/40">
+          <AiSectionViewTracker lang={lang} />
+          <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-[1fr_1.1fr] gap-10 items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-ink text-bg px-3.5 py-1.5 text-[13px] font-bold mb-5">
+                <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-yolk" /> {c.ai.badge}
+              </p>
+              <h2 id="ai-title" className="font-display text-3xl md:text-5xl font-extrabold tracking-[-0.03em] leading-[1.0] mb-4">
+                {c.ai.titleLead}<br /><mark className="mark">{c.ai.titleAccent}</mark>
+              </h2>
+              <p className="text-base leading-relaxed text-ink-soft max-w-md">{c.ai.body}</p>
+            </div>
+            <div>
+              {/* One-shot chat: bubble, "typing…", reply. Same mechanism as the hero demo. */}
+              <HeroDemo>
+                <ul className="space-y-5" aria-label={c.ai.chatLabel}>
+                  {c.ai.chats.map((chat, i) => {
+                    const t0 = 0.2 + i * 3.2; // start of each exchange, in seconds
+                    return (
+                      <li key={chat.you} className="space-y-2">
+                        <p
+                          data-a="chat"
+                          style={{ "--d": `${t0}s`, "--t": "350ms" } as CSSProperties}
+                          className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-mandarina text-ink px-4 py-2.5 text-[15px] font-semibold"
+                        >
+                          <span className="sr-only">{c.ai.youLabel}: </span>{chat.you}
+                        </p>
+                        {/* The reply keeps its space from the start; the dots sit on top of it. */}
+                        <div className="grid">
+                          <p
+                            data-a="chat"
+                            style={{ "--d": `${t0 + 1.7}s`, "--t": "350ms" } as CSSProperties}
+                            className="glass [grid-area:1/1] w-fit max-w-[92%] rounded-2xl rounded-bl-md px-4 py-2.5 text-[15px] leading-snug"
+                          >
+                            <span className="sr-only">{c.ai.aiLabel}: </span>{chat.ai}
+                          </p>
+                          <span
+                            aria-hidden
+                            data-a="typing"
+                            style={{ "--d": `${t0 + 0.6}s`, "--t": "1.1s" } as CSSProperties}
+                            className="chat-typing glass [grid-area:1/1] self-start w-fit rounded-2xl rounded-bl-md px-4 py-3.5 flex gap-1"
+                          >
+                            <i /><i /><i />
+                          </span>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </HeroDemo>
+              <p className="text-[12px] text-ink-soft mt-4">{c.ai.note}</p>
+            </div>
+          </div>
+          <ul className="mx-auto max-w-screen-lg px-5 pb-14 md:pb-20 grid md:grid-cols-3 gap-3 -mt-4" aria-label={c.ai.trustLabel}>
+            {c.ai.trust.map((t) => (
+              <li key={t.t} className="glass rounded-2xl px-5 py-4">
+                <h3 className="font-display text-lg font-extrabold tracking-[-0.02em]">{t.t}</h3>
+                <p className="text-[14px] leading-relaxed text-ink-soft mt-1">{t.d}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* PRIVATE BY DESIGN — the promise, once and in full */}

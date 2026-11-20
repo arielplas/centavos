@@ -61,6 +61,22 @@ export type HomeCopy = {
     /** Screen-reader description of the two notification cards. */
     cardsAlt: string;
   };
+  /** Announcement of the AI connector. Coming soon: no sign-up, no steps, no dates. */
+  ai: {
+    badge: string;
+    titleLead: string;
+    titleAccent: string;
+    body: string;
+    /** Screen-reader name of the chat examples. */
+    chatLabel: string;
+    youLabel: string;
+    aiLabel: string;
+    chats: { you: string; ai: string }[];
+    trustLabel: string;
+    trust: { t: string; d: string }[];
+    /** Disclosure that the chat is an illustration. */
+    note: string;
+  };
   /**
    * Free calculators. `null` in English: all but one are Spanish-only pages
    * about Mexican payroll and tax rules, and an English card would promise a
@@ -171,6 +187,26 @@ const es: HomeCopy = {
     titleRest: "de cada cobro.",
     body: "Un aviso al día para anotar, a la hora que tú elijas, y un recordatorio antes de cada cobro de suscripción. Los apagas cuando quieras.",
     cardsAlt: "Dos avisos de la app: uno para anotar los gastos del día y otro antes del cobro de Netflix.",
+  },
+  ai: {
+    badge: "Próximamente",
+    titleLead: "Anota tus gastos",
+    titleAccent: "hablándole a tu IA.",
+    body: "Pronto podrás conectar tu cuenta de Centavos con Claude: le dices lo que gastaste o le preguntas cómo vas, sin abrir la app. Más adelante llegará a otras IAs.",
+    chatLabel: "Ejemplos de conversación con la IA",
+    youLabel: "Tú",
+    aiLabel: "IA",
+    chats: [
+      { you: "gasté 200 en tacos", ai: "Listo, anoté $200 en Comida." },
+      { you: "¿cómo voy este mes?", ai: "Llevas $1,840 gastados de tu presupuesto de $4,000. Comida es lo que más pesa: $720." },
+    ],
+    trustLabel: "Cómo cuida tu cuenta",
+    trust: [
+      { t: "Lo apruebas tú", d: "La conexión se autoriza con un código desde la app." },
+      { t: "Solo ve tu cuenta", d: "La IA accede únicamente a tus datos de Centavos." },
+      { t: "Te desconectas cuando quieras", d: "Cortas el acceso en cualquier momento." },
+    ],
+    note: "Conversación de ejemplo. Las cifras son ilustrativas.",
   },
   // Free calculators: tool pages that bring organic traffic and link back to
   // the app. The featured card goes first, the rest follow by search volume.
@@ -322,6 +358,26 @@ const en: HomeCopy = {
     titleRest: "every charge.",
     body: "One reminder a day to log, at the time you choose, and a heads-up before each subscription charge. Turn them off whenever you want.",
     cardsAlt: "Two app notifications: one to log the day's expenses and one before the Netflix charge.",
+  },
+  ai: {
+    badge: "Coming soon",
+    titleLead: "Log your spending",
+    titleAccent: "by talking to your AI.",
+    body: "Soon you'll be able to connect your Centavos account to Claude: tell it what you spent or ask how you're doing, without opening the app. Other AIs will follow later.",
+    chatLabel: "Example conversations with the AI",
+    youLabel: "You",
+    aiLabel: "AI",
+    chats: [
+      { you: "spent 200 on tacos", ai: "Done, I logged $200 under Food." },
+      { you: "how am I doing this month?", ai: "You've spent $1,840 of your $4,000 budget. Food weighs the most: $720." },
+    ],
+    trustLabel: "How it protects your account",
+    trust: [
+      { t: "You approve it", d: "The connection is authorized with a code from the app." },
+      { t: "It only sees your account", d: "The AI can only reach your Centavos data." },
+      { t: "Disconnect anytime", d: "Cut off access whenever you want." },
+    ],
+    note: "Example conversation. Figures are illustrative.",
   },
   tools: null,
   faq: {
