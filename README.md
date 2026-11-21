@@ -40,7 +40,7 @@ app/
 
 components/
   Header.tsx, Logo.tsx
-  home/*                     → HomePage, copy (es/en), AppFooter, AppStoreBadges, MobileDownloadBar, PhoneMock
+  home/*                     → HomePage, copy (es/en), AppFooter, AppStoreBadges, CommunityCta (Discord), MobileDownloadBar, PhoneMock
   legal/*                    → LegalShell, BackToTop, LanguageSwitcher, HtmlLang
   legal/docs/*               → el texto legal, un módulo por documento e idioma
   soporte/SoporteForm.tsx
@@ -54,7 +54,7 @@ lib/
   gastos-hormiga.ts          → la cuenta y los límites de la calculadora de gastos hormiga (los mismos de la API)
   gastos-hormiga-api.ts      → cliente del endpoint que guarda la lista de gastos hormiga
   store-links.ts             → URLs de App Store / Google Play
-  social-links.ts            → URLs de Instagram y TikTok (footer)
+  social-links.ts            → URLs de Instagram, TikTok y Discord (footer); la de Discord sale de env
   seo.ts                     → helpers de JSON-LD y Open Graph por página
   config.ts                  → flags (formulario de soporte, correo)
   lang.ts                    → idioma por query param (?lang=), hreflang, hrefs
@@ -76,6 +76,7 @@ bun run dev                           # http://localhost:3000
 | `NEXT_PUBLIC_SITE_URL` | `https://centavos.mx` | URL canónica usada en metadata/sitemap/JSON-LD |
 | `NEXT_PUBLIC_API_URL` | _(vacío)_ | URL base de la API de Centavos; `/canjear` y `/gastos-hormiga` la llaman directo desde el navegador. Si falta, `/gastos-hormiga` no ofrece guardar la lista |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | _(vacío)_ | Client ID web de Google; si falta, `/canjear` oculta el botón de Google |
+| `NEXT_PUBLIC_DISCORD_URL` | _(vacío)_ | Invitación al servidor de Discord (`https://discord.gg/...`); el bloque de comunidad de la landing y el link de Discord del footer solo salen si está y es https. Se lee al compilar, así que cambiarla pide un nuevo deploy |
 
 ## Comandos
 

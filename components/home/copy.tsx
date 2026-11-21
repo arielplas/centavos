@@ -99,6 +99,22 @@ export type HomeCopy = {
     more: string;
     moreLink: string;
   };
+  /**
+   * Invitation to the Discord server. Only shown when `NEXT_PUBLIC_DISCORD_URL`
+   * is set. Says nothing about the server we can't promise (channels, member
+   * counts, early access): only what any team-run server has.
+   */
+  community: {
+    /** Handwritten kicker above the title. */
+    kicker: string;
+    titleLead: string;
+    titleAccent: string;
+    body: string;
+    cta: string;
+    fine: string;
+    /** The handwritten note beside the text. Decorative: the body says the same. */
+    note: { title: string; items: [ReactNode, ReactNode, ReactNode] };
+  };
   closing: {
     titleLead: string;
     titleRest: string;
@@ -262,6 +278,18 @@ const es: HomeCopy = {
     more: "¿Otra duda?",
     moreLink: "Escríbenos",
   },
+  community: {
+    kicker: "la comunidad",
+    titleLead: "Arma Centavos",
+    titleAccent: "con nosotros",
+    body: "En nuestro servidor de Discord platicas directo con quienes hacemos la app: cuéntanos qué le falta, avísanos si algo falla y comparte cómo la usas.",
+    cta: "Unirme al Discord",
+    fine: "Es gratis. Solo necesitas una cuenta de Discord.",
+    note: {
+      title: "en el Discord:",
+      items: [<><mark className="mark">ideas</mark> para la app</>, "avisar si algo falla", "platicar con el equipo"],
+    },
+  },
   closing: {
     titleLead: "Empieza por",
     titleRest: "el gasto de hoy.",
@@ -414,6 +442,18 @@ const en: HomeCopy = {
     ],
     more: "Another question?",
     moreLink: "Write to us",
+  },
+  community: {
+    kicker: "the community",
+    titleLead: "Build Centavos",
+    titleAccent: "with us",
+    body: "On our Discord server you talk straight to the people who make the app: tell us what it's missing, let us know when something breaks and share how you use it.",
+    cta: "Join the Discord",
+    fine: "It's free. You just need a Discord account.",
+    note: {
+      title: "on the Discord:",
+      items: [<><mark className="mark">ideas</mark> for the app</>, "report a bug", "chat with the team"],
+    },
   },
   closing: {
     titleLead: "Start with",

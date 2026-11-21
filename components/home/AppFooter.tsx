@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { DiscordGlyph } from "@/components/home/CommunityCta";
 import { Logo } from "@/components/Logo";
 import { UI } from "@/lib/ui-strings";
 import { DEFAULT_LANG, navHref, type SiteLang } from "@/lib/lang";
-import { INSTAGRAM_URL, TIKTOK_URL } from "@/lib/social-links";
+import { DISCORD_URL, INSTAGRAM_URL, TIKTOK_URL } from "@/lib/social-links";
 
 type FooterItem = {
   name: string;
@@ -77,10 +78,13 @@ export function AppFooter({
       { name: strings.footerPrivacy, href: navHref("/app/privacidad", lang) },
     ]},
     // The only footer links that leave the site, so they open in a new tab and
-    // say so to screen readers.
+    // say so to screen readers. Discord only when NEXT_PUBLIC_DISCORD_URL is set.
     { h: strings.footerSocialHeading, items: [
       { name: "Instagram", href: INSTAGRAM_URL, icon: <InstagramIcon />, external: true },
       { name: "TikTok",    href: TIKTOK_URL,    icon: <TikTokIcon />,    external: true },
+      ...(DISCORD_URL
+        ? [{ name: "Discord", href: DISCORD_URL, icon: <DiscordGlyph className="w-4 h-4" />, external: true }]
+        : []),
     ]},
   ];
 

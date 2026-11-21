@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { AiSectionViewTracker } from "@/components/home/AiSectionViewTracker";
 import { AppFooter } from "@/components/home/AppFooter";
 import { AppStoreBadges, InlineStoreLinks } from "@/components/home/AppStoreBadges";
+import { CommunityCta } from "@/components/home/CommunityCta";
 import { HOME_COPY } from "@/components/home/copy";
 import { HeroDemo } from "@/components/home/HeroDemo";
 import { MobileDownloadBar } from "@/components/home/MobileDownloadBar";
@@ -22,6 +23,7 @@ import {
 import { HtmlLang } from "@/components/legal/HtmlLang";
 import { DEFAULT_LANG, OG_LOCALE, langAlternates, langHref, navHref, type SiteLang } from "@/lib/lang";
 import { API_CONFIGURED } from "@/lib/promo-api";
+import { DISCORD_URL } from "@/lib/social-links";
 import { getAppLinks } from "@/lib/store-links";
 import { appStoreId, faqJsonLd, mobileApplicationJsonLd, pageOpenGraph } from "@/lib/seo";
 
@@ -384,6 +386,9 @@ export function HomePage({ lang }: { lang: SiteLang }) {
             ))}
           </div>
         </section>
+
+        {/* COMMUNITY — Discord invitation, only when the link is configured */}
+        {DISCORD_URL && <CommunityCta href={DISCORD_URL} lang={lang} />}
 
         {/* CLOSING — CTA, plus the disclaimer */}
         <section id="descargar" className="mx-auto max-w-screen-lg py-6 px-5 pb-10 scroll-mt-20">
