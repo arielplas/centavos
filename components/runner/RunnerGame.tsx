@@ -668,6 +668,9 @@ export default function RunnerGame({
         aria-modal="true"
         aria-label={t.dialogLabel}
         onPointerDown={onPointerDown}
+        // .paper is translucent for the site's glass look; the game needs a
+        // solid page so the landing doesn't show through the scene.
+        style={{ backgroundColor: "var(--color-surface)" }}
         className="paper absolute inset-0 overflow-hidden select-none touch-manipulation md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[min(760px,calc(100vw-32px))] md:h-[480px] md:rounded-[28px] md:shadow-[0_40px_80px_-20px_rgba(42,26,16,.45)]"
       >
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" aria-hidden />
