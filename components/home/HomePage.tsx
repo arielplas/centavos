@@ -94,7 +94,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(c.faq.items)) }}
       />
 
-      <Header mobileCta={false} lang={lang} switcherPath={PATH} />
+      <Header mobileCta={false} lang={lang} switcherPath={PATH} easterEgg />
 
       <main id="contenido">
         {/* HERO */}

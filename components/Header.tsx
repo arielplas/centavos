@@ -3,6 +3,7 @@ import { UI } from "@/lib/ui-strings";
 import { DEFAULT_LANG, navHref, type SiteLang } from "@/lib/lang";
 import { LanguageSwitcher } from "./legal/LanguageSwitcher";
 import { Logo } from "./Logo";
+import { LogoEasterEgg } from "./runner/LogoEasterEgg";
 
 /**
  * Single site header (home, support, legal): logo, Support link and a download
@@ -13,15 +14,19 @@ import { Logo } from "./Logo";
  *   steals viewport). The mobile CTA shows unless the page already has its own
  *   bottom download bar (`mobileCta={false}`).
  * - `switcherPath` adds the language switcher for that path (the landing).
+ * - `easterEgg` hides the runner game behind three taps on the logo (the landing).
  */
 export function Header({
   mobileCta = true,
   lang = DEFAULT_LANG,
   switcherPath,
+  easterEgg = false,
 }: {
   mobileCta?: boolean;
   lang?: SiteLang;
   switcherPath?: string;
+  /** Three taps on the logo open the hidden runner game (the landing only). */
+  easterEgg?: boolean;
 }) {
   const strings = UI[lang];
 
@@ -37,7 +42,11 @@ export function Header({
           ink-soft links at AA even while the bar passes over the ink band. */}
       <header className="md:sticky top-0 z-30 px-3 pt-3 md:pt-4">
         <div className="glass glass-strong mx-auto max-w-screen-lg flex items-center justify-between rounded-[24px] pl-4 pr-2 py-1.5">
-          <Logo size={26} href={navHref("/", lang)} label={strings.homeLabel} />
+          {easterEgg ? (
+            <LogoEasterEgg size={26} href={navHref("/", lang)} label={strings.homeLabel} lang={lang} />
+          ) : (
+            <Logo size={26} href={navHref("/", lang)} label={strings.homeLabel} />
+          )}
           <nav aria-label={strings.mainNav} className="flex items-center gap-2 sm:gap-4 text-[13px] font-semibold">
             <Link href={navHref("/app/soporte", lang)} className="inline-flex items-center min-h-11 text-ink-soft hover:text-ink px-2">
               {strings.support}

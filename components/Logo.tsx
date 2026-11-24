@@ -1,3 +1,4 @@
+import type { MouseEventHandler } from "react";
 import Link from "next/link";
 
 export function Logo({
@@ -6,6 +7,7 @@ export function Logo({
   dotColor = "var(--color-mandarina)",
   href = "/" as string | null,
   label = "Centavos · Inicio",
+  onClick,
 }: {
   size?: number;
   color?: string;
@@ -13,11 +15,13 @@ export function Logo({
   href?: string | null;
   /** Accessible name of the link. */
   label?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
   const inner = (
     <span className="inline-flex items-center gap-2 select-none">
       <span
         aria-hidden
+        data-coin
         className="relative inline-block rounded-full shadow-[inset_0_-2px_0_rgba(0,0,0,0.08)]"
         style={{ width: size, height: size, background: dotColor }}
       >
@@ -40,5 +44,5 @@ export function Logo({
     </span>
   );
   if (!href) return inner;
-  return <Link href={href} aria-label={label}>{inner}</Link>;
+  return <Link href={href} aria-label={label} onClick={onClick}>{inner}</Link>;
 }
