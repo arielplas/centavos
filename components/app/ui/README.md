@@ -71,4 +71,4 @@ ringGeometry/progressParts` (`ring.ts`), `monthClock/shortMoney/toneOf/sortByUse
 
 - `lib/subscriptions.ts` de la app (`groupByDue`, `nextChargeDate`…) no está copiado: es de la pantalla de Suscripciones.
 - `Money` con `compact` sigue a la app: desde 1,000, un decimal si no es entero («$5k», «$5.0k» para 5,040).
-- La etiqueta «independiente» de `BudgetRow` usa `home:otherCurrencyTag` (en `pulso.ts`); conviene moverla a `presupuestos.ts` como `budgets:otherCurrencyTag`.
+- La etiqueta «independiente» de `BudgetRow` usa `budgets:otherCurrencyTag` (en `presupuestos.ts`).
