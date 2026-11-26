@@ -13,7 +13,7 @@ import { useLang, useT } from "@/components/app/LanguageProvider";
 import { useSession } from "@/components/app/SessionProvider";
 import { AccessShell } from "@/components/app/access/AccessShell";
 import { FormError, PasswordField, TextField } from "@/components/app/access/Field";
-import { GoogleSection } from "@/components/app/access/GoogleSection";
+import { SocialSection } from "@/components/app/access/SocialSection";
 import { signupFailure } from "@/components/app/access/failures";
 import { accessHref, currentSearch } from "@/components/app/access/links";
 import { setAccessNotice } from "@/components/app/access/notice";
@@ -245,8 +245,8 @@ export function CrearCuentaScreen() {
 
       {step === 1 && (
         <div className="mt-4">
-          {/* Sin términos aceptados, Google queda deshabilitado (y su token se ignora). */}
-          <GoogleSection disabled={!accepted || busy} onBusyChange={setGoogleBusy} />
+          {/* Sin términos aceptados, Apple y Google quedan deshabilitados (y el token de Google se ignora). */}
+          <SocialSection disabled={!accepted || busy} onBusyChange={setGoogleBusy} />
         </div>
       )}
 
