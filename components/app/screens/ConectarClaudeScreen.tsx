@@ -13,11 +13,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ConfirmDialog } from "@/components/app/connect/ConfirmDialog";
 import {
   COPIED_MS,
+  POLL_MS,
   TICK_MS,
   WRITE_SCOPE,
   codeView,
   failureOf,
   formatLongDate,
+  newConnectionSince,
 } from "@/components/app/connect/linkCode";
 import { useLang, useT } from "@/components/app/LanguageProvider";
 import {
@@ -60,6 +62,9 @@ export function ConectarClaudeScreen() {
   const [confirming, setConfirming] = useState<ClaudeConnection | null>(null);
   const [revoking, setRevoking] = useState(false);
   const [revokeFailed, setRevokeFailed] = useState(false);
+  // Las conexiones que había al generar el código: una que no esté aquí es la de ese código.
+  const waitingFrom = useRef<ReadonlySet<string> | null>(null);
+  const [justConnected, setJustConnected] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const alive = useRef(true);
 
@@ -85,14 +90,20 @@ export function ConectarClaudeScreen() {
     void loadConnections("initial");
   }, [loadConnections]);
 
-  // Quien pega el código lo hace en otra pestaña (la de Claude). Al volver, la conexión nueva
-  // ya debe estar en la lista, como en la app, que recarga al recuperar el foco.
+  // Quien pega el código lo hace en otra pestaña o en la app de Claude. Al volver, la conexión
+  // nueva ya debe estar en la lista, como en la app, que recarga al recuperar el foco. Volver de
+  // otra pestaña cambia la visibilidad; volver de otra ventana o app solo devuelve el foco.
   useEffect(() => {
     const onVisible = () => {
       if (document.visibilityState === "visible") void loadConnections("quiet");
     };
+    const onFocus = () => void loadConnections("quiet");
     document.addEventListener("visibilitychange", onVisible);
-    return () => document.removeEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onFocus);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onFocus);
+    };
   }, [loadConnections]);
 
   // «Vence en N min» en vivo y el código que desaparece al vencer.
@@ -115,15 +126,40 @@ export function ConectarClaudeScreen() {
 
   const view = codeView(link, now);
   const available = load.phase === "ready" ? load.available : true;
+  const codeActive = view !== null;
+
+  // Mientras el código sigue vigente se vuelve a pedir la lista, aunque la página nunca pierda
+  // el foco (Claude en otra pantalla, o la página a la vista junto a Claude). Con la pestaña
+  // escondida no se pide: al volver, la visibilidad ya recarga.
+  useEffect(() => {
+    if (!codeActive) return;
+    const id = setInterval(() => {
+      if (document.visibilityState === "visible") void loadConnections("quiet");
+    }, POLL_MS);
+    return () => clearInterval(id);
+  }, [codeActive, loadConnections]);
+
+  // La conexión de este código llegó: se quita el código (ya se usó) y se dice que quedó listo.
+  useEffect(() => {
+    if (load.phase !== "ready") return;
+    if (!newConnectionSince(waitingFrom.current, load.connections)) return;
+    waitingFrom.current = null;
+    setLink(null);
+    setCopied(null);
+    setJustConnected(true);
+    setAnnouncement(t("settings:connectClaude.connectedTitle"));
+  }, [load, t]);
 
   async function generate() {
     if (generating) return;
     setGenerating(true);
     setCodeError(null);
     setCopied(null);
+    setJustConnected(false);
     try {
       const next = await createLinkCode();
       if (!alive.current) return;
+      waitingFrom.current = new Set(load.phase === "ready" ? load.connections.map((c) => c.id) : []);
       setLink(next);
       setNow(Date.now());
     } catch (err) {
@@ -249,6 +285,16 @@ export function ConectarClaudeScreen() {
                   {t("settings:connectClaude.expiresIn", { n: view.minutesLeft })}
                 </p>
               </div>
+            ) : justConnected ? (
+              <div className="mt-4 flex items-start gap-3 rounded-cv-md bg-green-soft px-4 py-3">
+                <svg aria-hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0 text-green">
+                  <path d="m5 12.5 4.5 4.5L19 7.5" />
+                </svg>
+                <div>
+                  <p className="text-[15px] font-bold">{t("settings:connectClaude.connectedTitle")}</p>
+                  <p className="text-[14px] text-ink-soft">{t("settings:connectClaude.connectedBody")}</p>
+                </div>
+              </div>
             ) : (
               <p className="mt-4 text-[14px] text-ink-soft">{t("settings:connectClaude.expiry")}</p>
             )}
@@ -264,11 +310,11 @@ export function ConectarClaudeScreen() {
               onClick={() => void generate()}
               disabled={generating}
               aria-busy={generating}
-              className={`${view ? BTN_LIGHT : BTN_DARK} mt-4 w-full`}
+              className={`${view || justConnected ? BTN_LIGHT : BTN_DARK} mt-4 w-full`}
             >
               {generating
                 ? t("settings:connectClaude.generating")
-                : t(view ? "settings:connectClaude.generateAnother" : "settings:connectClaude.generate")}
+                : t(view || justConnected ? "settings:connectClaude.generateAnother" : "settings:connectClaude.generate")}
             </button>
           </section>
         </>

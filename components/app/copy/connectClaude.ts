@@ -39,6 +39,9 @@ const es = {
       loadFailed: "No pudimos cargar tus conexiones.",
       createFailed: "No pudimos generar el código. Inténtalo de nuevo.",
       revokeFailed: "No pudimos desconectar. Inténtalo de nuevo.",
+      // Solo de la web: la pantalla nota la conexión sola mientras el código sigue vigente.
+      connectedTitle: "Claude quedó conectado",
+      connectedBody: "Ya puedes pedirle tus gastos o anotar nuevos desde Claude.",
     },
   },
 };
@@ -76,6 +79,8 @@ const en: Mirror<typeof es> = {
       loadFailed: "We couldn't load your connections.",
       createFailed: "We couldn't generate the code. Try again.",
       revokeFailed: "We couldn't disconnect. Try again.",
+      connectedTitle: "Claude is connected",
+      connectedBody: "You can ask it about your expenses or log new ones from Claude.",
     },
   },
 };
