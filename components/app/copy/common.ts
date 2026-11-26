@@ -36,6 +36,9 @@ const es = {
     nothingHere: "Nada por aquí",
     stepProgress: "Paso {{step}} de {{total}}",
     fields: {
+      // La palabra corta se ve dentro del campo; la frase completa es su nombre accesible (como la app).
+      show: "Ver",
+      hide: "Ocultar",
       showPassword: "Ver contraseña",
       hidePassword: "Ocultar contraseña",
     },
@@ -81,6 +84,8 @@ const en: Mirror<typeof es> = {
     nothingHere: "Nothing here",
     stepProgress: "Step {{step}} of {{total}}",
     fields: {
+      show: "Show",
+      hide: "Hide",
       showPassword: "Show password",
       hidePassword: "Hide password",
     },
