@@ -4,6 +4,7 @@
 // contenido; el estado vive en `Wizard.tsx`.
 
 import { useMemo, useState } from "react";
+import { CategoryIcon, ServiceMark } from "@/components/app/ui";
 import { useLang, useT } from "@/components/app/LanguageProvider";
 import type {
   OnboardingApplyResponse,
@@ -202,19 +203,7 @@ function CatalogGate({ catalog, onRetry, empty, children }: {
   return <ul className="flex flex-col gap-2.5">{children}</ul>;
 }
 
-function Mark({ children, color }: { children: React.ReactNode; color: string }) {
-  return (
-    <span
-      aria-hidden
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[20px]"
-      style={{ backgroundColor: color }}
-    >
-      {children}
-    </span>
-  );
-}
 
-const categoryColor = (category: string) => `var(--color-cat-${category}, var(--color-cat-other))`;
 
 export function BudgetsStep({
   onBack,
@@ -262,7 +251,7 @@ export function BudgetsStep({
             <ToggleAmountCard
               key={b.key}
               id={`presupuesto-${b.key}`}
-              mark={<Mark color={categoryColor(b.category)}>{b.emoji}</Mark>}
+              mark={<CategoryIcon category={b.category} size={40} />}
               name={b.name}
               currency={currency}
               selected={!!picks.sel[b.key]}
@@ -326,7 +315,7 @@ export function SubscriptionsStep({
             <ToggleAmountCard
               key={s.key}
               id={`suscripcion-${s.key}`}
-              mark={<Mark color={categoryColor(s.category)}>{s.emoji}</Mark>}
+              mark={<ServiceMark name={s.name} category={s.category} size={40} />}
               name={s.name}
               currency={currency}
               selected={!!picks.sel[s.key]}
