@@ -9,7 +9,6 @@ export type UIStrings = {
   skipToContent: string;
   /** Accessible name of the logo link. */
   homeLabel: string;
-  support: string;
   download: string;
   downloadFull: string;
   mainNav: string;
@@ -45,7 +44,6 @@ export const UI: Record<SiteLang, UIStrings> = {
   es: {
     skipToContent: "Saltar al contenido",
     homeLabel: "Centavos · Inicio",
-    support: "Soporte",
     download: "Descargar",
     downloadFull: "Descargar gratis",
     mainNav: "Principal",
@@ -74,7 +72,6 @@ export const UI: Record<SiteLang, UIStrings> = {
   en: {
     skipToContent: "Skip to content",
     homeLabel: "Centavos · Home",
-    support: "Support",
     download: "Download",
     downloadFull: "Download free",
     mainNav: "Main",

@@ -98,7 +98,7 @@ export function explicitLangHref(path: string, lang: SiteLang): string {
  * Paths that are served in both languages. Everything else is Spanish-only, so
  * carrying `?lang=` over to it would promise a translation that is not there.
  */
-export const BILINGUAL_PATHS: readonly string[] = ["/", "/app/terminos", "/app/privacidad", "/gastos-hormiga"] as const;
+export const BILINGUAL_PATHS: readonly string[] = ["/", "/app/terminos", "/app/privacidad", "/app/claude", "/gastos-hormiga"] as const;
 
 /**
  * Path for a navigation link: localised when the destination is bilingual, left

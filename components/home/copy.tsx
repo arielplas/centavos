@@ -61,12 +61,14 @@ export type HomeCopy = {
     /** Screen-reader description of the two notification cards. */
     cardsAlt: string;
   };
-  /** Announcement of the AI connector. Coming soon: no sign-up, no steps, no dates. */
+  /** The AI connector (Claude). Live: the CTA leads to /app/claude, which explains how to connect it. */
   ai: {
     badge: string;
     titleLead: string;
     titleAccent: string;
     body: string;
+    /** Link to /app/claude. */
+    cta: string;
     /** Screen-reader name of the chat examples. */
     chatLabel: string;
     youLabel: string;
@@ -205,10 +207,11 @@ const es: HomeCopy = {
     cardsAlt: "Dos avisos de la app: uno para anotar los gastos del día y otro antes del cobro de Netflix.",
   },
   ai: {
-    badge: "Próximamente",
+    badge: "Nuevo",
     titleLead: "Anota tus gastos",
     titleAccent: "hablándole a tu IA.",
-    body: "Pronto podrás conectar tu cuenta de Centavos con Claude: le dices lo que gastaste o le preguntas cómo vas, sin abrir la app. Más adelante llegará a otras IAs.",
+    body: "Conecta tu cuenta de Centavos con Claude: le dices lo que gastaste o le preguntas cómo vas, sin abrir la app. Más adelante llegará a otras IAs.",
+    cta: "Conectar con Claude",
     chatLabel: "Ejemplos de conversación con la IA",
     youLabel: "Tú",
     aiLabel: "IA",
@@ -218,7 +221,7 @@ const es: HomeCopy = {
     ],
     trustLabel: "Cómo cuida tu cuenta",
     trust: [
-      { t: "Lo apruebas tú", d: "La conexión se autoriza con un código desde la app." },
+      { t: "Lo apruebas tú", d: "La conexión se autoriza con un código de un solo uso." },
       { t: "Solo ve tu cuenta", d: "La IA accede únicamente a tus datos de Centavos." },
       { t: "Te desconectas cuando quieras", d: "Cortas el acceso en cualquier momento." },
     ],
@@ -388,10 +391,11 @@ const en: HomeCopy = {
     cardsAlt: "Two app notifications: one to log the day's expenses and one before the Netflix charge.",
   },
   ai: {
-    badge: "Coming soon",
+    badge: "New",
     titleLead: "Log your spending",
     titleAccent: "by talking to your AI.",
-    body: "Soon you'll be able to connect your Centavos account to Claude: tell it what you spent or ask how you're doing, without opening the app. Other AIs will follow later.",
+    body: "Connect your Centavos account to Claude: tell it what you spent or ask how you're doing, without opening the app. Other AIs will follow later.",
+    cta: "Connect to Claude",
     chatLabel: "Example conversations with the AI",
     youLabel: "You",
     aiLabel: "AI",
@@ -401,7 +405,7 @@ const en: HomeCopy = {
     ],
     trustLabel: "How it protects your account",
     trust: [
-      { t: "You approve it", d: "The connection is authorized with a code from the app." },
+      { t: "You approve it", d: "The connection is authorized with a one-time code." },
       { t: "It only sees your account", d: "The AI can only reach your Centavos data." },
       { t: "Disconnect anytime", d: "Cut off access whenever you want." },
     ],

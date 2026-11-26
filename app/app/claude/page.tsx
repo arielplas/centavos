@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { LegalShell } from "@/components/legal/LegalShell";
-import { CLAUDE } from "@/components/legal/docs";
+import { CLAUDE_PATH as PATH, ClaudePage } from "@/components/claude/ClaudePage";
+import { CLAUDE_COPY } from "@/components/claude/copy";
 import { LANG_PARAM, OG_LOCALE, langAlternates, langHref, resolveLang } from "@/lib/lang";
 import { pageOpenGraph } from "@/lib/seo";
-
-/** Canonical path, without the language param. */
-const PATH = "/app/claude";
 
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -13,18 +10,18 @@ type PageProps = {
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
   const lang = resolveLang((await searchParams)[LANG_PARAM]);
-  const doc = CLAUDE[lang];
+  const { meta } = CLAUDE_COPY[lang];
 
   return {
-    title: doc.title,
-    description: doc.description,
+    title: meta.title,
+    description: meta.description,
     alternates: {
       canonical: langHref(PATH, lang),
       languages: langAlternates(PATH),
     },
     openGraph: pageOpenGraph({
-      title: `${doc.title} · Centavos`,
-      description: doc.description,
+      title: `${meta.title} · Centavos`,
+      description: meta.description,
       path: langHref(PATH, lang),
       locale: OG_LOCALE[lang],
     }),
@@ -34,5 +31,5 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 export default async function ClaudeConnectorPage({ searchParams }: PageProps) {
   const lang = resolveLang((await searchParams)[LANG_PARAM]);
 
-  return <LegalShell doc={CLAUDE[lang]} lang={lang} path={PATH} bilingual />;
+  return <ClaudePage lang={lang} />;
 }
