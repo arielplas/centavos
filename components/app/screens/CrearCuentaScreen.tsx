@@ -13,6 +13,7 @@ import { useLang, useT } from "@/components/app/LanguageProvider";
 import { useSession } from "@/components/app/SessionProvider";
 import { AccessShell } from "@/components/app/access/AccessShell";
 import { FormError, PasswordField, TextField } from "@/components/app/access/Field";
+import { GoogleSection } from "@/components/app/access/GoogleSection";
 import { signupFailure } from "@/components/app/access/failures";
 import { accessHref, currentSearch } from "@/components/app/access/links";
 import { setAccessNotice } from "@/components/app/access/notice";
@@ -55,6 +56,7 @@ export function CrearCuentaScreen() {
   const [passwordKey, setPasswordKey] = useState<CopyKey | undefined>();
   const [formError, setFormError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
   const titleRef = useStepFocus<HTMLHeadingElement>(verify ? "verify" : step);
   const emailRef = useRef<HTMLInputElement>(null);
 
@@ -85,7 +87,7 @@ export function CrearCuentaScreen() {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    if (!valid || busy) return;
+    if (!valid || busy || googleBusy) return;
     if (step < TOTAL_STEPS) {
       setFormError(null);
       setStep((step + 1) as Step);
@@ -181,7 +183,7 @@ export function CrearCuentaScreen() {
               inputMode="email"
               placeholder={t("auth:fields.emailPlaceholder")}
               maxLength={LIMITS.EMAIL_MAX}
-              disabled={busy}
+              disabled={busy || googleBusy}
               inputRef={emailRef}
               autoFocus
             />
@@ -236,10 +238,17 @@ export function CrearCuentaScreen() {
           />
         )}
         <FormError id="crear-form-error">{formError ? accessError(formError) : undefined}</FormError>
-        <button type="submit" disabled={!valid || busy} className={primaryButton}>
+        <button type="submit" disabled={!valid || busy || googleBusy} className={primaryButton}>
           {step < TOTAL_STEPS ? t("auth:signUp.next") : busy ? t("auth:signUp.submitting") : t("auth:signUp.submit")}
         </button>
       </form>
+
+      {step === 1 && (
+        <div className="mt-4">
+          {/* Sin términos aceptados, Google queda deshabilitado (y su token se ignora). */}
+          <GoogleSection disabled={!accepted || busy} onBusyChange={setGoogleBusy} />
+        </div>
+      )}
 
       {step === 1 && (
         <p className="mt-6 text-center text-[15px] text-ink-soft">

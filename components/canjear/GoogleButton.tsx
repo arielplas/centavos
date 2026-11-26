@@ -43,10 +43,13 @@ export function GoogleButton({
   lang,
   disabled,
   onToken,
+  text = "signin_with",
 }: {
   lang: SiteLang;
   disabled: boolean;
   onToken: (idToken: string) => void;
+  /** Text Google draws on the button. The web app passes `continue_with` ("Continuar con Google"). */
+  text?: "signin_with" | "signup_with" | "continue_with" | "signin";
 }) {
   const host = useRef<HTMLDivElement>(null);
   const latest = useRef(onToken);
@@ -67,14 +70,14 @@ export function GoogleButton({
             if (r.credential) latest.current(r.credential);
           },
         });
-        id.renderButton(host.current, { type: "standard", theme: "outline", size: "large", text: "signin_with", shape: "pill", locale: lang, width: 280 });
+        id.renderButton(host.current, { type: "standard", theme: "outline", size: "large", text, shape: "pill", locale: lang, width: 280 });
       })
       // The script is blocked or offline: the email form still works.
       .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [lang]);
+  }, [lang, text]);
 
   if (!GOOGLE_CLIENT_ID) return null;
   return (

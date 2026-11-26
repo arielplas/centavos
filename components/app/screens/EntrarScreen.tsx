@@ -10,6 +10,7 @@ import { useT } from "@/components/app/LanguageProvider";
 import { useSession } from "@/components/app/SessionProvider";
 import { AccessShell } from "@/components/app/access/AccessShell";
 import { FormError, PasswordField, TextField } from "@/components/app/access/Field";
+import { GoogleSection } from "@/components/app/access/GoogleSection";
 import { takeAccessNotice } from "@/components/app/access/notice";
 import { linkClass, primaryButton, titleClass } from "@/components/app/access/styles";
 import { TextError, useAccessError, useOpenSession, useStepFocus } from "@/components/app/access/useAccess";
@@ -33,6 +34,7 @@ export function EntrarScreen() {
   const [errors, setErrors] = useState<LoginErrors>({});
   const [formError, setFormError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
   const [step, setStep] = useState<Step>({ kind: "login" });
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -57,7 +59,7 @@ export function EntrarScreen() {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    if (busy) return;
+    if (busy || googleBusy) return;
     const trimmed = email.trim();
     const next = loginErrors({ email: trimmed, password });
     setErrors(next);
@@ -126,7 +128,7 @@ export function EntrarScreen() {
           inputMode="email"
           placeholder={t("auth:fields.emailPlaceholder")}
           maxLength={LIMITS.EMAIL_MAX}
-          disabled={busy}
+          disabled={busy || googleBusy}
           inputRef={emailRef}
           autoFocus
         />
@@ -142,7 +144,7 @@ export function EntrarScreen() {
           autoComplete="current-password"
           placeholder={t("auth:fields.passwordPlaceholder")}
           maxLength={LIMITS.LOGIN_PASSWORD_MAX}
-          disabled={busy}
+          disabled={busy || googleBusy}
           inputRef={passwordRef}
         />
         <div className="-mt-2 flex justify-end">
@@ -151,10 +153,13 @@ export function EntrarScreen() {
           </Link>
         </div>
         <FormError id="entrar-form-error">{formError ? accessError(formError) : undefined}</FormError>
-        <button type="submit" disabled={busy} className={primaryButton}>
+        <button type="submit" disabled={busy || googleBusy} className={primaryButton}>
           {busy ? t("auth:signIn.submitting") : t("auth:signIn.submit")}
         </button>
       </form>
+      <div className="mt-4">
+        <GoogleSection disabled={busy} onBusyChange={setGoogleBusy} />
+      </div>
       <p className="mt-6 text-center text-[15px] text-ink-soft">
         {t("auth:signIn.noAccount")}
         <Link href={accessHref("/app/crear-cuenta", currentSearch())} className="font-extrabold text-mandarina-deep underline underline-offset-2">
