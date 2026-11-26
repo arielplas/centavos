@@ -171,7 +171,7 @@ function Tile({ variant, label, value, currency }: { variant: "peach" | "sand" |
       <p aria-hidden="true" className="text-caption font-bold text-ink-soft">
         {label}
       </p>
-      <p aria-hidden="true" className="mt-0.5 truncate text-[17px] font-bold text-ink">
+      <p aria-hidden="true" className="mt-0.5 break-words text-[17px] font-bold leading-tight text-ink">
         <Money value={value} currency={currency} compact />
       </p>
     </Card>
