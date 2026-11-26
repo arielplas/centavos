@@ -400,24 +400,7 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
                         <Rich text={c.how.step2.app} />
                       </p>
                     }
-                    web={
-                      <>
-                        <p className="mb-3.5">{c.how.step2.web.body}</p>
-                        <Link
-                          href={signinHref}
-                          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-mandarina px-5 text-[15px] font-extrabold text-ink shadow-[0_8px_20px_-12px_rgb(168_74_34/.7)] hover:opacity-90"
-                        >
-                          {c.how.step2.web.button}
-                          <Icon name="arrow" size={16} stroke={2.4} />
-                        </Link>
-                        <p className="mt-2.5 text-[14px]">
-                          {c.how.step2.web.signupLead}{" "}
-                          <Link href={signupHref} className="font-semibold text-mandarina-deep underline underline-offset-2">
-                            {c.how.step2.web.signup}
-                          </Link>
-                        </p>
-                      </>
-                    }
+                    web={<p>{c.how.step2.web.body}</p>}
                   />
                 ) : (
                   <p className="text-[15px] leading-relaxed text-ink-soft">
@@ -461,6 +444,22 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
                 </div>
               </li>
             </ol>
+            {/* The action of the three steps, under them and at full size: inside step 2's tab it
+                went unnoticed. Only with the web app; without it the code comes from the app. */}
+            {web && (
+              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <Link href={signinHref} className={pillPrimary}>
+                  {c.how.step2.web.button}
+                  <Icon name="arrow" size={18} stroke={2.4} />
+                </Link>
+                <p className="text-[15px] text-ink-soft">
+                  {c.how.step2.web.signupLead}{" "}
+                  <Link href={signupHref} className="font-semibold text-mandarina-deep underline underline-offset-2">
+                    {c.how.step2.web.signup}
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
