@@ -1458,8 +1458,8 @@ entrar, crear cuenta, onboarding y Conectar con Claude.
 8. *(Resuelta: un «Entrar» en el header del sitio, `components/Header.tsx`, que sale solo con
    `WEB_APP_ENABLED`, así que llega a producción junto con la bandera. Lleva el `?lang=` de la
    página cuando la página tiene idioma; en `/app/claude` va a
-   `/app/entrar?next=/app/conectar-claude`. En el teléfono ocupa el lugar de «Soporte», que sigue
-   en el pie.)* ¿Cuándo y dónde se enlaza la
+   `/app/entrar?next=/app/conectar-claude`. Va con las acciones, como píldora con borde antes de
+   «Descargar»; «Soporte» ya no está en la barra, solo en el pie.)* ¿Cuándo y dónde se enlaza la
    app web desde la landing (un «Entrar» en el header o en el footer)?
 9. ¿Con qué dominio y con qué API se prueba Apple antes de producción (un preview fijo de Vercel
    contra la API de producción, o un túnel)?

@@ -7,20 +7,22 @@ import { Logo } from "./Logo";
 import { LogoEasterEgg } from "./runner/LogoEasterEgg";
 
 /**
- * Single site header (home, support, legal): logo, Support link and a download
- * CTA pointing at the home page's #descargar section.
+ * Single site header (home, support, legal): logo, then on the right a quiet
+ * setting (the language) and the actions (the download CTA pointing at the home
+ * page's #descargar section), with a hairline between them on desktop. Soporte
+ * lives in the footer (AppFooter, on every page with this header), not here:
+ * four items of three different looks crowded the bar.
  *
  * - Sticky on desktop, always showing the CTA.
  * - Not sticky on mobile (on a multi-screen page, a fixed bar with just a logo
  *   steals viewport). The mobile CTA shows unless the page already has its own
- *   bottom download bar (`mobileCta={false}`).
- * - `switcherPath` adds the language switcher for that path (the landing).
+ *   bottom download bar or doesn't fit it (`mobileCta={false}`).
+ * - `switcherPath` adds the language switcher for that path, in its compact form.
  * - `easterEgg` hides the runner game behind three taps on the logo (the landing).
- * - With the web app live (WEB_APP_ENABLED), an "Entrar" link to /app/entrar; `signinHref`
- *   sends it elsewhere. It carries the page's language only when the page set one: on a
- *   Spanish-only page a forced `?lang=es` would be saved to the shared `lang` cookie and
- *   undo an English visitor's choice. On phones it takes Soporte's place (still in the
- *   footer): logo, Soporte, Entrar and the download button don't fit in 375px.
+ * - With the web app live (WEB_APP_ENABLED), "Entrar" joins the actions as an outlined pill
+ *   before the download CTA; it goes to /app/entrar, or to `signinHref`. It carries the page's
+ *   language only when the page set one: on a Spanish-only page a forced `?lang=es` would be
+ *   saved to the shared `lang` cookie and undo an English visitor's choice.
  */
 export function Header({
   mobileCta = true,
@@ -58,24 +60,24 @@ export function Header({
             <Logo size={26} href={navHref("/", lang)} label={strings.homeLabel} />
           )}
           <nav aria-label={strings.mainNav} className="flex items-center gap-2 sm:gap-4 text-[13px] font-semibold">
-            <Link
-              href={navHref("/app/soporte", lang)}
-              className={`${WEB_APP_ENABLED ? "hidden sm:inline-flex" : "inline-flex"} items-center min-h-11 text-ink-soft hover:text-ink px-2`}
-            >
-              {strings.support}
-            </Link>
-            {switcherPath && <LanguageSwitcher path={switcherPath} lang={lang} explicit />}
+            {switcherPath && (
+              <>
+                <LanguageSwitcher path={switcherPath} lang={lang} explicit compact />
+                {/* Setting | actions. Desktop only: on phones the CTA may be hidden. */}
+                <span aria-hidden className="hidden md:block h-5 w-px bg-rule-strong" />
+              </>
+            )}
             {WEB_APP_ENABLED && (
               <Link
                 href={signinHref ?? (langProp ? explicitLangHref("/app/entrar", langProp) : "/app/entrar")}
-                className="inline-flex items-center min-h-11 whitespace-nowrap font-bold text-ink hover:opacity-75 px-2"
+                className="inline-flex items-center min-h-11 whitespace-nowrap rounded-full border border-rule-strong px-3 sm:px-4 font-bold text-ink hover:border-ink"
               >
                 {strings.signIn}
               </Link>
             )}
             <Link
               href={`${navHref("/", lang)}#descargar`}
-              className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center min-h-11 whitespace-nowrap bg-ink text-bg rounded-full px-4 hover:opacity-85`}
+              className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center min-h-11 whitespace-nowrap bg-ink text-bg rounded-full px-3 sm:px-4 hover:opacity-85`}
             >
               <span className="md:hidden">{strings.download}</span>
               <span className="hidden md:inline">{strings.downloadFull}</span>
