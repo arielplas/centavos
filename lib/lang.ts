@@ -102,6 +102,7 @@ export const BILINGUAL_PATHS: readonly string[] = [
   "/",
   "/app/terminos",
   "/app/privacidad",
+  "/app/claude",
   "/app/entrar",
   "/gastos-hormiga",
 ] as const;

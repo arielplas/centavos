@@ -250,7 +250,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
         </section>
 
         {/* PRIVATE BY DESIGN — the promise, once and in full */}
-        <section className="bg-ink text-bg py-16 md:py-32">
+        <section id="crear-cuenta" className="bg-ink text-bg py-16 md:py-32 scroll-mt-20">
           <div className="mx-auto max-w-screen-lg px-5 grid md:grid-cols-[1.15fr_.85fr] gap-x-14 gap-y-8 md:content-center items-center">
             <h2 className="font-display text-[40px] md:text-6xl lg:text-7xl text-balance font-extrabold leading-[0.95] tracking-[-0.04em] md:col-start-1">
               {c.privacy.title.lead}<br /><span className="text-yolk">{c.privacy.title.accent}</span>
