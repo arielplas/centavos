@@ -24,7 +24,7 @@ import { accessHref, currentSearch } from "@/components/app/access/links";
 
 export function EntrarScreen() {
   const t = useT();
-  const { takePrefillEmail } = useSession();
+  const { takePrefillEmail, endedReason, clearEndedReason } = useSession();
   const openSession = useOpenSession();
   const accessError = useAccessError();
 
@@ -43,9 +43,17 @@ export function EntrarScreen() {
   useEffect(() => {
     const prefill = takePrefillEmail();
     if (prefill) setEmail(prefill);
+    // La sesión terminó sin que la persona la cerrara (refresh vencido o revocado):
+    // se dice por qué, una vez, y se borra el motivo (§4.3, §10).
+    if (endedReason) {
+      setFormError(new ApiError(401, endedReason));
+      clearEndedReason();
+    }
     // Crear cuenta mandó aquí porque el correo ya estaba verificado.
     if (takeAccessNotice() === "alreadyVerified") setFormError(new ApiError(400, "AUTH_EMAIL_ALREADY_VERIFIED"));
-  }, [takePrefillEmail]);
+    // Solo al montar: leer cada uno de estos valores los consume.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
