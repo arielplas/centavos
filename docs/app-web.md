@@ -462,8 +462,7 @@ lanzar; queda como mejora posterior.
 - **Errores:** `403 CONNECTOR_NOT_AVAILABLE` → `notAvailable`; `429 RATE_LIMIT` (10 códigos cada
   15 min) y cualquier otro → `createFailed` / `revokeFailed` / `loadFailed`, por código, nunca
   `error.message` (§7.1).
-- **Entrada:** en el AppShell (navegación de escritorio y teléfono) y en `/app/perfil`. Acepta
-  `?next=` desde `/app/entrar`, para el enlace que pone la página de conexión de Claude (§8).
+- **Entrada:** en el AppShell (navegación de escritorio y teléfono) y en `/app/perfil`. Se llega con `/app/entrar?next=/app/conectar-claude` desde la página pública `/app/claude`.
 - Ruta: `conectar-claude`, no `claude` (reservada para la página pública, §4.9).
 
 ### 4.9 Página pública `/app/claude` (revisión 2, D7)
@@ -1052,11 +1051,11 @@ En ningún caso hacen falta endpoints nuevos para leer datos: los de §7.3 alcan
 
 | Qué | Dónde | Detalle |
 |---|---|---|
-| La página de conexión de Claude dice «Abre Centavos en tu teléfono…» | `src/lib/consent-page.ts` | Que diga «en la app o en centavos.mx/app → Conectar con Claude», con enlace a `https://centavos.mx/app/entrar?next=/app/conectar-claude`, en es y en |
-| El push de nueva conexión dice «Desconéctalo en Perfil» | `src/lib/connector-notice.ts` | Mencionar también la web |
+| La página de conexión de Claude dice «Abre Centavos en tu teléfono…» | `src/lib/consent-page.ts` | **Hecho** (`feat/mcp-no-free-limits`): dice «en la app o en centavos.mx/app → Conectar con Claude», en es y en, **sin enlace**: la página corre dentro de la ventana de inicio de sesión de Claude, y seguir un enlace ahí perdería la conexión |
+| El push de nueva conexión dice «Desconéctalo en Perfil» | `src/lib/connector-notice.ts` | **Hecho:** «Desconéctalo en la app o en centavos.mx/app» |
 | `MCP_ALLOWED_USERS` | Env de producción | Una cuenta creada en la web no está en ninguna lista: hasta `MCP_ALLOWED_USERS=*`, `/app/conectar-claude` muestra `notAvailable` (lo dice `available`) |
 | #20 | `docs/feature-20-claude-without-app.md` | Con D2 y D5, el código por correo en la página de Claude deja de ser necesario para lanzar. Marcarlo como posterior y apuntar a este doc |
-| Doc de la app web | `docs/feature-status.md` | La fila con el siguiente número libre (hoy el 21) y `feature-21-web-app.md` apuntando aquí |
+| Doc de la app web | `docs/feature-status.md` | **Hecho:** #21, `docs/feature-21-web-app.md` |
 
 ---
 
