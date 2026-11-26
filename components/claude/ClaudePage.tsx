@@ -193,8 +193,10 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
       {/* JSON-LD in the server HTML (plain script, not next/script). */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqItems)) }} />
 
-      {/* The language switch lives in the navbar, as on the home page. */}
-      <Header lang={lang} switcherPath={CLAUDE_PATH} />
+      {/* The language switch lives in the navbar, as on the home page. Like the home page, no
+          download button there on phones: logo, Soporte, the switch and that button don't fit
+          in 375px. Desktop keeps it. */}
+      <Header lang={lang} switcherPath={CLAUDE_PATH} mobileCta={false} />
 
       <main id="contenido">
         {/* HERO */}
