@@ -1,13 +1,11 @@
 "use client";
 
-// Placeholder de /app/bienvenida. La pantalla real reemplaza este archivo
-// (docs/app-web.md, §14).
+// /app/bienvenida: el wizard de una cuenta nueva (docs/app-web.md §5.8, D6).
+// Sin AppShell: vive directamente bajo (privada)/. La guardia ya mandó aquí a
+// quien tiene `onboarded === false`; el wizard está en components/app/onboarding/.
+
+import { Wizard } from "@/components/app/onboarding/Wizard";
 
 export function BienvenidaScreen() {
-  return (
-    <main id="contenido" className="mx-auto max-w-[720px] px-4 py-10">
-      <h1 className="font-display text-3xl font-extrabold tracking-[-0.03em]">Bienvenida</h1>
-      <p className="mt-2 text-ink-soft">Pendiente de construir.</p>
-    </main>
-  );
+  return <Wizard />;
 }
