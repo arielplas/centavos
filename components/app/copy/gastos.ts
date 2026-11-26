@@ -49,6 +49,7 @@ const es = {
       limitedMonth: "Esta búsqueda solo ve este mes",
       limitedYear: "Esta búsqueda solo ve este año",
       unlockAll: "Buscar en todo tu historial con Centavos+",
+      unlockInApp: "Buscar en todo tu historial es de Centavos+. Actívalo desde la app.",
     },
   },
 };
@@ -96,6 +97,7 @@ const en: Mirror<typeof es> = {
       limitedMonth: "This search only covers this month",
       limitedYear: "This search only covers this year",
       unlockAll: "Search your whole history with Centavos+",
+      unlockInApp: "Searching your whole history is part of Centavos+. Turn it on in the app.",
     },
   },
 };
