@@ -27,6 +27,7 @@ import {
   type SessionUser,
 } from "@/lib/app/api";
 import { afterLoginHref, safeNext } from "@/lib/app/next-param";
+import { createCookieSessionStore } from "@/lib/app/session-cookie-store";
 
 // ─── SessionStore ──────────────────────────────────────────────────────────
 
@@ -40,7 +41,14 @@ export interface SessionStore {
   refresh(): Promise<{ accessToken: string }>;
   /** Revoca la sesión y olvida el refresh token. */
   logout(): Promise<void>;
+  /**
+   * Opcional (opción B, §6.3): avisos de OTRA pestaña: cerró sesión o abrió una.
+   * Devuelve la función para dejar de escuchar. La memoria no lo necesita.
+   */
+  subscribe?(listener: (event: SessionEvent) => void): () => void;
 }
+
+export type SessionEvent = "signed-in" | "signed-out";
 
 /**
  * Fase 0: los dos tokens viven en memoria y recargar la página cierra la sesión.
@@ -84,7 +92,7 @@ export function createMemorySessionStore(): SessionStore {
 
 /** El almacenamiento que usa la app web. La opción B (cookie) se cambia SOLO aquí. */
 export function createDefaultSessionStore(): SessionStore {
-  return createMemorySessionStore();
+  return createCookieSessionStore();
 }
 
 // ─── Estado ────────────────────────────────────────────────────────────────
@@ -162,8 +170,25 @@ export class SessionManager {
 
   /** Recupera la sesión al cargar (§6.1 `restore`). Idempotente: una sola vez por manager. */
   start = (): Promise<void> => {
-    this.starting ??= this.restore();
+    if (this.starting === null) {
+      this.starting = this.restore();
+      // Un cierre de sesión o un inicio nuevo en otra pestaña (§5.6).
+      this.store.subscribe?.(this.onRemoteEvent);
+    }
     return this.starting;
+  };
+
+  private onRemoteEvent = (event: SessionEvent): void => {
+    if (event === "signed-out") {
+      if (this.snapshot.status === "anonymous") return;
+      this.clearLocal();
+      this.set({ status: "anonymous", user: null, endedReason: null, loggedOut: true });
+      return;
+    }
+    // Otra pestaña entró (quizá con otra cuenta): se suelta lo de aquí y se recupera la sesión de la cookie.
+    for (const cleanup of this.cleanups) cleanup();
+    this.accessToken = null;
+    this.starting = this.restore();
   };
 
   private async restore(): Promise<void> {
