@@ -42,7 +42,10 @@ export function isValidAmount(raw: string): boolean {
   return Number.isFinite(n) && n > 0;
 }
 
-/** El monto a mandar: solo si la persona lo cambió; si no, la API usa el del catálogo. */
+/**
+ * El monto a mandar: solo si la persona lo cambió. Vacío o cero se toma como «sin cambiar» y la API
+ * usa el del catálogo, como en la app: un monto vacío nunca bloquea el paso.
+ */
 export function editedAmount(raw: string, defaultValue: number): number | undefined {
   const parsed = parseAmount(raw);
   if (!Number.isFinite(parsed) || parsed <= 0) return undefined;
@@ -62,15 +65,6 @@ export function budgetAmount(picks: Picks, b: OnboardingCatalogBudget): string {
 
 export function subscriptionAmount(picks: Picks, s: OnboardingCatalogSubscription): string {
   return picks.amt[s.key] ?? String(s.defaultAmount);
-}
-
-/** Hay algún elegido con monto que no sirve (vacío o cero): no se puede seguir. */
-export function hasInvalidPick<T extends { key: string }>(
-  items: readonly T[],
-  picks: Picks,
-  amountOf: (picks: Picks, item: T) => string,
-): boolean {
-  return items.some((i) => picks.sel[i.key] && !isValidAmount(amountOf(picks, i)));
 }
 
 export function budgetPicks(

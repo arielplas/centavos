@@ -1127,7 +1127,7 @@ interpolaciones `{{x}}` se reemplazan con una función pequeña; no hace falta i
 | `app.useAppToEdit` | Para anotar o editar, usa la app. | To log or edit, use the app. |
 | `app.copyLink` | Copiar enlace | Copy link |
 | `app.copiedLink` | Enlace copiado | Link copied |
-| `app.claudeReconnect` | Por seguridad, cambiar tu contraseña desconectó Claude. Vuelve a conectarlo en Conectar con Claude. | For your security, changing your password disconnected Claude. Connect it again from Connect to Claude. |
+| `app.claudeReconnect` | Si tenías Claude conectado, cambiar tu contraseña lo desconectó. Vuelve a conectarlo en Conectar con Claude. | If you had Claude connected, changing your password disconnected it. Connect it again from Connect to Claude. |
 | `app.nav.connectClaude` | Claude | Claude |
 
 *(Revisión 2: `app.forgotInApp.*`, `app.verifyInApp` y `app.onboardingPending.*` se retiraron; la

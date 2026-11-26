@@ -18,8 +18,6 @@ import {
   budgetAmount,
   currencyOptions,
   filterCurrencies,
-  hasInvalidPick,
-  isValidAmount,
   isValidTripName,
   subscriptionAmount,
   TRIP_NAME_MAX,
@@ -238,8 +236,6 @@ export function BudgetsStep({
 }) {
   const t = useT();
   const items: readonly OnboardingCatalogBudget[] = catalog.phase === "ready" ? catalog.catalog.budgets : [];
-  const [showErrors, setShowErrors] = useState(false);
-  const blocked = hasInvalidPick(items, picks, budgetAmount);
 
   return (
     <StepScaffold
@@ -253,7 +249,7 @@ export function BudgetsStep({
       footer={
         <PrimaryButton
           disabled={catalog.phase !== "ready"}
-          onClick={() => (blocked ? setShowErrors(true) : onContinue())}
+          onClick={onContinue}
         >
           {t("onboarding:continue")}
         </PrimaryButton>
@@ -272,7 +268,6 @@ export function BudgetsStep({
               selected={!!picks.sel[b.key]}
               amount={amount}
               amountLabel={t("onboarding:budgets.amountLabel")}
-              amountError={showErrors && !isValidAmount(amount) ? t("onboarding:web.amountInvalid") : undefined}
               onToggle={() => onPicks({ ...picks, sel: { ...picks.sel, [b.key]: !picks.sel[b.key] } })}
               onAmountChange={(v) => onPicks({ ...picks, amt: { ...picks.amt, [b.key]: v } })}
             />
@@ -305,8 +300,6 @@ export function SubscriptionsStep({
 }) {
   const t = useT();
   const items: readonly OnboardingCatalogSubscription[] = catalog.phase === "ready" ? catalog.catalog.subscriptions : [];
-  const [showErrors, setShowErrors] = useState(false);
-  const blocked = hasInvalidPick(items, picks, subscriptionAmount);
 
   return (
     <StepScaffold
@@ -320,7 +313,7 @@ export function SubscriptionsStep({
       footer={
         <PrimaryButton
           disabled={catalog.phase !== "ready" || busy}
-          onClick={() => (blocked ? setShowErrors(true) : onFinish())}
+          onClick={onFinish}
         >
           {busy ? t("onboarding:web.working") : t("onboarding:subscriptions.finish")}
         </PrimaryButton>
@@ -339,7 +332,6 @@ export function SubscriptionsStep({
               selected={!!picks.sel[s.key]}
               amount={amount}
               amountLabel={t("onboarding:budgets.amountLabel")}
-              amountError={showErrors && !isValidAmount(amount) ? t("onboarding:web.amountInvalid") : undefined}
               onToggle={() => onPicks({ ...picks, sel: { ...picks.sel, [s.key]: !picks.sel[s.key] } })}
               onAmountChange={(v) => onPicks({ ...picks, amt: { ...picks.amt, [s.key]: v } })}
             />

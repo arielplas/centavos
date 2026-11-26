@@ -69,10 +69,10 @@ describe("elecciones", () => {
     expect(logic.budgetPicks(budgets, logic.NO_PICKS)).toEqual([]);
     expect(logic.subscriptionPicks(subs, { sel: { spotify: true }, amt: { spotify: "139" } })).toEqual([{ key: "spotify", amount: 139 }]);
   });
-  test("un elegido con monto vacío o cero bloquea; uno sin elegir no", () => {
-    expect(logic.hasInvalidPick(budgets, { sel: { pets: true }, amt: { pets: "" } }, logic.budgetAmount)).toBe(true);
-    expect(logic.hasInvalidPick(budgets, { sel: { pets: false }, amt: { pets: "" } }, logic.budgetAmount)).toBe(false);
-    expect(logic.hasInvalidPick(budgets, { sel: { pets: true }, amt: {} }, logic.budgetAmount)).toBe(false);
+  test("un elegido con monto vacío o cero se manda sin monto: la API usa el del catálogo, como en la app", () => {
+    expect(logic.budgetPicks(budgets, { sel: { pets: true }, amt: { pets: "" } })).toEqual([{ key: "pets" }]);
+    expect(logic.budgetPicks(budgets, { sel: { pets: true }, amt: { pets: "0" } })).toEqual([{ key: "pets" }]);
+    expect(logic.subscriptionPicks(subs, { sel: { netflix: true }, amt: { netflix: "" } })).toEqual([{ key: "netflix" }]);
   });
 });
 
