@@ -10,9 +10,12 @@ export const SUPPORT_FORM_ENABLED = false;
 export const SUPPORT_EMAIL = "hola@centavos.mx";
 
 /**
- * The web app (/app/entrar, /app/crear-cuenta) is built on its own branch and is
- * not live yet. While it is off, the Claude connector page only offers the app
- * path to get the connection code and does not link to the web app. Turn it on
- * with NEXT_PUBLIC_WEB_APP_ENABLED=true once the web app ships.
+ * La app web (`/app/entrar`, `/app/pulso`…) solo existe con
+ * `NEXT_PUBLIC_WEB_APP_ENABLED=true`; sin ella, `app/app/(web)/layout.tsx`
+ * responde 404 en todas sus rutas. Se lee al compilar: cambiarla pide un
+ * nuevo build/deploy. Así se puede desplegar a medias sin que nadie la vea.
+ * También decide qué enseña la página pública `/app/claude`: sin la app web, solo el camino
+ * de la app para sacar el código de conexión, y ningún enlace a `/app/entrar`. Y si el header
+ * del sitio (`components/Header.tsx`) lleva «Entrar».
  */
 export const WEB_APP_ENABLED = process.env.NEXT_PUBLIC_WEB_APP_ENABLED === "true";

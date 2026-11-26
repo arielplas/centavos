@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { WEB_APP_ENABLED } from "@/lib/config";
 import { UI } from "@/lib/ui-strings";
-import { DEFAULT_LANG, navHref, type SiteLang } from "@/lib/lang";
+import { DEFAULT_LANG, explicitLangHref, navHref, type SiteLang } from "@/lib/lang";
 import { LanguageSwitcher } from "./legal/LanguageSwitcher";
 import { Logo } from "./Logo";
 import { LogoEasterEgg } from "./runner/LogoEasterEgg";
@@ -18,19 +19,27 @@ import { LogoEasterEgg } from "./runner/LogoEasterEgg";
  *   bottom download bar or doesn't fit it (`mobileCta={false}`).
  * - `switcherPath` adds the language switcher for that path, in its compact form.
  * - `easterEgg` hides the runner game behind three taps on the logo (the landing).
+ * - With the web app live (WEB_APP_ENABLED), "Entrar" joins the actions as an outlined pill
+ *   before the download CTA; it goes to /app/entrar, or to `signinHref`. It carries the page's
+ *   language only when the page set one: on a Spanish-only page a forced `?lang=es` would be
+ *   saved to the shared `lang` cookie and undo an English visitor's choice.
  */
 export function Header({
   mobileCta = true,
-  lang = DEFAULT_LANG,
+  lang: langProp,
   switcherPath,
   easterEgg = false,
+  signinHref,
 }: {
   mobileCta?: boolean;
   lang?: SiteLang;
   switcherPath?: string;
   /** Three taps on the logo open the hidden runner game (the landing only). */
   easterEgg?: boolean;
+  /** Where "Entrar" goes instead of /app/entrar, e.g. with a `next` (the Claude page). */
+  signinHref?: string;
 }) {
+  const lang = langProp ?? DEFAULT_LANG;
   const strings = UI[lang];
 
   return (
@@ -58,9 +67,17 @@ export function Header({
                 <span aria-hidden className="hidden md:block h-5 w-px bg-rule-strong" />
               </>
             )}
+            {WEB_APP_ENABLED && (
+              <Link
+                href={signinHref ?? (langProp ? explicitLangHref("/app/entrar", langProp) : "/app/entrar")}
+                className="inline-flex items-center min-h-11 whitespace-nowrap rounded-full border border-rule-strong px-3 sm:px-4 font-bold text-ink hover:border-ink"
+              >
+                {strings.signIn}
+              </Link>
+            )}
             <Link
               href={`${navHref("/", lang)}#descargar`}
-              className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center min-h-11 whitespace-nowrap bg-ink text-bg rounded-full px-4 hover:opacity-85`}
+              className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center min-h-11 whitespace-nowrap bg-ink text-bg rounded-full px-3 sm:px-4 hover:opacity-85`}
             >
               <span className="md:hidden">{strings.download}</span>
               <span className="hidden md:inline">{strings.downloadFull}</span>

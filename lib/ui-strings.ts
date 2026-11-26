@@ -11,6 +11,8 @@ export type UIStrings = {
   homeLabel: string;
   download: string;
   downloadFull: string;
+  /** Header link into the web app; only shown while it is live (WEB_APP_ENABLED). */
+  signIn: string;
   mainNav: string;
   onThisPage: string;
   tableOfContents: string;
@@ -46,6 +48,7 @@ export const UI: Record<SiteLang, UIStrings> = {
     homeLabel: "Centavos · Inicio",
     download: "Descargar",
     downloadFull: "Descargar gratis",
+    signIn: "Entrar",
     mainNav: "Principal",
     onThisPage: "En esta página",
     tableOfContents: "Tabla de contenidos",
@@ -74,6 +77,7 @@ export const UI: Record<SiteLang, UIStrings> = {
     homeLabel: "Centavos · Home",
     download: "Download",
     downloadFull: "Download free",
+    signIn: "Log in",
     mainNav: "Main",
     onThisPage: "On this page",
     tableOfContents: "Table of contents",

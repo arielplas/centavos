@@ -29,6 +29,8 @@ export type ClaudeCopy = {
     body: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    /** Only shown when the web app is live: for whoever already has an account. */
+    signin: { lead: string; link: string };
     checksLabel: string;
     checkFree: string;
     /** Only shown when the web app is live. */
@@ -70,7 +72,7 @@ export type ClaudeCopy = {
       tabApp: string;
       tabWeb: string;
       app: string;
-      web: { before: string; link: string; middle: string; signup: string; after: string };
+      web: { body: string; button: string; signupLead: string; signup: string };
       codeExampleLabel: string;
       codeNote: [string, string];
     };
@@ -96,6 +98,8 @@ export type ClaudeCopy = {
     title: string;
     body: string;
     primary: string;
+    /** Replaces `primary` when the web app is live. */
+    signin: string;
     signup: string;
   };
 };
@@ -114,6 +118,7 @@ export const CLAUDE_COPY: Record<SiteLang, ClaudeCopy> = {
       body: "Conecta Centavos con Claude, el asistente de Anthropic. Dile lo que gastaste o pregúntale cómo vas, y Claude lo anota o te responde con tus números reales. En claude.ai, en la app de escritorio o en tu celular.",
       ctaPrimary: "Conectar con Claude",
       ctaSecondary: "Ver qué le puedes pedir",
+      signin: { lead: "¿Ya tienes cuenta?", link: "Entra y conecta Claude" },
       checksLabel: "Lo esencial",
       checkFree: "Gratis con tu cuenta de Centavos",
       checkNoApp: "No necesitas la app",
@@ -202,11 +207,10 @@ export const CLAUDE_COPY: Record<SiteLang, ClaudeCopy> = {
         tabWeb: "En la web",
         app: "Abre Centavos en tu teléfono y entra a **Ajustes → Conectar con Claude → Generar código**.",
         web: {
-          before: "Entra a ",
-          link: "centavos.mx/app",
-          middle: " con tu cuenta y abre **Conectar con Claude**. ¿Todavía no tienes cuenta? ",
+          body: "Entra a centavos.mx con tu cuenta y genera el código ahí mismo, sin la app.",
+          button: "Entrar y conectar",
+          signupLead: "¿Todavía no tienes cuenta?",
           signup: "Créala gratis",
-          after: " en un minuto.",
         },
         codeExampleLabel: "Ejemplo de código: 7KQ2M-9XD4P",
         codeNote: ["Sirve una sola vez", "y vence en 10 minutos."],
@@ -328,6 +332,7 @@ export const CLAUDE_COPY: Record<SiteLang, ClaudeCopy> = {
       title: "Empieza en dos minutos.",
       body: "Crea tu cuenta, conecta Claude y anota tu primer gasto escribiendo.",
       primary: "Conectar con Claude",
+      signin: "Entrar y conectar",
       signup: "Crear cuenta gratis",
     },
   },
@@ -345,6 +350,7 @@ export const CLAUDE_COPY: Record<SiteLang, ClaudeCopy> = {
       body: "Connect Centavos to Claude, Anthropic’s assistant. Tell it what you spent or ask how you’re doing, and Claude logs it or answers with your real numbers. On claude.ai, in the desktop app or on your phone.",
       ctaPrimary: "Connect to Claude",
       ctaSecondary: "See what you can ask",
+      signin: { lead: "Already have an account?", link: "Sign in and connect Claude" },
       checksLabel: "The essentials",
       checkFree: "Free with your Centavos account",
       checkNoApp: "You don’t need the app",
@@ -433,11 +439,10 @@ export const CLAUDE_COPY: Record<SiteLang, ClaudeCopy> = {
         tabWeb: "On the web",
         app: "Open Centavos on your phone and go to **Settings → Connect with Claude → Generate code**.",
         web: {
-          before: "Sign in at ",
-          link: "centavos.mx/app",
-          middle: " with your account and open **Connect with Claude**. Don’t have an account yet? ",
+          body: "Sign in to centavos.mx with your account and generate the code right there, no app needed.",
+          button: "Sign in and connect",
+          signupLead: "Don’t have an account yet?",
           signup: "Create one for free",
-          after: " in a minute.",
         },
         codeExampleLabel: "Example code: 7KQ2M-9XD4P",
         codeNote: ["Works only once", "and expires in 10 minutes."],
@@ -559,6 +564,7 @@ export const CLAUDE_COPY: Record<SiteLang, ClaudeCopy> = {
       title: "Start in two minutes.",
       body: "Create your account, connect Claude and log your first expense by typing it.",
       primary: "Connect to Claude",
+      signin: "Sign in and connect",
       signup: "Create a free account",
     },
   },
