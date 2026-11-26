@@ -6,6 +6,7 @@ import { WEB_APP_ENABLED } from "@/lib/config";
 import { navHref, type SiteLang } from "@/lib/lang";
 import { faqJsonLd } from "@/lib/seo";
 import { ConnectTabs } from "./ConnectTabs";
+import { SmoothAnchor } from "./SmoothAnchor";
 import { CopyUrlButton } from "./CopyUrlButton";
 import { FaqAccordion } from "./FaqAccordion";
 import { Rich } from "./Rich";
@@ -203,16 +204,16 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
             </h1>
             <p className="max-w-[520px] text-[17px] md:text-lg leading-relaxed text-ink-soft mb-7">{c.hero.body}</p>
             <div className="flex flex-wrap gap-3 mb-6">
-              <a href="#como" className={pillPrimary}>
+              <SmoothAnchor href="#como" className={pillPrimary}>
                 {c.hero.ctaPrimary}
                 <Icon name="arrow" size={18} stroke={2.4} />
-              </a>
-              <a
+              </SmoothAnchor>
+              <SmoothAnchor
                 href="#ejemplos"
                 className="glass-lite inline-flex items-center min-h-[52px] rounded-full px-5 text-[16px] font-bold text-ink hover:border-ink-soft"
               >
                 {c.hero.ctaSecondary}
-              </a>
+              </SmoothAnchor>
             </div>
             <ul aria-label={c.hero.checksLabel} className="flex flex-wrap gap-x-5 gap-y-2 text-[14px] font-semibold text-ink-soft">
               {checks.map((t) => (
@@ -298,7 +299,7 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
         </section>
 
         {/* EXAMPLES */}
-        <section id="ejemplos" aria-labelledby="ejemplos-title" className={`${container} scroll-mt-20 pt-6 pb-16 md:pb-[72px]`}>
+        <section id="ejemplos" aria-labelledby="ejemplos-title" className={`${container} scroll-mt-20 pt-6 pb-16 md:pb-[72px] focus:outline-none`}>
           <div className="mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
             <h2 id="ejemplos-title" className={`${h2} max-w-[640px] text-[32px] md:text-5xl`}>
               {c.examples.title}
@@ -330,7 +331,7 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
         </section>
 
         {/* HOW TO CONNECT */}
-        <section id="como" aria-labelledby="como-title" className="scroll-mt-20 border-y border-rule bg-sand/40">
+        <section id="como" aria-labelledby="como-title" className="scroll-mt-20 focus:outline-none border-y border-rule bg-sand/40">
           <div className={`${container} py-16 md:py-20`}>
             <h2 id="como-title" className={`${h2} mb-3 text-[32px] md:text-5xl`}>
               {c.how.title}
@@ -503,9 +504,9 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
               <p className="text-[16px] leading-relaxed text-ink-soft">{c.cta.body}</p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <a href="#como" className={pillPrimary}>
+              <SmoothAnchor href="#como" className={pillPrimary}>
                 {c.cta.primary}
-              </a>
+              </SmoothAnchor>
               <a
                 href={signupHref}
                 className="inline-flex min-h-[52px] items-center justify-center rounded-full bg-ink px-5 text-[16px] font-extrabold text-bg hover:opacity-85"
