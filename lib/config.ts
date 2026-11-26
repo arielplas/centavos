@@ -8,3 +8,11 @@
 export const SUPPORT_FORM_ENABLED = false;
 
 export const SUPPORT_EMAIL = "hola@centavos.mx";
+
+/**
+ * La app web (`/app/entrar`, `/app/pulso`…) solo existe con
+ * `NEXT_PUBLIC_WEB_APP_ENABLED=true`; sin ella, `app/app/(web)/layout.tsx`
+ * responde 404 en todas sus rutas. Se lee al compilar: cambiarla pide un
+ * nuevo build/deploy. Así se puede desplegar a medias sin que nadie la vea.
+ */
+export const WEB_APP_ENABLED = process.env.NEXT_PUBLIC_WEB_APP_ENABLED === "true";

@@ -77,6 +77,7 @@ bun run dev                           # http://localhost:3000
 | `NEXT_PUBLIC_API_URL` | _(vacío)_ | URL base de la API de Centavos; `/canjear` y `/gastos-hormiga` la llaman directo desde el navegador. Si falta, `/gastos-hormiga` no ofrece guardar la lista |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | _(vacío)_ | Client ID web de Google; si falta, `/canjear` oculta el botón de Google |
 | `NEXT_PUBLIC_DISCORD_URL` | _(vacío)_ | Invitación al servidor de Discord (`https://discord.gg/...`); el bloque de comunidad de la landing y el link de Discord del footer solo salen si está y es https. Se lee al compilar, así que cambiarla pide un nuevo deploy |
+| `NEXT_PUBLIC_WEB_APP_ENABLED` | _(vacío)_ | Solo con `true` existe la app web (`/app/entrar`, `/app/pulso`…); si no, esas rutas responden 404. Se lee al compilar. En local, la landing corre en el 3002 (`bun run dev -- -p 3002`) porque la API usa el 3000 |
 
 ## Comandos
 
