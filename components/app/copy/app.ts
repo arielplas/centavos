@@ -17,7 +17,7 @@ const es = {
     copyLink: "Copiar enlace",
     copiedLink: "Enlace copiado",
     claudeReconnect:
-      "Por seguridad, cambiar tu contraseña desconectó Claude. Vuelve a conectarlo en Conectar con Claude.",
+      "Si tenías Claude conectado, cambiar tu contraseña lo desconectó. Vuelve a conectarlo en Conectar con Claude.",
     nav: {
       label: "Navegación principal",
       connectClaude: "Claude",
@@ -50,7 +50,7 @@ const en: Mirror<typeof es> = {
     copyLink: "Copy link",
     copiedLink: "Link copied",
     claudeReconnect:
-      "For your security, changing your password disconnected Claude. Connect it again from Connect to Claude.",
+      "If you had Claude connected, changing your password disconnected it. Connect it again from Connect to Claude.",
     nav: {
       label: "Main navigation",
       connectClaude: "Claude",

@@ -24,6 +24,9 @@ const es = {
       field: "Nueva contraseña",
       submit: "Guardar contraseña",
       submitting: "Guardando…",
+      // Solo de la web: la pantalla final, antes de abrir la sesión (el aviso de Claude es app:claudeReconnect).
+      savedTitle: "Contraseña actualizada",
+      savedBody: "Tu contraseña quedó guardada. Por seguridad, cerramos la sesión en tus otros dispositivos.",
     },
   },
 };
@@ -46,6 +49,8 @@ const en: Mirror<typeof es> = {
       field: "New password",
       submit: "Save password",
       submitting: "Saving…",
+      savedTitle: "Password updated",
+      savedBody: "Your password is saved. For your security, we logged you out on your other devices.",
     },
   },
 };
