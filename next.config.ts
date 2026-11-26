@@ -2,10 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // The promo link image reads its fonts from disk at request time; a host
-  // that packages each route separately must be told to ship them with it.
+  // The promo link image and the Claude page's image read their fonts from disk
+  // at request time; a host that packages each route separately must be told to
+  // ship them with it.
   outputFileTracingIncludes: {
     "/canjear/og": ["./app/canjear/og/fonts/*.ttf"],
+    "/app/claude/og": ["./app/canjear/og/fonts/*.ttf"],
   },
   images: {
     remotePatterns: [
