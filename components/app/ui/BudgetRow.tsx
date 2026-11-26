@@ -82,7 +82,7 @@ export function BudgetRow({ b, shared, userCurrency, clock, last, href }: Budget
               {t("budgets:readOnly")}
             </Tag>
           ) : null}
-          {offCurrency ? <Tag className="bg-peach text-mandarina-deep">{t("home:otherCurrencyTag", { currency: cur })}</Tag> : null}
+          {offCurrency ? <Tag className="bg-peach text-mandarina-deep">{t("budgets:otherCurrencyTag", { currency: cur })}</Tag> : null}
         </span>
         <span className="mt-px block truncate text-small text-ink-soft">
           {limitless
