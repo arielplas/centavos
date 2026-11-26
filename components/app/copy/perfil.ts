@@ -9,10 +9,17 @@ import type { Mirror } from "./types";
 const es = {
   settings: {
     title: "Ajustes",
+    groups: {
+      account: "Cuenta",
+      help: "Ayuda y legal",
+    },
+    // Copia nueva de la web (§4.6, Perfil): no existe en la app.
+    planLabel: "Plan",
     rows: {
       language: "Idioma",
       terms: "Términos de servicio",
       privacy: "Aviso de privacidad",
+      support: "Soporte",
       signOut: "Cerrar sesión",
       connectClaude: "Conectar con Claude",
     },
@@ -27,10 +34,16 @@ const es = {
 const en: Mirror<typeof es> = {
   settings: {
     title: "Settings",
+    groups: {
+      account: "Account",
+      help: "Help & legal",
+    },
+    planLabel: "Plan",
     rows: {
       language: "Language",
       terms: "Terms of Service",
       privacy: "Privacy Policy",
+      support: "Support",
       signOut: "Log out",
       connectClaude: "Connect to Claude",
     },

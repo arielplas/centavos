@@ -32,6 +32,8 @@ const es = {
     budgetsHeading: "Cómo van tus presupuestos",
     recentKicker: "Lo último",
     recentHeading: "Gastos recientes",
+    // Copia nueva de la web (no está en la app, donde esta etiqueta está escrita en español).
+    otherCurrencyTag: "{{currency}} · independiente",
   },
 };
 
@@ -61,6 +63,7 @@ const en: Mirror<typeof es> = {
     budgetsHeading: "How your budgets are doing",
     recentKicker: "Latest",
     recentHeading: "Recent expenses",
+    otherCurrencyTag: "{{currency}} · standalone",
   },
 };
 
