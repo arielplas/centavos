@@ -677,7 +677,8 @@ Mientras una petición está en curso, el botón queda deshabilitado (no se env�
    lo exige («primary App ID»). Agrupada así, Apple trata la web y la app como la misma: quien ya
    autorizó en el iPhone solo ve «continuar» en la web.
 3. En su configuración web: **Domains** `centavos.mx` y **Return URLs**
-   `https://centavos.mx/app/entrar` (en la v1 es la única pantalla con botón de Apple). Según la ayuda
+   `https://centavos.mx/app/entrar` y `https://centavos.mx/app/crear-cuenta` (el botón de Apple está
+   en las dos, y el intento manda la de la página, sin query). Según la ayuda
    actual de Apple ya **no** hace falta subir un archivo de verificación del dominio.
    - **Confirmado:** la Return URL tiene que llevar un nombre de dominio: **no puede ser
      `localhost` ni una IP**, ni llevar `#`. Por eso Apple no se puede probar en `localhost`: se
@@ -1410,9 +1411,17 @@ entrar, crear cuenta, onboarding y Conectar con Claude.
 
 20. **Google**: la prop `text` en `GoogleButton` (sin cambiar `/canjear`), el botón en
     `/app/entrar` y `/app/crear-cuenta`, y `disableAutoSelect` al salir (A-7).
-21. **Apple**, cuando exista el Services ID: carga del script, nonce, popup, nombre pendiente y
-    errores del navegador. Prueba en el preview (A-8, A-12). ★ Return URLs de `/app/entrar` y
-    `/app/crear-cuenta`.
+21. **Apple**: carga del script, nonce, popup, nombre pendiente y errores del navegador.
+    **Hecho** (`components/app/access/AppleButton.tsx`, `apple.ts`, `SocialSection.tsx`), escondido
+    hasta que exista `NEXT_PUBLIC_APPLE_SERVICE_ID`. Falta la prueba con el Services ID real en el
+    preview (A-8, A-12): el nonce de ida y vuelta, el mismo `sub` que el iPhone y la respuesta real
+    de la ventana. ★ Return URLs de `/app/entrar` y `/app/crear-cuenta`.
+    - Revisado en `appleid.auth.js`: `es_MX` y `en_US` existen (200). Sus errores son
+      `popup_closed_by_user`, `popup_blocked_by_browser` y `user_trigger_new_signin_flow`;
+      `user_cancelled_authorize` lo manda la ventana de Apple. Cancelar, cerrar o abrir otro intento
+      no muestran mensaje; la ventana bloqueada usa `app:applePopupBlocked`.
+    - `signIn()` acepta su propia configuración, pero solo cambia `scope` y `redirectURI`. Por eso el
+      nonce y el `state` de cada intento van en `init`, preparados antes del clic.
 22. **Cabeceras y endurecimiento** de §11 (CSP primero en Report-Only) y una pasada de
     accesibilidad con la skill `a11y-seo` del repo (I-3, I-4).
 23. **Docs.** Sección «App web» en el README (rutas, variables, la sesión), `.env.example` y una

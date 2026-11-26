@@ -10,7 +10,7 @@ import { useT } from "@/components/app/LanguageProvider";
 import { useSession } from "@/components/app/SessionProvider";
 import { AccessShell } from "@/components/app/access/AccessShell";
 import { FormError, PasswordField, TextField } from "@/components/app/access/Field";
-import { GoogleSection } from "@/components/app/access/GoogleSection";
+import { SocialSection } from "@/components/app/access/SocialSection";
 import { takeAccessNotice } from "@/components/app/access/notice";
 import { linkClass, primaryButton, titleClass } from "@/components/app/access/styles";
 import { TextError, useAccessError, useOpenSession, useStepFocus } from "@/components/app/access/useAccess";
@@ -158,7 +158,7 @@ export function EntrarScreen() {
         </button>
       </form>
       <div className="mt-4">
-        <GoogleSection disabled={busy} onBusyChange={setGoogleBusy} />
+        <SocialSection disabled={busy} onBusyChange={setGoogleBusy} />
       </div>
       <p className="mt-6 text-center text-[15px] text-ink-soft">
         {t("auth:signIn.noAccount")}

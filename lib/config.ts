@@ -19,3 +19,15 @@ export const SUPPORT_EMAIL = "hola@centavos.mx";
  * del sitio (`components/Header.tsx`) lleva «Entrar».
  */
 export const WEB_APP_ENABLED = process.env.NEXT_PUBLIC_WEB_APP_ENABLED === "true";
+
+/**
+ * Services ID de Sign in with Apple para la web (docs/app-web.md §5.5), agrupado con la App ID
+ * de iOS y en `APPLE_CLIENT_IDS` de la API. Vacío: el botón de Apple no aparece. Se lee al compilar.
+ */
+export const APPLE_SERVICE_ID = process.env.NEXT_PUBLIC_APPLE_SERVICE_ID ?? "";
+
+/**
+ * Return URL registrada en Apple. Vacía: la de la página actual (`origin + pathname`), así que
+ * `/app/entrar` y `/app/crear-cuenta` tienen que estar registradas las dos.
+ */
+export const APPLE_REDIRECT_URI = process.env.NEXT_PUBLIC_APPLE_REDIRECT_URI ?? "";
