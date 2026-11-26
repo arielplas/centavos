@@ -346,10 +346,12 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
                 <p className="text-[15px] leading-relaxed text-ink-soft">
                   <Rich text={c.how.step1.body} />
                 </p>
-                <div className="flex items-center gap-2 rounded-[14px] border border-rule-strong bg-surface py-1.5 pl-3.5 pr-1.5">
+                {/* The address never breaks mid-word: when the card is too narrow for it and the
+                    button side by side, the button wraps to its own line instead. */}
+                <div className="flex flex-wrap items-center gap-2 rounded-[14px] border border-rule-strong bg-surface py-1.5 pl-3.5 pr-1.5">
                   <code
                     aria-label={c.how.step1.urlLabel}
-                    className="min-w-0 flex-1 select-all break-all font-mono text-[14px] font-semibold"
+                    className="flex-1 select-all whitespace-nowrap font-mono text-[13px] font-semibold"
                   >
                     {CONNECTOR_URL}
                   </code>
