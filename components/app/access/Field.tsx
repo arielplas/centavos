@@ -76,7 +76,12 @@ export function TextField({
   );
 }
 
-/** Contraseña con el botón de ver / ocultar (`common:fields.*`). */
+/**
+ * Contraseña con el botón de ver / ocultar (`common:fields.*`). Como en la app, dentro del campo
+ * se ve la palabra corta («Ver» / «Ocultar») y la frase completa es el nombre accesible: con la
+ * frase visible, «Ocultar contraseña» no cabía en el espacio del botón y el texto escrito pasaba
+ * por debajo.
+ */
 export function PasswordField(props: Omit<FieldProps, "type" | "trailing">) {
   const t = useT();
   const [shown, setShown] = useState(false);
@@ -89,9 +94,10 @@ export function PasswordField(props: Omit<FieldProps, "type" | "trailing">) {
           type="button"
           onClick={() => setShown((s) => !s)}
           disabled={props.disabled}
+          aria-label={shown ? t("common:fields.hidePassword") : t("common:fields.showPassword")}
           className="absolute inset-y-0 right-1 min-w-11 px-3 text-[12px] font-bold text-ink-soft hover:text-ink cursor-pointer"
         >
-          {shown ? t("common:fields.hidePassword") : t("common:fields.showPassword")}
+          {shown ? t("common:fields.hide") : t("common:fields.show")}
         </button>
       }
     />

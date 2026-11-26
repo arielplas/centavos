@@ -23,6 +23,19 @@ body {
   min-height: 100dvh;
 }
 
+/* Tailwind v4 dejó los botones con el cursor de flecha. Todo lo que se toca lleva la mano,
+   salvo si está deshabilitado. En la capa base, para que una utilidad `cursor-*` gane. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  select:not(:disabled),
+  input:is([type="checkbox"], [type="radio"], [type="submit"], [type="button"]):not(:disabled),
+  label:has(> input:is([type="checkbox"], [type="radio"]):not(:disabled)) {
+    cursor: pointer;
+  }
+}
+
 /* Ocultar scrollbars en strips horizontales */
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
