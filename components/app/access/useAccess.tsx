@@ -45,6 +45,7 @@ export function useAccessError(): (error: unknown, fallback?: CopyKey, screen?: 
   return useCallback(
     (error, fallback = "common:genericError", screen) => {
       if (error instanceof SessionOpenError) return t("app:sessionEnded");
+      if (error instanceof TextError) return t(error.key);
       if (isApiError(error)) return errorText(error, screen);
       if (error && typeof error === "object" && "code" in error) return errorText(error as { code?: string }, screen);
       return t(fallback);
@@ -79,4 +80,9 @@ export function useCountdown() {
     return () => clearTimeout(id);
   }, [remaining, setRemaining]);
   return { remaining, start: setRemaining };
+}
+
+/** Un error que es solo una clave de copia (no viene de la API): `auth:verify.noAccount`. */
+export class TextError {
+  constructor(readonly key: CopyKey) {}
 }

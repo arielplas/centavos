@@ -11,10 +11,14 @@ import { useSession } from "@/components/app/SessionProvider";
 import { AccessShell } from "@/components/app/access/AccessShell";
 import { FormError, PasswordField, TextField } from "@/components/app/access/Field";
 import { linkClass, primaryButton, titleClass } from "@/components/app/access/styles";
-import { useAccessError, useOpenSession, useStepFocus } from "@/components/app/access/useAccess";
+import { TextError, useAccessError, useOpenSession, useStepFocus } from "@/components/app/access/useAccess";
+import { VerifyStep, type VerifyLeave } from "@/components/app/access/VerifyStep";
 import { hasErrors, LIMITS, loginErrors, type LoginErrors } from "@/components/app/access/validation";
 import { loginFailure } from "@/components/app/access/failures";
-import { login } from "@/lib/app/api";
+import { ApiError, login } from "@/lib/app/api";
+
+/** Dónde está la pantalla: el formulario, o Verificar (una cuenta sin verificar, §5.1). El `userId` y el `signupToken` viven solo aquí. */
+type Step = { kind: "login" } | { kind: "verify"; userId?: string; signupToken?: string };
 import { accessHref, currentSearch } from "@/components/app/access/links";
 
 export function EntrarScreen() {
@@ -28,9 +32,10 @@ export function EntrarScreen() {
   const [errors, setErrors] = useState<LoginErrors>({});
   const [formError, setFormError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
+  const [step, setStep] = useState<Step>({ kind: "login" });
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const titleRef = useStepFocus<HTMLHeadingElement>("login");
+  const titleRef = useStepFocus<HTMLHeadingElement>(step.kind);
 
   // El correo que trae otra pantalla de acceso. Se lee una vez; con StrictMode
   // el efecto corre dos veces y la segunda lectura devuelve null: no se pisa.
@@ -55,16 +60,40 @@ export function EntrarScreen() {
       await openSession(await login({ email: trimmed, password }));
     } catch (error) {
       const failure = loginFailure(error);
-      // Conserva el correo y borra la contraseña (§10).
       setPassword("");
-      setFormError(failure.kind === "error" ? failure.error : error);
-      passwordRef.current?.focus();
+      if (failure.kind === "unverified") {
+        // El correo no se reenvía solo: la persona pulsa «Reenviar código», como en la app.
+        setStep({ kind: "verify", userId: failure.userId, signupToken: failure.signupToken });
+      } else {
+        // Conserva el correo y borra la contraseña (§10).
+        setFormError(failure.error);
+        passwordRef.current?.focus();
+      }
     } finally {
       setBusy(false);
     }
   }
 
   const clear = (field: keyof LoginErrors) => setErrors((e) => (e[field] ? { ...e, [field]: undefined } : e));
+
+  function leaveVerify(reason: VerifyLeave) {
+    setFormError(reason === "alreadyVerified" ? new ApiError(400, "AUTH_EMAIL_ALREADY_VERIFIED") : new TextError("auth:verify.noAccount"));
+    setStep({ kind: "login" });
+  }
+
+  if (step.kind === "verify") {
+    return (
+      <AccessShell>
+        <VerifyStep
+          email={email.trim()}
+          userId={step.userId}
+          signupToken={step.signupToken}
+          onBack={() => setStep({ kind: "login" })}
+          onLeave={leaveVerify}
+        />
+      </AccessShell>
+    );
+  }
 
   return (
     <AccessShell>
