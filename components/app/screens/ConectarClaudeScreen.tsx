@@ -85,6 +85,16 @@ export function ConectarClaudeScreen() {
     void loadConnections("initial");
   }, [loadConnections]);
 
+  // Quien pega el código lo hace en otra pestaña (la de Claude). Al volver, la conexión nueva
+  // ya debe estar en la lista, como en la app, que recarga al recuperar el foco.
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void loadConnections("quiet");
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [loadConnections]);
+
   // «Vence en N min» en vivo y el código que desaparece al vencer.
   useEffect(() => {
     if (!link) return;
