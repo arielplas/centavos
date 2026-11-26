@@ -317,6 +317,12 @@ function BudgetSection({
   const f = useFormat();
   const view = useMemo(() => budgetsView(section, userCurrency), [section, userCurrency]);
   const clock = useMemo(() => monthClock(period), [period]);
+  // El detalle abre en el mes que se está viendo aquí, como en la app. El actual no lleva query.
+  const detailQuery = useMemo(() => {
+    const now = new Date();
+    const current = period.month === now.getMonth() + 1 && period.year === now.getFullYear();
+    return current ? "" : `?mes=${period.year}-${period.month}`;
+  }, [period]);
   const left = view.left;
   const over = left < 0;
 
@@ -364,7 +370,7 @@ function BudgetSection({
       ) : null}
 
       {view.groups.map((g) => (
-        <Group key={g.key} groupKey={g.key} rows={g.rows} shared={shared} clock={clock} userCurrency={userCurrency} />
+        <Group key={g.key} groupKey={g.key} rows={g.rows} shared={shared} clock={clock} userCurrency={userCurrency} detailQuery={detailQuery} />
       ))}
     </>
   );
@@ -386,12 +392,15 @@ function Group({
   shared,
   clock,
   userCurrency,
+  detailQuery,
 }: {
   groupKey: GroupKey;
   rows: Ranked[];
   shared: boolean;
   clock: ReturnType<typeof monthClock>;
   userCurrency: string;
+  /** `?mes=AAAA-M` cuando se ve otro mes que el actual; vacío si no. */
+  detailQuery: string;
 }) {
   const t = useT();
   const [info, setInfo] = useState(false);
@@ -432,7 +441,7 @@ function Group({
       {message ? <p className="mb-2 ml-1 text-small text-ink-soft">{message}</p> : null}
       <BudgetRowsCard border={tone.border}>
         {rows.map((r, i) => (
-          <BudgetRow key={r.b.id} b={r.b} shared={shared} userCurrency={userCurrency} clock={clock} last={i === rows.length - 1} />
+          <BudgetRow key={r.b.id} b={r.b} shared={shared} userCurrency={userCurrency} clock={clock} last={i === rows.length - 1} href={`/app/presupuestos/${r.b.id}${detailQuery}`} />
         ))}
       </BudgetRowsCard>
     </section>

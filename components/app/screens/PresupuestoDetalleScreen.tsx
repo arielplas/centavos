@@ -22,6 +22,7 @@ import {
   Card,
   Icon,
   LISTED_MONTHS,
+  isMonthLocked,
   LoadError,
   MonthPicker,
   Money,
@@ -44,7 +45,11 @@ import {
 
 const DEFAULT_CURRENCY = "MXN";
 
-export function PresupuestoDetalleScreen() {
+/**
+ * `initialMonthKey`: el `?mes=AAAA-M` con que la lista abre el detalle en el mes que se estaba
+ * viendo, como en la app. Se ignora si no es uno de los meses listados o si está bloqueado.
+ */
+export function PresupuestoDetalleScreen({ initialMonthKey }: { initialMonthKey?: string }) {
   const t = useT();
   const { lang } = useLang();
   const { user } = useSession();
@@ -55,7 +60,10 @@ export function PresupuestoDetalleScreen() {
   const userCurrency = user?.currency ?? DEFAULT_CURRENCY;
 
   const months = useMemo(() => recentMonths(LISTED_MONTHS, lang), [lang]);
-  const [selectedKey, setSelectedKey] = useState(() => months[0].key);
+  const [selectedKey, setSelectedKey] = useState(() => {
+    const i = initialMonthKey ? months.findIndex((m) => m.key === initialMonthKey) : -1;
+    return i >= 0 && !isMonthLocked(i, isPremium, months.length) ? months[i].key : months[0].key;
+  });
   const selected = months.find((m) => m.key === selectedKey) ?? months[0];
 
   const { phase, data, error, apiCode, reload } = useLoad<BudgetDetailResponse>(
