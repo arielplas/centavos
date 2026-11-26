@@ -1,5 +1,22 @@
 import { describe, expect, test } from "bun:test";
-import { codeView, failureOf, formatLongDate } from "./linkCode";
+import { codeView, failureOf, formatLongDate, newConnectionSince } from "./linkCode";
+
+describe("newConnectionSince", () => {
+  const c = (id: string) => ({ id });
+  test("encuentra la conexión que no estaba al generar el código", () => {
+    expect(newConnectionSince(new Set(["a"]), [c("a"), c("b")])).toEqual(c("b"));
+  });
+  test("sin conexiones nuevas, nada", () => {
+    expect(newConnectionSince(new Set(["a", "b"]), [c("a"), c("b")])).toBeNull();
+    expect(newConnectionSince(new Set(["a"]), [])).toBeNull();
+  });
+  test("la primera conexión de la cuenta también cuenta", () => {
+    expect(newConnectionSince(new Set(), [c("a")])).toEqual(c("a"));
+  });
+  test("si no se está esperando una conexión, nada", () => {
+    expect(newConnectionSince(null, [c("a")])).toBeNull();
+  });
+});
 
 const T0 = Date.parse("2026-11-26T12:00:00Z");
 const link = (msFromNow: number) => ({ code: "ABCD-1234", expiresAt: new Date(T0 + msFromNow).toISOString() });

@@ -10,6 +10,21 @@ export const TICK_MS = 15_000;
 export const COPIED_MS = 2_000;
 /** El permiso que distingue «puede registrar» de «solo ve». */
 export const WRITE_SCOPE = "centavos.write";
+/**
+ * Cada cuánto se vuelve a pedir la lista mientras hay un código vigente, para notar la conexión
+ * en cuanto Claude la termina. ~150 pedidos en los 10 minutos de un código, lejos de los 120 por
+ * minuto que la API deja por usuario.
+ */
+export const POLL_MS = 4_000;
+
+/**
+ * La conexión que apareció desde que se generó el código: la primera cuyo id no estaba en
+ * `before`. `null` si no hay ninguna nueva (o si no se está esperando una).
+ */
+export function newConnectionSince<T extends { id: string }>(before: ReadonlySet<string> | null, connections: T[]): T | null {
+  if (!before) return null;
+  return connections.find((c) => !before.has(c.id)) ?? null;
+}
 
 /**
  * Lo que se ve del código en `now`. El código solo sale mientras no haya
