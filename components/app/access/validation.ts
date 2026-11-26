@@ -50,3 +50,15 @@ export function isValidName(name: string): boolean {
   const length = name.trim().length;
   return length >= 1 && length <= LIMITS.NAME_MAX;
 }
+
+export type SignupValues = { email: string; accepted: boolean; password: string; name: string };
+
+/**
+ * ¿Sirve lo escrito en este paso de crear cuenta? Con eso se habilita el
+ * botón: no hay mensajes de validación antes (Apéndice A, como en la app).
+ */
+export function isSignupStepValid(step: 1 | 2 | 3, values: SignupValues): boolean {
+  if (step === 1) return isValidEmail(values.email) && values.accepted;
+  if (step === 2) return newPasswordError(values.password) === undefined;
+  return isValidName(values.name);
+}

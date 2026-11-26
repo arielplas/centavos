@@ -10,6 +10,7 @@ import { useT } from "@/components/app/LanguageProvider";
 import { useSession } from "@/components/app/SessionProvider";
 import { AccessShell } from "@/components/app/access/AccessShell";
 import { FormError, PasswordField, TextField } from "@/components/app/access/Field";
+import { takeAccessNotice } from "@/components/app/access/notice";
 import { linkClass, primaryButton, titleClass } from "@/components/app/access/styles";
 import { TextError, useAccessError, useOpenSession, useStepFocus } from "@/components/app/access/useAccess";
 import { VerifyStep, type VerifyLeave } from "@/components/app/access/VerifyStep";
@@ -42,6 +43,8 @@ export function EntrarScreen() {
   useEffect(() => {
     const prefill = takePrefillEmail();
     if (prefill) setEmail(prefill);
+    // Crear cuenta mandó aquí porque el correo ya estaba verificado.
+    if (takeAccessNotice() === "alreadyVerified") setFormError(new ApiError(400, "AUTH_EMAIL_ALREADY_VERIFIED"));
   }, [takePrefillEmail]);
 
   async function onSubmit(event: FormEvent) {
