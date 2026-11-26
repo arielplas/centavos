@@ -68,6 +68,23 @@ const es = {
       statusAlreadyMember: "Ya es miembro",
       statusFailed: "No se pudo invitar",
     },
+    // Solo de la web (la app móvil usa pantallas nativas para esto).
+    web: {
+      stepLabel: "Configura tu cuenta",
+      language: "Idioma",
+      languageEs: "Español",
+      languageEn: "English",
+      currencySearch: "Buscar moneda",
+      currencySearchPlaceholder: "Peso, dólar, MXN…",
+      currencyNone: "Ninguna moneda coincide.",
+      currencyList: "Monedas",
+      amountInvalid: "Escribe un monto mayor a cero.",
+      nameLabel: "Nombre del viaje",
+      emailLabel: "Correo de tu amigo",
+      invitedList: "Correos a invitar",
+      removeInvite: "Quitar {{email}}",
+      working: "Un momento…",
+    },
   },
 };
 
@@ -132,6 +149,23 @@ const en: Mirror<typeof es> = {
       statusInvitedPending: "We sent them an email",
       statusAlreadyMember: "Already a member",
       statusFailed: "Couldn't invite",
+    },
+    // Web only (the mobile app uses native screens for this).
+    web: {
+      stepLabel: "Set up your account",
+      language: "Language",
+      languageEs: "Español",
+      languageEn: "English",
+      currencySearch: "Search currency",
+      currencySearchPlaceholder: "Peso, dollar, MXN…",
+      currencyNone: "No currency matches.",
+      currencyList: "Currencies",
+      amountInvalid: "Enter an amount greater than zero.",
+      nameLabel: "Trip name",
+      emailLabel: "Your friend's email",
+      invitedList: "Emails to invite",
+      removeInvite: "Remove {{email}}",
+      working: "One moment…",
     },
   },
 };
