@@ -3,10 +3,13 @@
 import { useState, type ReactNode } from "react";
 
 /**
- * Step 2 of the connection: where to get the code, in the app or on the web.
+ * Step 2 of the connection: where to get the code, on the web or in the app.
  * The two instructions arrive already rendered (they hold links and bold runs);
  * only the choice of tab lives here. Both stay in the HTML; the inactive one is
  * `hidden`.
+ *
+ * The web opens first: whoever reads this is already in a browser, and the
+ * sign-in button there is one click away from the code.
  */
 export function ConnectTabs({
   groupLabel,
@@ -21,7 +24,7 @@ export function ConnectTabs({
   app: ReactNode;
   web: ReactNode;
 }) {
-  const [tab, setTab] = useState<"app" | "web">("app");
+  const [tab, setTab] = useState<"app" | "web">("web");
 
   const tabClass = (on: boolean) =>
     `min-h-11 rounded-full px-4 text-[14px] font-extrabold ${
@@ -31,19 +34,19 @@ export function ConnectTabs({
   return (
     <>
       <div role="group" aria-label={groupLabel} className="inline-flex self-start rounded-full bg-sand p-1">
-        <button type="button" aria-pressed={tab === "app"} onClick={() => setTab("app")} className={tabClass(tab === "app")}>
-          {tabApp}
-        </button>
         <button type="button" aria-pressed={tab === "web"} onClick={() => setTab("web")} className={tabClass(tab === "web")}>
           {tabWeb}
         </button>
+        <button type="button" aria-pressed={tab === "app"} onClick={() => setTab("app")} className={tabClass(tab === "app")}>
+          {tabApp}
+        </button>
       </div>
-      <p hidden={tab !== "app"} className="text-[15px] leading-relaxed text-ink-soft">
-        {app}
-      </p>
-      <p hidden={tab !== "web"} className="text-[15px] leading-relaxed text-ink-soft">
+      <div hidden={tab !== "web"} className="text-[15px] leading-relaxed text-ink-soft">
         {web}
-      </p>
+      </div>
+      <div hidden={tab !== "app"} className="text-[15px] leading-relaxed text-ink-soft">
+        {app}
+      </div>
     </>
   );
 }

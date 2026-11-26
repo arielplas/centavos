@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
 import { HtmlLang } from "@/components/legal/HtmlLang";
 import { WEB_APP_ENABLED } from "@/lib/config";
-import { navHref, type SiteLang } from "@/lib/lang";
+import { LANG_PARAM, navHref, type SiteLang } from "@/lib/lang";
 import { faqJsonLd } from "@/lib/seo";
 import { ConnectTabs } from "./ConnectTabs";
 import { SmoothAnchor } from "./SmoothAnchor";
@@ -177,8 +177,14 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
   const web = WEB_APP_ENABLED;
 
   const faqItems = c.faq.items.map((it) => ({ q: it.q, a: pick(it.a, web) }));
+  // Into the web app and back out at the code. Signed in already, /app/entrar forwards
+  // straight to `next`. The language goes along even when it is Spanish: the web app
+  // otherwise picks its own (a cookie, the device) and someone reading this page in
+  // Spanish could land on an English sign-in.
+  const toWebApp = (path: "/app/entrar" | "/app/crear-cuenta") => `${path}?next=${CONNECT_NEXT}&${LANG_PARAM}=${lang}`;
+  const signinHref = toWebApp("/app/entrar");
   // Without the web app, "create account" is the landing's sign-up card.
-  const signupHref = web ? `/app/crear-cuenta?next=${CONNECT_NEXT}` : `${navHref("/", lang)}#crear-cuenta`;
+  const signupHref = web ? toWebApp("/app/crear-cuenta") : `${navHref("/", lang)}#crear-cuenta`;
   const checks = [c.hero.checkFree, ...(web ? [c.hero.checkNoApp] : []), c.hero.checkDisconnect];
 
   return (
@@ -206,7 +212,7 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
               <mark className="mark">{c.hero.titleAccent}</mark>
             </h1>
             <p className="max-w-[520px] text-[17px] md:text-lg leading-relaxed text-ink-soft mb-7">{c.hero.body}</p>
-            <div className="flex flex-wrap gap-3 mb-6">
+            <div className={`flex flex-wrap gap-3 ${web ? "mb-4" : "mb-6"}`}>
               <SmoothAnchor href="#como" className={pillPrimary}>
                 {c.hero.ctaPrimary}
                 <Icon name="arrow" size={18} stroke={2.4} />
@@ -218,6 +224,18 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
                 {c.hero.ctaSecondary}
               </SmoothAnchor>
             </div>
+            {web && (
+              <p className="mb-6 text-[15px] text-ink-soft">
+                {c.hero.signin.lead}{" "}
+                <Link
+                  href={signinHref}
+                  className="inline-flex items-center gap-1 font-extrabold text-mandarina-deep underline underline-offset-2 hover:opacity-80"
+                >
+                  {c.hero.signin.link}
+                  <Icon name="arrow" size={15} stroke={2.6} />
+                </Link>
+              </p>
+            )}
             <ul aria-label={c.hero.checksLabel} className="flex flex-wrap gap-x-5 gap-y-2 text-[14px] font-semibold text-ink-soft">
               {checks.map((t) => (
                 <li key={t} className="inline-flex items-center gap-2">
@@ -375,18 +393,27 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
                     groupLabel={c.how.step2.groupLabel}
                     tabApp={c.how.step2.tabApp}
                     tabWeb={c.how.step2.tabWeb}
-                    app={<Rich text={c.how.step2.app} />}
+                    app={
+                      <p>
+                        <Rich text={c.how.step2.app} />
+                      </p>
+                    }
                     web={
                       <>
-                        {c.how.step2.web.before}
-                        <Link href={`/app/entrar?next=${CONNECT_NEXT}`} className="font-semibold text-mandarina-deep underline underline-offset-2">
-                          {c.how.step2.web.link}
+                        <p className="mb-3.5">{c.how.step2.web.body}</p>
+                        <Link
+                          href={signinHref}
+                          className="inline-flex min-h-11 items-center gap-2 rounded-full bg-mandarina px-5 text-[15px] font-extrabold text-ink shadow-[0_8px_20px_-12px_rgb(168_74_34/.7)] hover:opacity-90"
+                        >
+                          {c.how.step2.web.button}
+                          <Icon name="arrow" size={16} stroke={2.4} />
                         </Link>
-                        <Rich text={c.how.step2.web.middle} />
-                        <Link href={`/app/crear-cuenta?next=${CONNECT_NEXT}`} className="font-semibold text-mandarina-deep underline underline-offset-2">
-                          {c.how.step2.web.signup}
-                        </Link>
-                        {c.how.step2.web.after}
+                        <p className="mt-2.5 text-[14px]">
+                          {c.how.step2.web.signupLead}{" "}
+                          <Link href={signupHref} className="font-semibold text-mandarina-deep underline underline-offset-2">
+                            {c.how.step2.web.signup}
+                          </Link>
+                        </p>
                       </>
                     }
                   />
@@ -507,9 +534,18 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
               <p className="text-[16px] leading-relaxed text-ink-soft">{c.cta.body}</p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <SmoothAnchor href="#como" className={pillPrimary}>
-                {c.cta.primary}
-              </SmoothAnchor>
+              {/* At the end of the page, with the web app live, the next move is to sign in, not
+                  to scroll back up to the steps (the connect screen shows them again). */}
+              {web ? (
+                <Link href={signinHref} className={pillPrimary}>
+                  {c.cta.signin}
+                  <Icon name="arrow" size={18} stroke={2.4} />
+                </Link>
+              ) : (
+                <SmoothAnchor href="#como" className={pillPrimary}>
+                  {c.cta.primary}
+                </SmoothAnchor>
+              )}
               <a
                 href={signupHref}
                 className="inline-flex min-h-[52px] items-center justify-center rounded-full bg-ink px-5 text-[16px] font-extrabold text-bg hover:opacity-85"
