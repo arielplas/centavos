@@ -195,8 +195,8 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
 
       {/* The language switch lives in the navbar, as on the home page. Like the home page, no
           download button there on phones: logo, Soporte, the switch and that button don't fit
-          in 375px. Desktop keeps it. */}
-      <Header lang={lang} switcherPath={CLAUDE_PATH} mobileCta={false} />
+          in 375px. Desktop keeps it. "Entrar" (web app on) goes straight to the code. */}
+      <Header lang={lang} switcherPath={CLAUDE_PATH} mobileCta={false} signinHref={signinHref} />
 
       <main id="contenido">
         {/* HERO */}

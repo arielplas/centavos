@@ -1,6 +1,7 @@
 import Link from "next/link";
+import { WEB_APP_ENABLED } from "@/lib/config";
 import { UI } from "@/lib/ui-strings";
-import { DEFAULT_LANG, navHref, type SiteLang } from "@/lib/lang";
+import { DEFAULT_LANG, explicitLangHref, navHref, type SiteLang } from "@/lib/lang";
 import { LanguageSwitcher } from "./legal/LanguageSwitcher";
 import { Logo } from "./Logo";
 import { LogoEasterEgg } from "./runner/LogoEasterEgg";
@@ -15,19 +16,28 @@ import { LogoEasterEgg } from "./runner/LogoEasterEgg";
  *   bottom download bar (`mobileCta={false}`).
  * - `switcherPath` adds the language switcher for that path (the landing).
  * - `easterEgg` hides the runner game behind three taps on the logo (the landing).
+ * - With the web app live (WEB_APP_ENABLED), an "Entrar" link to /app/entrar; `signinHref`
+ *   sends it elsewhere. It carries the page's language only when the page set one: on a
+ *   Spanish-only page a forced `?lang=es` would be saved to the shared `lang` cookie and
+ *   undo an English visitor's choice. On phones it takes Soporte's place (still in the
+ *   footer): logo, Soporte, Entrar and the download button don't fit in 375px.
  */
 export function Header({
   mobileCta = true,
-  lang = DEFAULT_LANG,
+  lang: langProp,
   switcherPath,
   easterEgg = false,
+  signinHref,
 }: {
   mobileCta?: boolean;
   lang?: SiteLang;
   switcherPath?: string;
   /** Three taps on the logo open the hidden runner game (the landing only). */
   easterEgg?: boolean;
+  /** Where "Entrar" goes instead of /app/entrar, e.g. with a `next` (the Claude page). */
+  signinHref?: string;
 }) {
+  const lang = langProp ?? DEFAULT_LANG;
   const strings = UI[lang];
 
   return (
@@ -48,10 +58,21 @@ export function Header({
             <Logo size={26} href={navHref("/", lang)} label={strings.homeLabel} />
           )}
           <nav aria-label={strings.mainNav} className="flex items-center gap-2 sm:gap-4 text-[13px] font-semibold">
-            <Link href={navHref("/app/soporte", lang)} className="inline-flex items-center min-h-11 text-ink-soft hover:text-ink px-2">
+            <Link
+              href={navHref("/app/soporte", lang)}
+              className={`${WEB_APP_ENABLED ? "hidden sm:inline-flex" : "inline-flex"} items-center min-h-11 text-ink-soft hover:text-ink px-2`}
+            >
               {strings.support}
             </Link>
             {switcherPath && <LanguageSwitcher path={switcherPath} lang={lang} explicit />}
+            {WEB_APP_ENABLED && (
+              <Link
+                href={signinHref ?? (langProp ? explicitLangHref("/app/entrar", langProp) : "/app/entrar")}
+                className="inline-flex items-center min-h-11 whitespace-nowrap font-bold text-ink hover:opacity-75 px-2"
+              >
+                {strings.signIn}
+              </Link>
+            )}
             <Link
               href={`${navHref("/", lang)}#descargar`}
               className={`${mobileCta ? "inline-flex" : "hidden md:inline-flex"} items-center min-h-11 whitespace-nowrap bg-ink text-bg rounded-full px-4 hover:opacity-85`}
