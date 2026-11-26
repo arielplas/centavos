@@ -185,7 +185,7 @@ export function HomePage({ lang }: { lang: SiteLang }) {
           </div>
         </section>
 
-        {/* AI CONNECTOR — announced as coming soon: no form, no steps */}
+        {/* AI CONNECTOR — live: the CTA leads to /app/claude, which explains how to connect it */}
         <section aria-labelledby="ai-title" className="bg-sand/40">
           <AiSectionViewTracker lang={lang} />
           <div className="mx-auto max-w-screen-lg px-5 py-14 md:py-20 grid md:grid-cols-[1fr_1.1fr] gap-10 items-center">
@@ -197,6 +197,16 @@ export function HomePage({ lang }: { lang: SiteLang }) {
                 {c.ai.titleLead}<br /><mark className="mark">{c.ai.titleAccent}</mark>
               </h2>
               <p className="text-base leading-relaxed text-ink-soft max-w-md">{c.ai.body}</p>
+              <Link
+                href={navHref("/app/claude", lang)}
+                className="mt-6 inline-flex items-center justify-center gap-2.5 min-h-[52px] rounded-full bg-mandarina px-6 text-[16px] font-extrabold text-ink shadow-[0_10px_24px_-12px_rgb(168_74_34/.7)] hover:opacity-90"
+              >
+                {c.ai.cta}
+                <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" />
+                  <path d="m13 6 6 6-6 6" />
+                </svg>
+              </Link>
             </div>
             <div>
               {/* One-shot chat: bubble, "typing…", reply. Same mechanism as the hero demo. */}
