@@ -48,6 +48,8 @@ export function Dropdown({ options, selectedKey, onSelect, label, className, ali
   const button = useRef<HTMLButtonElement>(null);
   const items = useRef<(HTMLLIElement | null)[]>([]);
   const listId = useId();
+  // Espacio elige al apretar y suelta sobre el botón (donde ya está el foco): sin esto, el «clic» de ese soltar la reabriría.
+  const chosenAt = useRef(0);
 
   const selectedIndex = Math.max(0, options.findIndex((o) => o.key === selectedKey));
   const selected = options[selectedIndex];
@@ -80,6 +82,7 @@ export function Dropdown({ options, selectedKey, onSelect, label, className, ali
   const choose = (index: number) => {
     const option = options[index];
     if (!option) return;
+    chosenAt.current = Date.now();
     closeList(true);
     onSelect(option.key);
   };
@@ -134,7 +137,11 @@ export function Dropdown({ options, selectedKey, onSelect, label, className, ali
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
         aria-label={`${label}: ${selected?.label ?? ""}`}
-        onClick={() => (open ? closeList(false) : openList())}
+        onClick={() => {
+          if (Date.now() - chosenAt.current < 400) return;
+          if (open) closeList(false);
+          else openList();
+        }}
         onKeyDown={onButtonKey}
         className="glass-lite flex min-h-[44px] w-full items-center gap-2 rounded-2xl px-4 py-2 text-left text-body-bold font-bold text-ink"
       >
@@ -171,7 +178,12 @@ export function Dropdown({ options, selectedKey, onSelect, label, className, ali
                 {o.sublabel ? <span className="block text-small text-ink-soft">{o.sublabel}</span> : null}
               </span>
               {o.badge}
-              {o.key === selectedKey ? <Icon name="check" size={18} /> : null}
+              {o.key === selectedKey ? (
+                // La app marca la elegida con «✓» en un disco tinta (§4.7: sin íconos inventados).
+                <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[11px] font-extrabold leading-none text-bg">
+                  ✓
+                </span>
+              ) : null}
             </li>
           ))}
         </ul>

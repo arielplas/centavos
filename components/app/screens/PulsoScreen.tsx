@@ -120,7 +120,7 @@ function HeroCard({ pulse, view, userCurrency }: { pulse: PulseResponse; view: P
         className="mt-1.5 font-display font-extrabold leading-tight tracking-[-0.04em] text-on-hero"
         style={{ fontSize: "clamp(1.75rem, 9vw, 2.375rem)" }}
       >
-        <Money value={view.available} currency={userCurrency} prefix={view.available < 0 ? "−" : undefined} />
+        <Money value={view.available} currency={userCurrency} />
       </p>
       <p className="mt-1 text-small text-on-hero-soft">{t("home:ofBudgeted", { amount: f.money(pulse.totalBudget, userCurrency) })}</p>
 
@@ -157,7 +157,7 @@ function Tiles({ pulse, userCurrency }: { pulse: PulseResponse; userCurrency: st
     month: f.money(pulse.spentThisMonth, userCurrency),
   });
   return (
-    <div role="group" aria-label={label} className="grid grid-cols-3 gap-2">
+    <div role="img" aria-label={label} className="grid grid-cols-3 gap-2">
       <Tile variant="peach" label={t("home:tileToday")} value={pulse.spentToday} currency={userCurrency} />
       <Tile variant="sand" label={t("home:tileWeek")} value={pulse.spentThisWeek} currency={userCurrency} />
       <Tile variant="sky" label={t("home:tileMonth")} value={pulse.spentThisMonth} currency={userCurrency} />

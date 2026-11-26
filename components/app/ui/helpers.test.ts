@@ -15,9 +15,10 @@ describe("dinero", () => {
     expect(formatMoneyParts(1234, "MXN", "es")).toEqual({ amount: "$1,234.00", currency: "MXN" });
     expect(formatMoney(1234.5, "USD", "en")).toBe("$1,234.50 USD");
   });
-  test("compacto desde 1,000: «$5.0k» no, «$5k» sí; un decimal si no es entero", () => {
+  test("compacto desde 1,000: «$5k» si es entero, un decimal si no («$5.0k» para 5,040)", () => {
     expect(formatMoneyParts(5000, "MXN", "es", { compact: true }).amount).toBe("$5k");
     expect(formatMoneyParts(1500, "MXN", "es", { compact: true }).amount).toBe("$1.5k");
+    expect(formatMoneyParts(5040, "MXN", "es", { compact: true }).amount).toBe("$5.0k");
     expect(formatMoneyParts(999, "MXN", "es", { compact: true }).amount).toBe("$999.00");
     expect(formatMoneyParts(2_400_000, "MXN", "es", { compact: true }).amount).toBe("$2.4M");
   });

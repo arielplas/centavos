@@ -150,15 +150,14 @@ function LanguageSwitch() {
   const t = useT();
   const { lang, setLang } = useLang();
   return (
-    <div role="radiogroup" aria-label={t("settings:language.title")} className="flex gap-2">
+    <div role="group" aria-label={t("settings:language.title")} className="flex gap-2">
       {LANGUAGES.map((l) => {
         const on = l.lang === lang;
         return (
           <button
             key={l.lang}
             type="button"
-            role="radio"
-            aria-checked={on}
+            aria-pressed={on}
             lang={l.lang}
             onClick={() => setLang(l.lang)}
             className={`min-h-[44px] flex-1 rounded-full px-4 text-body-bold font-bold ${

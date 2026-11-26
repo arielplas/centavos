@@ -10,7 +10,6 @@ const es = {
   settings: {
     title: "Ajustes",
     groups: {
-      account: "Cuenta",
       help: "Ayuda y legal",
     },
     // Copia nueva de la web (§4.6, Perfil): no existe en la app.
@@ -35,7 +34,6 @@ const en: Mirror<typeof es> = {
   settings: {
     title: "Settings",
     groups: {
-      account: "Account",
       help: "Help & legal",
     },
     planLabel: "Plan",

@@ -32,7 +32,7 @@ Centavos+. En la web **no hay paywall**: lo bloqueado muestra el aviso `app:mont
 
 | Pieza | Props |
 |---|---|
-| `Icon` | `name: IconName \| MdiName` (los 37 de `@cntvos/icons` y los 15 de `MDI_PATHS`: `account`, `account-multiple`, `alert-circle-outline`, `alert-outline`, `check`, `check-circle-outline`, `chevron-down/left/up`, `image-outline`, `infinity`, `information-outline`, `lock`, `lock-outline`, `party-popper`), `size=24`, `strokeWidth=1.75` (solo `@cntvos`), `label?` (sin él: `aria-hidden`), `className?`, `style?` |
+| `Icon` | `name: IconName \| MdiName` (los 37 de `@cntvos/icons` y los 14 de `MDI_PATHS`: `account`, `account-multiple`, `alert-circle-outline`, `alert-outline`, `check-circle-outline`, `chevron-down/left/up`, `image-outline`, `infinity`, `information-outline`, `lock`, `lock-outline`, `party-popper`), `size=24`, `strokeWidth=1.75` (solo `@cntvos`), `label?` (sin él: `aria-hidden`), `className?`, `style?` |
 | `Money` | `value`, `currency`, `compact?` («$5k», desde 1,000), `whole?` (sin «.00»), `sign?`, `prefix?` («−» en gastos, «+» si se pasó), `className?`, `style?`. El código va a `0.5em` |
 | `CategoryIcon` | `category` (clave; nula o desconocida → «otros»), `size=44`, `imageUrl?` (foto del presupuesto), `tint?` (`"transparent"` dentro de un anillo), `className?`. Decorativo |
 | `ServiceMark` | `name`, `category`, `size=44`, `className?`. Iniciales sobre el tinte; radio `0.3·size`. Decorativo |
@@ -70,5 +70,5 @@ ringGeometry/progressParts` (`ring.ts`), `monthClock/shortMoney/toneOf/sortByUse
 ## Pendientes conocidos para quien construya encima
 
 - `lib/subscriptions.ts` de la app (`groupByDue`, `nextChargeDate`…) no está copiado: es de la pantalla de Suscripciones.
-- `Money` con `compact` sigue a la app: 1,000 en adelante («$5k MXN»). El doc dice «$5.0k»; la app no pone el «.0».
+- `Money` con `compact` sigue a la app: desde 1,000, un decimal si no es entero («$5k», «$5.0k» para 5,040).
 - La etiqueta «independiente» de `BudgetRow` usa `home:otherCurrencyTag` (en `pulso.ts`); conviene moverla a `presupuestos.ts` como `budgets:otherCurrencyTag`.
