@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { AppFooter } from "@/components/home/AppFooter";
 import { HtmlLang } from "@/components/legal/HtmlLang";
-import { LanguageSwitcher } from "@/components/legal/LanguageSwitcher";
 import { WEB_APP_ENABLED } from "@/lib/config";
 import { navHref, type SiteLang } from "@/lib/lang";
 import { faqJsonLd } from "@/lib/seo";
@@ -184,19 +183,17 @@ export function ClaudePage({ lang }: { lang: SiteLang }) {
       {/* JSON-LD in the server HTML (plain script, not next/script). */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(faqItems)) }} />
 
-      <Header lang={lang} />
+      {/* The language switch lives in the navbar, as on the home page. */}
+      <Header lang={lang} switcherPath={CLAUDE_PATH} />
 
       <main id="contenido">
         {/* HERO */}
         <section aria-labelledby="hero-title" className={`${container} pt-10 pb-10 md:pt-16 grid items-center gap-10 lg:grid-cols-2 lg:gap-12`}>
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-3 mb-5">
-              <p className="inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-[13px] font-bold text-bg">
-                <span aria-hidden className="size-1.5 rounded-full bg-yolk" />
-                {c.hero.badge}
-              </p>
-              <LanguageSwitcher path={CLAUDE_PATH} lang={lang} />
-            </div>
+            <p className="inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-[13px] font-bold text-bg mb-5">
+              <span aria-hidden className="size-1.5 rounded-full bg-yolk" />
+              {c.hero.badge}
+            </p>
             <h1
               id="hero-title"
               className="font-display text-[44px] sm:text-6xl lg:text-7xl font-extrabold leading-[0.95] tracking-[-0.045em] text-balance mb-5"
