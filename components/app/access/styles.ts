@@ -11,4 +11,4 @@ export const linkClass =
   "inline-flex min-h-11 items-center text-[14px] font-bold text-mandarina-deep underline underline-offset-2 cursor-pointer disabled:text-ink-soft disabled:no-underline disabled:cursor-not-allowed";
 export const errorClass = "text-[13px] font-semibold text-mandarina-deep";
 export const titleClass =
-  "font-display text-[28px] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink outline-none whitespace-pre-line";
+  "font-display text-[28px] font-extrabold leading-[1.1] tracking-[-0.03em] text-ink outline-none focus-visible:outline-none! whitespace-pre-line";
